@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App de citas</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Poppins:wght@200;500&display=swap" rel="stylesheet">
+  <style>
+    body{
+        background: #F7F3F7;
+    }
+
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        color: #33333;
+        font-family: 'Montserrat', sans-serif;
+    }
+    /* estilo para hacer que la barra lateral ocupe el 20% del ancho de la pantalla */
+    .sidebar {
+      width: 30%;
+      max-width: 300px;
+      height: 100vh;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #E62E6B;
+      overflow-x: hidden;
+    }
+
+    /* estilo para los elementos de la barra lateral */
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      margin: 10px;
+      text-decoration: none;
+      color: #000;
+    }
+
+    /* estilo para los elementos activos de la barra lateral */
+    .sidebar .active {
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+      border-radius: 10px;
+    }
+
+    /* estilo para el contenido de la página */
+    .content {
+      margin-left: 30%;
+      padding: 20px;
+      height: 1000px; /* solo para hacer el ejemplo, quitar esto después */
+    }
+
+    h1{
+        padding: 20px;
+        /*estilo para el titulo del sidebar*/
+        color: #fff;
+    }
+
+    h2, h3, h4{
+        color: #FF007F;
+    }
+
+    /* adaptivo para el sidebar  */
+    @media screen and (max-width: 700px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .sidebar a {float: left;}
+      div.content {margin-left: 0;}
+    }
+
+    /*estilo para el input*/
+    input[type=text] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      resize: none;
+    }
+
+    /*animacion de transicion del active*/
+    .sidebar a {
+      transition: all 0.3s ease;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <!-- Barra lateral -->
+  <div class="sidebar">
+    <h1>RINDER</h1>
+    <a href="#" class="active" style="font-weight: bold;">Matches</a>
+    <a href="#">Posts</a>
+    <a href="#">Mensajes</a>
+    <a href="#">Perfil</a>
+    <a href="#">Soporte</a>
+  </div>
+
+  <!-- Contenido de la página -->
+  <div class="content">
+    <h2>Bienvenido a Rinder</h2>
+    <input type="text" placeholder="¿Qué tienes en mente?">
+  </div>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+  /*cambiar el active si se presiona los links con animacion*/
+    $(document).ready(function(){
+        $('.sidebar a').click(function(){
+        $('.sidebar a').removeClass("active");
+        $(this).addClass("active");
+        });
+    });
+
+  </script>
+</body>
+</html>
