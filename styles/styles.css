@@ -38,7 +38,6 @@ body {
 .sidebar h1 {
   font-family: 'Ysabeau', cursive;
   color: #fff;
-  margin-bottom: 20px;
 }
 
 /* Estilo para los elementos de la barra lateral */
@@ -50,6 +49,19 @@ body {
   color: #fff;
   transition: all 0.5s ease;
 }
+
+.sidebar .title{
+  display: flex;
+  padding: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar .title img{
+  height: 40px;
+}
+
 
 /* Estilo para los elementos activos de la barra lateral */
 .sidebar a.active {
