@@ -1,0 +1,91 @@
+.Matches-container{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+
+
+.profile-photo-matches{
+	border-radius: 20px;
+	overflow: hidden;
+	margin-bottom: 30px;
+}
+
+.center-matches{
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+}
+
+.center-matches .profile-info-matches{
+	width: 60%;
+	text-align: left;
+}
+
+.center-matches .photos-preview-matches{
+	margin-top: 20px;
+	width: 60%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.center-matches .photos-preview-matches img{
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+
+.center-matches p{
+	margin: 0;
+	text-align: justify;
+}
+
+
+
+
+.Matches-container button{
+	border-radius: 20px;
+	overflow: hidden;
+	width: 120px;
+	height: 120px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/*estilo para el boton rosado*/
+	background-color: #F9A5C4;
+	border: none;
+	outline: none;
+
+}
+
+/*button animation hover*/
+.Matches-container button:hover{
+	background-color: #F9A5C4;
+	transform: scale(1.1);
+}
+
+/*button animation click*/
+.Matches-container button:active{
+	background-color: #F9A5C4;
+	transform: scale(1);
+}
+
+
+.left-matches, .right-matches {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+}
+
+

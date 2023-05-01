@@ -113,6 +113,26 @@
             }, 300);
 
         });
+        $('#Planes').click(function(){
+            for (var i = 0; i < contents.length; i++) {
+                if (contents[i].id != "Planes-Content") {
+                    contents[i].classList.add("slide-out-bottom");
+                    contents[i].classList.remove("slide-in-top");
+                } else{
+                    contents[i].classList.add("slide-in-top");
+                    contents[i].classList.remove("slide-out-bottom");
+
+                }
+            }
+            setTimeout(function(){
+                contents.hide();
+                $('#Planes-Content').show();
+                console.log("Planes");
+
+            }, 300);
+
+        }
+    );
 
 
     });
