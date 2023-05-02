@@ -228,5 +228,16 @@
 }
 
 
+.profile-post-content {
+    margin: 27px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
 
+.profile-post-content img{
+    max-width: 100%;
+}
 
