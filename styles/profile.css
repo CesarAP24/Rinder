@@ -1,0 +1,231 @@
+/*
+<!-- Seccion de perfil -->
+        <div id="Perfil-Content" class="container slide-in-top">
+            <div class="row">
+                <div class="col-12">
+                    <!--Estructura básica para el perfil con foto de perfil, banner, descripción, etc-->
+                    <div class="profile-container">
+                        <div class="profile-top">
+                            <div class="profile-banner-image">
+                                <img src="https://via.placeholder.com/1200x300" alt="Banner">
+                            </div>
+                            <div class="profile-info-fast">
+                                <!--Información rapida, num likes recibidos, seguidores, -->
+                                <div class="profile-info-fast-box">
+                                    <div class="fast-info-box">
+                                        <h5>Seguidores</h5>
+                                        <p>10</p>
+                                    </div>
+                                    <div class="fast-info-box">
+                                        <h5>Estado Civil</h5>
+                                        <p>Divorciado</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-info-immage">
+                                <img src="https://via.placeholder.com/150" alt="Foto de perfil">
+                            </div>
+                        </div>
+                        <div class="profile-down">
+                            <div class="profile-info-main">
+                                <h3>Cesar Perales</h3>
+                                <p><strong>Descripción: </strong>Con propietaria pero sin dueña siuuu Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. </p>
+                                <p><strong>Intereses: </strong>Autos, Motos, Música, etc</p>
+                                <p><strong>Edad: </strong>23</p>
+                                <p><strong>Sexo: </strong>Masculino</p>
+                                <p><strong>Ubicación: </strong>Argentina</p>
+                                <p><strong>Idiomas: </strong>Español, Inglés</p>
+                                <p><strong>Profesión: </strong>Programador</p>
+                            </div>
+
+                            <div class="profile-posts">
+                                <div class="profile-post-box">
+                                    <div class="profile-post-header">
+                                        <div class="profile-post-user-image">
+                                            <img src="https://via.placeholder.com/60" alt="Foto de perfil">
+                                        </div>
+                                        <div class="profile-post-user-name">
+                                            <h5>Cesar Perales</h5>
+                                        </div>
+                                    </div>
+                                    <div class="profile-post-content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur.</p>
+                                    </div>
+                                    <div class="profile-post-footer">
+                                        <div class="profile-post-footer-left">
+                                            <p>12/12/2020 12:00</p>
+                                        </div>
+                                        <div class="profile-post-footer-right">
+                                            <button class="profile-post-like-btn">❤️</button>
+                                            <button class="profile-post-comment-btn">💬</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        */
+
+/*estilos para lo de arriba*/
+
+.Perfil-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+}
+
+.Perfil-container::-webkit-scrollbar{
+    width: 3px;
+    height: 0;
+    background-color: rgba(0, 0, 0, .0);
+}
+
+.Perfil-container::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, .02);
+}
+
+
+.profile-container{
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-top{
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-banner-image{
+	width: 100%;
+	height: auto;
+}
+
+.profile-banner-image img{
+	width: 100%;
+	height: auto;
+}
+
+.profile-info-fast {
+    width: 100%;
+    border-bottom: 2px solid rgba(0,0,0,.1);
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-info-fast-box{
+	display: flex;
+	flex-direction: row;
+	justify-content: right;
+	align-items: center;
+}
+
+.fast-info-box{
+	height: auto;
+	display: flex;
+	padding: 15px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-info-immage {
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 10px;
+    margin-top: -100px;
+    border: 4px solid white;
+}
+
+
+
+
+.profile-down {
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.profile-info-main, .profile-post-box{
+    border-radius: 15px;
+    padding: 20px;
+    border: 3px solid rgba(0,0,0,.05);
+    margin-bottom: 20px;
+}
+
+.profile-info-main{
+	width: 30%;
+	height: fit-content;
+}
+
+.profile-posts{
+	width: 65%;
+}
+
+
+.profile-post-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 15px;
+}
+
+.profile-post-user-image{
+    border-radius: 100%;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.profile-post-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.profile-post-footer-right button {
+    border: none;
+    background-color: rgba(0,0,0,.0);
+    border-radius: 100%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.profile-post-footer-right button:hover {
+    color: #ff0000;
+    background-color: rgba(0,0,0,.05);
+}
+
+.profile-post-footer-right button:active {
+    background-color: rgba(0,0,0,.1);
+}
+
+
+
+

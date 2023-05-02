@@ -50,6 +50,12 @@ body {
   transition: all 0.5s ease;
 }
 
+.sidebar a:hover{
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+}
+
 .sidebar .title{
   display: flex;
   padding: 10px;
