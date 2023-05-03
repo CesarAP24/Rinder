@@ -1,0 +1,33 @@
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 2px solid #eae7ea;
+    border-radius: 15px;
+    background-color: #fff;
+    resize: none;
+}
+
+
+/*active input*/
+input[type=text]:focus {
+    border: 2px solid #ff007f;
+}
+
+
+.Posts-container{
+    overflow-y: scroll;
+    width: 100%;
+    max-width: none;
+}
+
+.Posts-container::-webkit-scrollbar{
+    width: 5px;
+    height: 0;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.Posts-container::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, .1);
+}

@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Poppins:wght@200;500&family=Ysabeau:wght@300&display=swap');
 
 
+/*importar fuente otf*/
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../fonts/FireFoxesDemoRegular.ttf');
+}
+
 /* Estilo para el body */
 body {
   background-color: #F7F3F7;
@@ -60,12 +66,13 @@ body {
   display: flex;
   padding: 10px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
 }
 
 .sidebar .title img{
   height: 40px;
+  margin-left: 10px;
 }
 
 
@@ -85,18 +92,6 @@ body {
 /* Estilo para los títulos */
 h1, h2, h3, h4 {
   color: #FF007F;
-}
-
-/* Estilo para el input */
-input[type=text] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 10px 0;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  resize: none;
 }
 
 /* Estilo para la foto de perfil */
