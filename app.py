@@ -30,6 +30,16 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     fecha_nacimiento = db.Column(db.Date, nullable=False)
 
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+
+    id = db.Column(db.Integer, primary_key=True)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+
 # ... código para configurar Flask y SQLAlchemy ...
 
 @app.route('/procesar_registro', methods=['POST'])
