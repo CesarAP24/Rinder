@@ -21,14 +21,25 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:china@localhost:5
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+class suscripcion(db.Model):
+    __tablename__ = 'suscripciones'
+    name = db.Column(db.String(50), nullable=False)
+    precio = db.Column(db.Integer, nullable=False)
+    duration = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
+    updated_at = db.Column(db.Date, nullable=False)
+    usuarios = db.relationship('User', backref='suscripcion', lazy=True)
+
+
+
 class User(db.Model):
     __tablename__ = 'users'
-
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
     fecha_nacimiento = db.Column(db.Date, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
+    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
+    name_suscripcion = db.Column(db.Integer, ForeignKey('suscripciones.id'), nullable=False)
 
 
 class Message(db.Model):
@@ -39,6 +50,7 @@ class Message(db.Model):
     fecha = db.Column(db.Date, nullable=False)
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+
 
 # ... código para configurar Flask y SQLAlchemy ...
 
