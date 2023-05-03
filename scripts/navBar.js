@@ -12,6 +12,7 @@
         $('.content').hide();
     });
 
+
     /*mostrar la sección maches*/
     $(document).ready(function(){
         const contents = $('.container');
