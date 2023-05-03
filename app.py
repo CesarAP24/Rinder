@@ -1,3 +1,5 @@
+#imports
+import psycopg2 
 from flask import(
     Flask,
     render_template,
@@ -11,6 +13,7 @@ from sqlalchemy import create_engine, Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+
 
 #configuration
 app = Flask(__name__)
@@ -53,3 +56,4 @@ def procesar_registro():
 
     # Redirigir al usuario a la página principal
     return redirect('index.html')
+
