@@ -68,10 +68,66 @@
         </div>
 
         <!-- Seccion de posts -->
-        <div id="Posts-Content" class="container slide-in-top">
-            <h3>Bienvenido a Rinder</h3>
-            <input type="text" placeholder="¿Qué tienes en mente?">
-
+        <div id="Posts-Content" class="container slide-in-top Posts-container">
+            <div class="new-post-container">
+                <h3>Bienvenido a Rinder</h3>
+                <input type="text" placeholder="¿Qué tienes en mente?">
+            </div>
+            <div class="posts-section-posts-container">
+                <div class="profile-post-box">
+                    <div class="profile-post-header">
+                        <div class="profile-post-user-image">
+                                <img src="https://via.placeholder.com/60" alt="Foto de perfil">
+                                </div>
+                                <div class="profile-post-user-name">
+                                    <h5>Cesar Perales</h5>
+                                </div>
+                        </div>
+                        <div class="profile-post-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur.</p>
+                            <img src="https://via.placeholder.com/400" alt="Foto de perfil">
+                        </div>
+                    <div class="profile-post-footer">
+                        <div class="profile-post-footer-left">
+                            <p>12/12/2020 12:00</p>
+                        </div>
+                        <div class="profile-post-footer-right">
+                            <button class="profile-post-like-btn">❤️</button>
+                            <button class="profile-post-comment-btn">💬</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-post-box">
+                    <div class="profile-post-header">
+                        <div class="profile-post-user-image">
+                                <img src="https://via.placeholder.com/60" alt="Foto de perfil">
+                                </div>
+                                <div class="profile-post-user-name">
+                                    <h5>Cesar Perales</h5>
+                                </div>
+                        </div>
+                        <div class="profile-post-content">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                        cillum dolore eu fugiat nulla pariatur.</p>
+                        </div>
+                    <div class="profile-post-footer">
+                        <div class="profile-post-footer-left">
+                            <p>12/12/2020 12:00</p>
+                        </div>
+                        <div class="profile-post-footer-right">
+                            <button class="profile-post-like-btn">❤️</button>
+                            <button class="profile-post-comment-btn">💬</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Seccion de mensajes -->
@@ -344,7 +400,7 @@
 
   <script type="text/javascript">
         $(document).ready(function(){
-            $("#Mensajes").click();
+            $("#Posts").click();
         });
   </script>
 </body>
