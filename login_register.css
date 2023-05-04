@@ -53,6 +53,8 @@ body {
     font-family: 'Montserrat', sans-serif;
     align-items: center;
     margin-top: 90px;
+    overflow-y: scroll;
+    margin-bottom: 90px;
 }
 
 label {
@@ -85,3 +87,12 @@ html {
     border-top-width: 12px;
     border-top-color: #ee628e;
 }
+  
+.container {
+    overflow-y: scroll;
+    height: 500px; 
+}
+
+#register-section {
+    display: none;
+  }
