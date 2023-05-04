@@ -1,0 +1,92 @@
+form {
+    margin: auto;
+    padding: 95px;
+}
+
+h1, h2, h3, h4 {
+    margin-left: 50px;
+    color: #FF007F;
+    font-size: larger;
+    margin: 48px;
+}
+
+
+body {
+    background-color: #F7F3F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    align-items: center;
+    margin-top: 90px;
+    height: 100%;
+    margin-bottom: 90px;
+}
+
+html {
+    border-top: solid;
+    border-top-width: 12px;
+    border-top-color: #ee628e;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+form {
+    text-align: justify;
+    padding: 0px;
+    margin-top: -100px;
+    line-height: 28px;
+}
+
+p{
+    color: #ee628e;
+    font-weight: bold;
+}
+
+.preguntas input[type="checkbox" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+    border-color:#ee628e;
+    border-width: 3px;
+}
+
+button {
+    margin: 11px;
+    width: 95%;
+    padding: 10px;
+    border: none;
+    font-size: 15px;
+    background: #ee628e;
+    color: white;
+    border-radius: 6px;
+    font-family: 'Montserrat';
+}
+
+element.style {
+    margin-top: 80px;
+}
+
+.preguntas {
+    margin-top: 105px;
+    overflow-y: scroll;
+}
+
