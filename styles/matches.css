@@ -12,6 +12,7 @@
     height: 425px;
     min-height: 425px;
     display: flex;
+    box-shadow: 0 0 102px rgba(0,0,0,.1);
     border-radius: 20px;
     overflow: hidden;
     margin-bottom: 30px;
@@ -33,7 +34,7 @@
     margin-left: 43px;
     margin-right: 43px;
     text-align: left;
-    text-shadow: 0 0 8px #767676;
+    text-shadow: 1px 1px 1px #000000;
 }
 
 .profile-photo-footer {
