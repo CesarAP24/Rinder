@@ -8,38 +8,57 @@
 
 
 
-.profile-photo-matches{
-	border-radius: 20px;
-	overflow: hidden;
-	margin-bottom: 30px;
+.profile-photo-matches {
+    width: 600px;
+    height: 500px;
+    min-height: 500px;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
-.center-matches{
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 50%;
+.profile-photo-matches img{
+	height: 500px;
 }
 
-.center-matches .profile-info-matches{
-	width: 60%;
-	text-align: left;
+.profile-photo-matches h4 {
+    position: relative;
+    margin-top: -37px;
+    top: -11px;
+    color: white;
+    font-weight: bolder;
+    margin-left: 43px;
+    margin-right: 43px;
+    text-align: left;
+    text-shadow: 0 0 8px #767676;
 }
 
-.center-matches .photos-preview-matches{
-	margin-top: 20px;
-	width: 60%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	align-items: center;
+.profile-photo-footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.center-matches .photos-preview-matches img{
-	border-radius: 5px;
-	overflow: hidden;
+.center-matches {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+}
+
+.center-matches .profile-info-matches {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: left;
+    background: #e62e6b;
+    color: white;
 }
 
 
@@ -59,23 +78,54 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/*estilo para el boton rosado*/
-	background-color: #F9A5C4;
 	border: none;
 	outline: none;
-
+	transition: all 0.2s ease;
 }
 
-/*button animation hover*/
+/*animacion procedural del hover*/
 .Matches-container button:hover{
-	background-color: #F9A5C4;
 	transform: scale(1.1);
+	transition: all 0.2s ease;
 }
 
-/*button animation click*/
+/*active*/
 .Matches-container button:active{
-	background-color: #F9A5C4;
-	transform: scale(1);
+	transform: scale(0.9);
+	transition: all 0.2s ease;
+}
+
+
+/*especify*/
+
+.Matches-container .right-matches button{
+	background-color: #ffe5e5;
+}
+
+.Matches-container .left-matches button{
+	background-color: #ffe1ec;
+}
+
+.Matches-container .right-matches button:hover {
+    background-color: #ffc8c8;
+}
+
+.Matches-container .left-matches button:hover{
+	background-color: #f9b9d0;
+}
+
+.Matches-container .right-matches button:active {
+    background-color: #fdb9b9;
+}
+
+.Matches-container .left-matches button:active{
+	background-color: #f9a3c3;
+}
+
+
+
+.Matches-container button img{
+	width: 100%;
 }
 
 
