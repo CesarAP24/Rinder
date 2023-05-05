@@ -27,7 +27,7 @@
 .profile-photo-matches h4 {
     position: relative;
     margin-top: -37px;
-    top: -52px;
+    top: -17px;
     color: white;
     font-weight: bolder;
     margin-left: 43px;
@@ -64,9 +64,8 @@
 .center-matches p{
 	margin: 0;
 	text-align: justify;
+    margin-bottom: 1rem;
 }
-
-
 
 
 .Matches-container button {

@@ -87,16 +87,3 @@ input[type=text]:focus {
     padding-bottom: 10px;
     justify-content: space-between;
 }
-.Matches-container button {
-    border-radius: 100%;
-    background: rgba(0, 0, 0, .005);
-    overflow: hidden;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    outline: none;
-}
-
