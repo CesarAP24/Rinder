@@ -39,7 +39,9 @@ class User(db.Model):
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
     likes_restantes = db.Column(db.Integer, nullable=False, default=3)
-    name_suscripcion = db.Column(db.Integer, ForeignKey('suscripciones.id'), nullable=False)
+    name_suscripcion = db.Column(db.string, ForeignKey('suscripciones.name'), nullable=False)
+    id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
+    
 
 
 class Message(db.Model):
@@ -51,6 +53,14 @@ class Message(db.Model):
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
 
+
+class Perfil(db.Model):
+    __tablename__ = 'perfiles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(300), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    usuario= db.relationship('User', backref='perfiles', lazy=True)
 
 # ... código para configurar Flask y SQLAlchemy ...
 
