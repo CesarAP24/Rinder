@@ -1,17 +1,16 @@
-.Matches-container{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-	height: 100%;
+.Matches-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    height: 100%;
 }
 
-
-
 .profile-photo-matches {
-    width: 600px;
-    height: 500px;
-    min-height: 500px;
+    width: 525px;
+    height: 425px;
+    min-height: 425px;
     display: flex;
     border-radius: 20px;
     overflow: hidden;
@@ -28,7 +27,7 @@
 .profile-photo-matches h4 {
     position: relative;
     margin-top: -37px;
-    top: -11px;
+    top: -52px;
     color: white;
     font-weight: bolder;
     margin-left: 43px;
@@ -49,7 +48,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 600px;
+    width: 525px;
 }
 
 .center-matches .profile-info-matches {
@@ -70,17 +69,17 @@
 
 
 
-.Matches-container button{
-	border-radius: 100%;
-	overflow: hidden;
-	width: 120px;
-	height: 120px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: none;
-	outline: none;
-	transition: all 0.2s ease;
+.Matches-container button {
+    border-radius: 100%;
+    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
 /*animacion procedural del hover*/
