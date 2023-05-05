@@ -34,8 +34,10 @@ input[type=text]:focus {
     padding: 0;
 }
 
-.Posts-container::-webkit-scrollbar{
-    width: 5px;
+
+
+.Posts-container::-webkit-scrollbar {
+    width: 2px;
     height: 0;
     background-color: rgba(0, 0, 0, .05);
 }
@@ -46,9 +48,6 @@ input[type=text]:focus {
 
 
 .profile-info-main, .profile-post-box {
-    border-radius: 15px;
-    padding: 0;
-    border: 3px solid rgba(0,0,0,.05);
     margin-bottom: 20px;
 }
 

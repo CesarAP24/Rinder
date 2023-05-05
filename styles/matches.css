@@ -56,10 +56,9 @@
     padding: 15px;
     border-radius: 10px;
     text-align: left;
-    background: #e62e6b;
+    background: linear-gradient(to bottom, #e6628d, #f065a5);
     color: white;
 }
-
 
 .center-matches p{
 	margin: 0;
