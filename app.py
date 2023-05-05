@@ -52,30 +52,101 @@ class Message(db.Model):
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
 
 
-# ... código para configurar Flask y SQLAlchemy ...
 
-@app.route('/procesar_registro', methods=['POST'])
+
+
+
+
+# ... ROUTES ...
+
+@app.route('/Usuarios', methods=['POST', 'GET'])
 def procesar_registro():
-    # Obtener los datos del formulario
-    nombre = request.form['nombre']
-    email = request.form['email']
-    password = request.form['password']
-    fecha_nacimiento = request.form['fecha_nacimiento']
+    if request.method == 'POST':
+        # FALTA IMPLEMENTAR va a depender de lo que desee isabella :v
+        return (jsonify({'error': 'Método no implementado'}), 501);
 
-    # Calcular la edad a partir de la fecha de nacimiento
-    hoy = date.today()
-    fecha_nacimiento = date.fromisoformat(fecha_nacimiento)
-    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    elif request.method == 'GET':
+        # Devolver todos los ids de los usuarios existentes
+        usuarios = User.query.all()
 
-    # Verificar que el usuario tenga al menos 18 años
-    if edad < 18:
-        return render_template('login.html', mensaje_edad='Debes tener al menos 18 años para registrarte.')
+        usuarios_json = [usuario.id for usuario in usuarios]
 
-    # Crear y guardar el nuevo usuario
-    nuevo_usuario = User(nombre=nombre, email=email, password=password, fecha_nacimiento=fecha_nacimiento)
-    db.session.add(nuevo_usuario)
-    db.session.commit()
+        return (jsonify(usuarios_json), 200);
 
-    # Redirigir al usuario a la página principal
-    return redirect('index.html')
+    elif request.method == 'PATCH':
+        # FALTA IMPLEMENTAR
+        return (jsonify({'message': 'Método no implementado'}), 501);
 
+    elif request.method == 'DELETE':
+
+        # Verificar que se tenga permisos
+        if not request.headers.get('Authorization'):
+            return (jsonify({'message': 'No tienes permisos para realizar esta acción'}), 403);
+        else:
+            # verificar FALTA IMPLEMENTAR
+            pass
+
+        # ELimina TODOS los usuarios
+        usuarios = User.query.all();
+
+        with app.app_context():
+            for usuario in usuarios:
+                db.session.delete(usuario);
+            db.session.commit();
+
+        return (jsonify({'message': 'Todos los usuarios han sido eliminados'}), 200);
+
+    else:
+        return (jsonify({'message': 'Método no válido'}), 405);
+
+
+
+@route('/Usuarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
+
+def procesar_usuario(id):
+    if request.method == 'GET':
+        # Verificar que el usuario exista
+        usuario = User.query.filter_by(id=id).first();
+
+        if not usuario:
+            return (jsonify({'message': 'El usuario no existe'}), 404);
+
+        # Devolver los datos del usuario
+        usuario_json = {
+            'id': usuario.id,
+            'nombre': usuario.nombre,
+            'fecha_nacimiento': usuario.fecha_nacimiento,
+            'is_active': usuario.is_active,
+            'likes_restantes': usuario.likes_restantes,
+            'name_suscripcion': usuario.name_suscripcion,
+        }
+
+        return (jsonify(usuario_json), 200);
+
+    elif request.method == 'DELETE':
+        # Verificar que el usuario exista
+        usuario = User.query.filter_by(id=id).first();
+
+        if not usuario:
+            return (jsonify({'message': 'El usuario no existe'}), 404);
+
+        # Verificar que se tenga permisos
+        if not request.headers.get('Authorization'):
+            return (jsonify({'message': 'No tienes permisos para realizar esta acción'}), 403);
+        else:
+            # verificar FALTA IMPLEMENTAR
+            pass
+
+        # Eliminar el usuario
+        with app.app_context():
+            db.session.delete(usuario);
+            db.session.commit();
+
+        return (jsonify({'message': 'El usuario ha sido eliminado'}), 200);
+
+    elif request.method == 'PATCH':
+        # FALTA IMPLEMENTAR
+        return (jsonify({'message': 'Método no implementado'}), 501);
+
+    else:
+        return (jsonify({'message': 'Método no válido'}), 405);
