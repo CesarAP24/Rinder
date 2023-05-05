@@ -98,13 +98,13 @@
 
 .profile-info-main, .profile-post-box{
     border-radius: 15px;
-    padding: 20px;
     border: 3px solid rgba(0,0,0,.05);
     margin-bottom: 20px;
 }
 
-.profile-info-main{
+.profile-down .profile-info-main{
 	width: 30%;
+    padding: 20px;
 	height: fit-content;
 }
 
