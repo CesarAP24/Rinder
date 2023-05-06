@@ -29,6 +29,8 @@ class suscripcion(db.Model):
     created_at = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.Date, nullable=False)
     usuarios = db.relationship('User', backref='suscripcion', lazy=True)
+    compras = db.relationship('compra', backref='suscripcion', lazy=True)
+
 
 
 
@@ -36,9 +38,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    fecha_nacimiento = db.Column(db.Date, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
-    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
     name_suscripcion = db.Column(db.string, ForeignKey('suscripciones.name'), nullable=False)
     id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
     
@@ -56,11 +56,56 @@ class Message(db.Model):
 
 class Perfil(db.Model):
     __tablename__ = 'perfiles'
-
-    id = db.Column(db.Integer, primary_key=True)
     descripcion = db.Column(db.String(300), nullable=False)
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
+    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
+    username = db.Column(db.String(50), nullable=False)
+    edad= db.Column(db.Integer, nullable=False)
+    genero = db.Column(db.String(50), nullable=False)
+    language = db.Column(db.String(50), nullable=False)
+    prefer_language = db.Column(db.String(50), nullable=False)    
+    fecha_nacimiento = db.Column(db.Date, nullable=False)
+    genero = db.Column(db.String(50), nullable=False)
+    ruta_foto= db.Column(db.String(300), nullable=False)
+    
+
+
+
+
+    modified_at = db.Column(db.Date, nullable=False)
+
     usuario= db.relationship('User', backref='perfiles', lazy=True)
+
+
+class publicacion(db.Model):
+    __tablename__ = 'publicaciones'
+
+    id = db.Column(db.Integer, primary_key=True)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    kindofpost= db.Column(db.String(300), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+    usuario= db.relationship('User', backref='publicaciones', lazy=True)
+
+class compra(db.Model):
+    __table__name = 'compras'
+    precio= db.Column(db.Integer, nullable=False)
+    suscripcion_name= db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='compras', lazy=True)
+    suscripcion= db.relationship('suscripcion', backref='compras', lazy=True)
+
+class like(db.Model): 
+    __table__name = 'likes'
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_publicacion = db.Column(db.Integer, ForeignKey('publicaciones.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='likes', lazy=True)
+    publicacion= db.relationship('publicacion', backref='likes', lazy=True)
+
 
 # ... código para configurar Flask y SQLAlchemy ...
 
