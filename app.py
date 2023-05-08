@@ -71,6 +71,37 @@ class Perfil(db.Model):
     modified_at = db.Column(db.Date, nullable=False)
 
     usuario= db.relationship('User', backref='perfiles', lazy=True)
+    
+class publicacion(db.Model):
+    __tablename__ = 'publicaciones'
+
+    id = db.Column(db.Integer, primary_key=True)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    kindofpost= db.Column(db.String(300), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+    usuario= db.relationship('User', backref='publicaciones', lazy=True)
+
+class compra(db.Model):
+    __table__name = 'compras'
+    precio= db.Column(db.Integer, nullable=False)
+    suscripcion_name= db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='compras', lazy=True)
+    suscripcion= db.relationship('suscripcion', backref='compras', lazy=True)
+
+
+class like(db.Model): 
+    __table__name = 'likes'
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_publicacion = db.Column(db.Integer, ForeignKey('publicaciones.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='likes', lazy=True)
+    publicacion= db.relationship('publicacion', backref='likes', lazy=True)
+
+
 
 
 
