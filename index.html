@@ -94,7 +94,7 @@
                             <p>12/12/2020 12:00</p>
                         </div>
                         <div class="profile-post-footer-right">
-                            <button class="profile-post-like-btn">❤️</button>
+                            <button id="profile-post-like-btn" class="profile-post-like-btn" >♥</button>
                             <button class="profile-post-comment-btn">💬</button>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                             <p>12/12/2020 12:00</p>
                         </div>
                         <div class="profile-post-footer-right">
-                            <button class="profile-post-like-btn">❤️</button>
+                            <button id="profile-post-like-btn" class="profile-post-like-btn" >♥</button>
                             <button class="profile-post-comment-btn">💬</button>
                         </div>
                     </div>
@@ -209,7 +209,7 @@
         <!-- Seccion de perfil -->
         <div id="Perfil-Content" class="container Perfil-container slide-in-top">
             <!--Estructura básica para el perfil con foto de perfil, descripción, etc-->
-            <button class="btn-edit-profile"><p2>Editar perfil</p2></button>
+            <button class="btn-edit-profile"><p2>Editar perfil</button>
             <button class="btn-add-photo">
                 <span class="icon">+</span>
               </button>
@@ -270,9 +270,9 @@
                                     <p>12/12/2020 12:00</p>
                                 </div>
                                 <div class="profile-post-footer-right">
-                                    <button class="profile-post-like-btn">❤️</button>
-                                    <button class="profile-post-comment-btn">💬</button>
-                                </div>
+                                        <button class="profile-post-like-btn" liked="0">♥</button>
+                                        <button class="profile-post-comment-btn">💬</button>
+                                    </div>                                    
                             </div>
                         </div>
                         <div class="profile-post-box">
@@ -299,7 +299,7 @@
                                     <p>12/12/2020 12:00</p>
                                 </div>
                                 <div class="profile-post-footer-right">
-                                    <button class="profile-post-like-btn">❤️</button>
+                                    <button class="profile-post-like-btn" liked="0">♥</button>
                                     <button class="profile-post-comment-btn">💬</button>
                                 </div>
                             </div>
@@ -326,7 +326,7 @@
                                     <p>12/12/2020 12:00</p>
                                 </div>
                                 <div class="profile-post-footer-right">
-                                    <button class="profile-post-like-btn">❤️</button>
+                                    <button id="profile-post-like-btn" class="profile-post-like-btn" liked="0" >♥</button>
                                     <button class="profile-post-comment-btn">💬</button>
                                 </div>
                             </div>
@@ -352,7 +352,8 @@
                                     <p>12/12/2020 12:00</p>
                                 </div>
                                 <div class="profile-post-footer-right">
-                                    <button class="profile-post-like-btn">❤️</button>
+                                    <button id="profile-post-like-btn" class="profile-post-like-btn" liked="0">♥</button>
+
                                     <button class="profile-post-comment-btn">💬</button>
                                 </div>
                             </div>
@@ -405,5 +406,21 @@
             $("#Posts").click();
         });
   </script>
+
+<script> 
+    var likeButton = document.getElementsByClassName("profile-post-like-btn");
+    console.log(likeButton)
+    for (var i = 0; i < likeButton.length; i++){
+        likeButton[i].addEventListener("click", function(){
+            console.log("presionado!")
+            if(this.classList.contains("liked")){
+                this.classList.remove("liked")
+            }else{
+                this.classList.add("liked")
+            }
+        });
+    }
+</script>
+
 </body>
 </html>

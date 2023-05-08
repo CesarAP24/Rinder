@@ -151,6 +151,11 @@
     background-color: rgba(0,0,0,.1);
 }
 
+.liked{
+    color: #ff0000;
+    background-color: rgba(0,0,0,.05);
+}
+
 
 .profile-post-content {
     margin: 27px 0;
@@ -226,3 +231,8 @@
     font-size: 13px;
     font-weight: bolder;
   }
+
+  button.profile-post-like-btn {
+    font-family: 'Ysabeau';
+}
+  
