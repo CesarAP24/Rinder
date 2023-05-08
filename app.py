@@ -29,6 +29,8 @@ class suscripcion(db.Model):
     created_at = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.Date, nullable=False)
     usuarios = db.relationship('User', backref='suscripcion', lazy=True)
+    compras = db.relationship('compra', backref='suscripcion', lazy=True)
+
 
 
 
@@ -36,10 +38,10 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    fecha_nacimiento = db.Column(db.Date, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
-    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
-    name_suscripcion = db.Column(db.Integer, ForeignKey('suscripciones.id'), nullable=False)
+    name_suscripcion = db.Column(db.string, ForeignKey('suscripciones.name'), nullable=False)
+    id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
+    
 
 
 class Message(db.Model):
@@ -148,5 +150,3 @@ def procesar_usuario(id):
         # FALTA IMPLEMENTAR
         return (jsonify({'message': 'Método no implementado'}), 501);
 
-    else:
-        return (jsonify({'message': 'Método no válido'}), 405);
