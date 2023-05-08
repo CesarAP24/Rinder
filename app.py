@@ -59,6 +59,7 @@ class Message(db.Model):
 
 
 
+
 # ... ROUTES ...
 
 @app.route('/Usuarios', methods=['POST', 'GET'])
@@ -149,4 +150,17 @@ def procesar_usuario(id):
     elif request.method == 'PATCH':
         # FALTA IMPLEMENTAR
         return (jsonify({'message': 'Método no implementado'}), 501);
+
+
+@route('/Usuarios/<id>/Perfiles', methods=['GET', 'PATCH'])
+
+def procesar_perfiles(id):
+    #permisos
+    if request.method == 'GET':
+        #devolver el perfil
+    elif request.method == 'PATCH':
+        #MODIFICAR VALORES DEL PERFIL
+    else:
+        #metodo no permitido
+        render_template
 
