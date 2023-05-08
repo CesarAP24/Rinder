@@ -4,92 +4,43 @@
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <title>Rind your match</title>
     <link rel="stylesheet" href="styles/form_styles.css">
+	<link rel="stylesheet" href="styles/grid_styles.css">
+	<script type="text/javascript" src="scripts/mainForm.js"></script>
+
 </head>
 <body>
-	    <h2>Encuesta sobre preferencias de comida</h2>
-	    <form action="/enviar" method="POST">
-
+	<p>Responda estas preguntas:</p>
+	<form>
 		<div class = "preguntas">
-    <div class = "container_preguntas">
-            <p>¿Qué tipo de comida te gusta más?</p>
-		<label for="opcion1">
-			<input type="checkbox" name="opcion1" id="opcion1" value="italiana"> Italiana
-		</label><br>
-		<label for="opcion2">
-			<input type="checkbox"  name="opcion2" id="opcion2" value="mexicana"> Mexicana
-		</label><br>
-		<label for="opcion3">
-			<input type="checkbox"  name="opcion3" id="opcion3" value="japonesa"> Japonesa
-		</label><br>
-    </div>
+			<button><</button>
+			<div class = "pregunta-template">
+	            <h3>¿Can you answer this template?</h3>
+				<!--display grid for 4 options-->
+				<div class="grid-container">
+					<div class="grid-item">
+						<div class="grid-image-container">
+							<img src="https://via.placeholder.com/500" alt="placeholder">	
+						</div>
+						<label>Option1</label>
+					</div>
+					<div class="grid-item">
+						<div class="grid-image-container">
+							<img src="https://via.placeholder.com/500" alt="placeholder">	
+						</div>
+						<label>Option1</label>
+					</div>
+					<div class="grid-item">
+						<div class="grid-image-container">
+							<img src="https://via.placeholder.com/500" alt="placeholder">	
+						</div>
+						<label>Option1</label>
+					</div>
+				</div>
+			</div>
+			<button>></button>
+		</div>
 
-    <div class = "container_preguntas">
-		<p>¿Qué tipo de postre prefieres?</p>
-		<label for="opcion4">
-			<input type="checkbox" name="opcion4" id="opcion4" value="helado"> Helado
-		</label><br>
-		<label for="opcion5">
-			<input type="checkbox" name="opcion5" id="opcion5" value="pastel"> Pastel
-		</label><br>
-		<label for="opcion6">
-			<input type="checkbox" name="opcion6" id="opcion6" value="frutas"> Frutas
-		</label><br>
-    </div>
-
-    <div class = "container_preguntas">
-        <p>¿Qué tipo de postre prefieres?</p>
-		<label for="opcion4">
-			<input type="checkbox" name="opcion4" id="opcion4" value="helado"> Helado
-		</label><br>
-		<label for="opcion5">
-			<input type="checkbox" name="opcion5" id="opcion5" value="pastel"> Pastel
-		</label><br>
-		<label for="opcion6">
-			<input type="checkbox" name="opcion6" id="opcion6" value="frutas"> Frutas
-		</label><br>
-    </div>
-
-    <div class = "container_preguntas">
-        <p>¿Qué tipo de postre prefieres?</p>
-		<label for="opcion4">
-			<input type="checkbox" name="opcion4" id="opcion4" value="helado"> Helado
-		</label><br>
-		<label for="opcion5">
-			<input type="checkbox" name="opcion5" id="opcion5" value="pastel"> Pastel
-		</label><br>
-		<label for="opcion6">
-			<input type="checkbox" name="opcion6" id="opcion6" value="frutas"> Frutas
-		</label><br>
-    </div>
-
-    <div class = "container_preguntas">
-        <p>¿Qué tipo de postre prefieres?</p>
-		<label for="opcion4">
-			<input type="checkbox" name="opcion4" id="opcion4" value="helado"> Helado
-		</label><br>
-		<label for="opcion5">
-			<input type="checkbox" name="opcion5" id="opcion5" value="pastel"> Pastel
-		</label><br>
-		<label for="opcion6">
-			<input type="checkbox" name="opcion6" id="opcion6" value="frutas"> Frutas
-		</label><br>
-    </div>
-
-    <div class = "container_preguntas">
-        <p>¿Qué tipo de postre prefieres?</p>
-		<label for="opcion4">
-			<input type="checkbox" name="opcion4" id="opcion4" value="helado"> Helado
-		</label><br>
-		<label for="opcion5">
-			<input type="checkbox" name="opcion5" id="opcion5" value="pastel"> Pastel
-		</label><br>
-		<label for="opcion6">
-			<input type="checkbox" name="opcion6" id="opcion6" value="frutas"> Frutas
-		</label><br>
-    </div>
-    <p1>¿No deseas contestar la encuesta? Presiona <a href="#" id="omitir">Omitir</a></p1>
-		<button type="submit">Enviar respuestas</button>
-        </div>
+		<p>¿No deseas contestar la pregunta? <a href="#" id="omitir">Omítela</a></p>
 	</form>
 </body>
 </html>

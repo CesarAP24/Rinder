@@ -1,7 +1,12 @@
 form {
-    margin: auto;
-    padding: 95px;
+    margin-top: 0;
+    width: 70%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 
 h1, h2, h3, h4 {
     margin-left: 50px;
@@ -16,17 +21,12 @@ body {
     background-color: #F7F3F7;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    overflow-y: scroll;
-    margin: 0;
-    padding: 0;
+    justify-content: center;
     box-sizing: border-box;
     color: #333333;
     font-family: 'Montserrat', sans-serif;
     align-items: center;
-    margin-top: 90px;
     height: 100%;
-    margin-bottom: 90px;
 }
 
 html {
@@ -49,25 +49,13 @@ h2 {
 form {
     text-align: justify;
     padding: 0px;
-    margin-top: -150px;
     line-height: 28px;
 }
 
-p{
+p {
     color: #ee628e;
     font-weight: bold;
-}
-
-.preguntas input[type="checkbox" i] {
-    background-color: initial;
-    cursor: default;
-    appearance: auto;
-    box-sizing: border-box;
-    margin: 3px 3px 3px 4px;
-    padding: initial;
-    border: initial;
-    border-color:#ee628e;
-    border-width: 3px;
+    margin: 30px;
 }
 
 button {
@@ -82,34 +70,53 @@ button {
     font-family: 'Montserrat';
 }
 
-element.style {
-    margin-top: 80px;
-}
-
 .preguntas {
-    margin-top: 105px;
-    overflow-y: scroll;
+    display: flex;
+    width: 116%;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
 }
 
-.container_preguntas {
-    margin-top: 37px;
+.preguntas button {
+    padding: 26px;
+    color: #d4d4d4;
+    background: #f7f3f7;
+    font-size: 64px;
+    width: 150px;
+    font-family: Consolas;
+    transition: 0.2s;
+}
+.preguntas button:hover{
+    cursor: pointer;
+    color: #ee628e; 
+    transition: 0.2s;
+
+}
+
+.preguntas button:active{
+    color: #fd93b4;
+}
+
+
+.pregunta-template {
     display: flex;
     flex-direction: column;
-    align-content: space-around;
-    justify-content: center;
+    box-sizing: border-box;
     background: white;
-    width: 400px;
-    height: 140px;
-    padding: 26px;
-    border-radius: 30px;
-    line-height: 1;
-    margin-bottom: 15px;
+    width: 80%;
+    padding: 35px;
+    border-radius: 19px;
+    align-items: center;
 }
 
-p1{
-    display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
+.pregunta-template h3 {
+    color: #FF007F;
+    font-size: 24px;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 28px;
 }
+
