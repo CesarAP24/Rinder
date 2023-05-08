@@ -54,9 +54,54 @@ class Message(db.Model):
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
 
 
+class Perfil(db.Model):
+    __tablename__ = 'perfiles'
+    descripcion = db.Column(db.String(300), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
+    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
+    username = db.Column(db.String(50), nullable=False)
+    edad= db.Column(db.Integer, nullable=False)
+    genero = db.Column(db.String(50), nullable=False)
+    language = db.Column(db.String(50), nullable=False)
+    prefer_language = db.Column(db.String(50), nullable=False)    
+    fecha_nacimiento = db.Column(db.Date, nullable=False)
+    genero = db.Column(db.String(50), nullable=False)
+    ruta_foto= db.Column(db.String(300), nullable=False)
+    modified_at = db.Column(db.Date, nullable=False)
 
+    usuario= db.relationship('User', backref='perfiles', lazy=True)
+    
+class publicacion(db.Model):
+    __tablename__ = 'publicaciones'
 
+    id = db.Column(db.Integer, primary_key=True)
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    kindofpost= db.Column(db.String(300), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+    usuario= db.relationship('User', backref='publicaciones', lazy=True)
 
+        usuarios_json = [usuario.id for usuario in usuarios]
+class compra(db.Model):
+    __table__name = 'compras'
+    precio= db.Column(db.Integer, nullable=False)
+    suscripcion_name= db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='compras', lazy=True)
+    suscripcion= db.relationship('suscripcion', backref='compras', lazy=True)
+
+        return (jsonify(usuarios_json), 200);
+
+class like(db.Model): 
+    __table__name = 'likes'
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_publicacion = db.Column(db.Integer, ForeignKey('publicaciones.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    usuario= db.relationship('User', backref='likes', lazy=True)
+    publicacion= db.relationship('publicacion', backref='likes', lazy=True)
 
 
 
@@ -163,4 +208,6 @@ def procesar_perfiles(id):
     else:
         #metodo no permitido
         render_template
+
+
 
