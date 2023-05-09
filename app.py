@@ -1,5 +1,4 @@
 #imports
-import psycopg2 
 from flask import(
     Flask,
     render_template,
@@ -13,6 +12,7 @@ from sqlalchemy import create_engine, Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import uuid;
 
 
 #configuration
@@ -23,7 +23,9 @@ migrate = Migrate(app, db)
 
 class suscripcion(db.Model):
     __tablename__ = 'suscripciones'
-    name = db.Column(db.String(50), nullable=False)
+    #keys
+    name = db.Column(db.String(50), primary_key=True)
+    
     precio = db.Column(db.Integer, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.Date, nullable=False)
@@ -32,46 +34,48 @@ class suscripcion(db.Model):
     compras = db.relationship('compra', backref='suscripcion', lazy=True)
 
 
-
-
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True)
+
     nombre = db.Column(db.String(50), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
-    name_suscripcion = db.Column(db.string, ForeignKey('suscripciones.name'), nullable=False)
+    name_suscripcion = db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
     id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
     
 
-
 class Message(db.Model):
     __tablename__ = 'messages'
-
-    id = db.Column(db.Integer, primary_key=True)
-    texto = db.Column(db.String(300), nullable=False)
-    fecha = db.Column(db.Date, nullable=False)
+    id = db.Column(db.string(50), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True)
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
+    
+    texto = db.Column(db.String(300), nullable=False)
+    fecha = db.Column(db.Date, nullable=False)
+    
 
 
 class Perfil(db.Model):
     __tablename__ = 'perfiles'
-    descripcion = db.Column(db.String(300), nullable=False)
-    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    created_at = db.Column(db.Date, nullable=False)
-    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
+    #keys and foreing keys
+    id_usuario = db.Column(db.String(50), ForeignKey('users.id'), nullable=False)
+    usuario= db.relationship('User', backref='perfiles', lazy=True)
+    
+    #atributes
     username = db.Column(db.String(50), nullable=False)
     edad= db.Column(db.Integer, nullable=False)
     genero = db.Column(db.String(50), nullable=False)
+    descripcion = db.Column(db.String(300), nullable=False)
+    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
     language = db.Column(db.String(50), nullable=False)
-    prefer_language = db.Column(db.String(50), nullable=False)    
     fecha_nacimiento = db.Column(db.Date, nullable=False)
-    genero = db.Column(db.String(50), nullable=False)
     ruta_foto= db.Column(db.String(300), nullable=False)
-    modified_at = db.Column(db.Date, nullable=False)
-
-    usuario= db.relationship('User', backref='perfiles', lazy=True)
     
+    #necessary extra
+    modified_at = db.Column(db.Date, nullable=False)
+    created_at = db.Column(db.Date, nullable=False)
+
+
 class publicacion(db.Model):
     __tablename__ = 'publicaciones'
 
@@ -83,7 +87,8 @@ class publicacion(db.Model):
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
     usuario= db.relationship('User', backref='publicaciones', lazy=True)
 
-        usuarios_json = [usuario.id for usuario in usuarios]
+
+
 class compra(db.Model):
     __table__name = 'compras'
     precio= db.Column(db.Integer, nullable=False)
@@ -93,7 +98,7 @@ class compra(db.Model):
     usuario= db.relationship('User', backref='compras', lazy=True)
     suscripcion= db.relationship('suscripcion', backref='compras', lazy=True)
 
-        return (jsonify(usuarios_json), 200);
+
 
 class like(db.Model): 
     __table__name = 'likes'
@@ -132,6 +137,7 @@ def procesar_registro():
             return (jsonify({'message': 'No tienes permisos para realizar esta acción'}), 403);
         else:
             # verificar FALTA IMPLEMENTAR
+            return (jsonify(usuarios_json), 200);
             pass
 
         # ELimina TODOS los usuarios
@@ -145,12 +151,10 @@ def procesar_registro():
         return (jsonify({'message': 'Todos los usuarios han sido eliminados'}), 200);
 
     else:
-        return (jsonify({'message': 'Método no válido'}), 405);
+        return render_template('error.html', error={"name":"Error 404", "message":"Página no encontrada"}), 404;
 
 
-
-@route('/Usuarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
-
+@app.route('/Usuarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
 def procesar_usuario(id):
     if request.method == 'GET':
         # Verificar que el usuario exista
@@ -197,17 +201,18 @@ def procesar_usuario(id):
         return (jsonify({'message': 'Método no implementado'}), 501);
 
 
-@route('/Usuarios/<id>/Perfiles', methods=['GET', 'PATCH'])
-
+@app.route('/Usuarios/<id>/Perfiles', methods=['GET', 'PATCH'])
 def procesar_perfiles(id):
     #permisos
     if request.method == 'GET':
         #devolver el perfil
+        pass
     elif request.method == 'PATCH':
         #MODIFICAR VALORES DEL PERFIL
+        pass
     else:
         #metodo no permitido
-        render_template
+        render_template('error.html', error={"name":"Método no permitido", "description":"El método que se está intentando usar no está permitido en esta ruta."})
 
 
 
