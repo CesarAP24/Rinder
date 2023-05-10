@@ -139,7 +139,7 @@ class Mensaje(db.Model):
 
     id_usuariodestinatario = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
     id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
-    
+
     id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
     id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     
@@ -162,10 +162,10 @@ class Mensaje(db.Model):
 class Suscripcion(db.Model):
     __tablename__ = 'suscripcion'
     nombre = db.Column(db.String(50), primary_key=True)
-    precio = db.Column(db.Float)
+    precio = db.Column(db.Float, nullable = False)
     created = db.Column(db.Date, default=datetime.utcnow)
-    modified = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
-    duracion = db.Column(db.Integer())
+    modified = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    day_duration = db.Column(db.Integer, default=30)
 
     def __init__(self, nombre, precio, created, modified, duracion):
         self.nombre = nombre
@@ -179,13 +179,13 @@ class Suscripcion(db.Model):
     
 class Likea_Perfil(db.Model):
     __tablename__ = 'likea_perfil'
-    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'), primary_key=True)
-    id_perfil = db.Column(db.String(50), ForeignKey('perfil.username'), primary_key=True)
+    id_usuario = db.Column(db.String(50),primary_key=True)
+    id_usuario2 = db.Column(db.String(50), primary_key=True)
     fecha = db.Column(db.Date, default=datetime.utcnow)
 
-    def __init__(self, id_usuario, id_perfil, fecha):
+    def __init__(self, id_usuario, id_usuario2, fecha):
         self.id_usuario = id_usuario
-        self.id_perfil = id_perfil
+        self.id_usuario2 = id_usuario2
         self.fecha = fecha
 
     def __repr__(self):
@@ -193,8 +193,10 @@ class Likea_Perfil(db.Model):
     
 class Likea_Publicacion(db.Model):
     __tablename__ = 'likea_publicacion'
-    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'), primary_key=True)
-    id_publicacion = db.Column(db.String(36), ForeignKey('publicacion.id_publicacion'), primary_key=True)
+    id_usuario = db.Column(db.String(50), primary_key=True)
+    id_publicacion = db.Column(db.String(36), primary_key=True)
+    
+
     fecha = db.Column(db.Date, default=datetime.utcnow)
 
     def __init__(self, id_usuario, id_publicacion, fecha):
