@@ -29,7 +29,6 @@ class suscripcion(db.Model):
     created_at = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.Date, nullable=False)
     usuarios = db.relationship('User', backref='suscripcion', lazy=True)
-    compras = db.relationship('compra', backref='suscripcion', lazy=True)
 
 
 
@@ -39,7 +38,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
-    name_suscripcion = db.Column(db.string, ForeignKey('suscripciones.name'), nullable=False)
+    name_suscripcion = db.Column(db.string(50), ForeignKey('suscripciones.name'), nullable=False)
     id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
     
 
@@ -52,7 +51,7 @@ class Message(db.Model):
     fecha = db.Column(db.Date, nullable=False)
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
-
+    
 
 class Perfil(db.Model):
     __tablename__ = 'perfiles'
@@ -84,7 +83,7 @@ class publicacion(db.Model):
     usuario= db.relationship('User', backref='publicaciones', lazy=True)
 
 class compra(db.Model):
-    __table__name = 'compras'
+    __tablename__ = 'compras'
     precio= db.Column(db.Integer, nullable=False)
     suscripcion_name= db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
@@ -94,14 +93,24 @@ class compra(db.Model):
 
 
 class like(db.Model): 
-    __table__name = 'likes'
+    __tablename__ = 'likes'
     id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     id_publicacion = db.Column(db.Integer, ForeignKey('publicaciones.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     usuario= db.relationship('User', backref='likes', lazy=True)
     publicacion= db.relationship('publicacion', backref='likes', lazy=True)
 
-
+class Sesuscribe(db.model):
+    __tablename__ = 'EstadosSuscripcion'
+    comprado = db.Column(db.date , nullable=False)    
+    vencimiento = db.Column(db.date , nullable=False)
+    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
+    id_suscripcion = db.Column(db.Integer, ForeignKey('name_suscripcion'), nullable=False)
+    usuario= db.relationship('User', backref='EstadosSuscripcion', lazy=True)
+    suscripcion= db.relationship('suscripcion', backref='EstadosSuscripcion', lazy=True)
+    
+    
+     
 
 
 
