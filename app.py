@@ -147,14 +147,18 @@ class Mensaje(db.Model):
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
     formato = db.Column(db.String(50))
-
-    def __init__(self, id_usuariodestinatario, id_usuarioremitente, fecha, contenido, state, formato):
+    def __init__(self, id_mensaje, id_mensaje2, id_usuariodestinatario, id_usuariodestinatario2, id_usuarioremitente, id_usuarioremitente2, fecha, contenido, state, formato ):
+        self.id_mensaje = id_mensaje
+        self.id_mensaje2 = id_mensaje2
         self.id_usuariodestinatario = id_usuariodestinatario
+        self.id_usuariodestinatario2 = id_usuariodestinatario2
         self.id_usuarioremitente = id_usuarioremitente
+        self.id_usuarioremitente2 = id_usuarioremitente2
         self.fecha = fecha
         self.contenido = contenido
         self.state = state
         self.formato = formato
+
 
     def __repr__(self):
         return f"<Mensaje {self.id_mensaje}>"
@@ -167,12 +171,12 @@ class Suscripcion(db.Model):
     modified = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow) 
     day_duration = db.Column(db.Integer, default=30)
 
-    def __init__(self, nombre, precio, created, modified, duracion):
+    def __init__(self, nombre, precio, created, modified, day_duration):
         self.nombre = nombre
         self.precio = precio
         self.created = created
         self.modified = modified
-        self.duracion = duracion
+        self.day_duration = day_duration
 
     def __repr__(self):
         return f"<Suscripcion {self.nombre}>"
@@ -194,15 +198,16 @@ class Likea_Perfil(db.Model):
 class Likea_Publicacion(db.Model):
     __tablename__ = 'likea_publicacion'
     id_usuario = db.Column(db.String(50), primary_key=True)
+    id_usuario2 =  db.Column(db.String(50), primary_key=True)
     id_publicacion = db.Column(db.String(36), primary_key=True)
-    
-
     fecha = db.Column(db.Date, default=datetime.utcnow)
 
-    def __init__(self, id_usuario, id_publicacion, fecha):
+    def __init__(self, id_usuario, id_usuario2, id_publicacion, fecha):
         self.id_usuario = id_usuario
+        self.id_usuario2 = id_usuario2
         self.id_publicacion = id_publicacion
         self.fecha = fecha
+    
 
     def __repr__(self):
         return f"<LikeaPublicacion {self.id_usuario}>"
@@ -212,11 +217,14 @@ class Compra(db.Model):
     id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     nombre_suscripcion = db.Column(db.String(50), ForeignKey('suscripcion.nombre'))
     fecha = db.Column(db.Date, default=datetime.utcnow)
+    precio_compra = db.Column(db.double, nullable = False)
 
-    def __init__(self, id_usuario, nombre_suscripcion, fecha):
+
+    def __init__(self, id_usuario, nombre_suscripcion, fecha, precio_compra):
         self.id_usuario = id_usuario
         self.nombre_suscripcion = nombre_suscripcion
         self.fecha = fecha
+        self.precio_compra = precio_compra
 
     def __repr__(self):
         return f"<Compra {self.id_compra}>"
