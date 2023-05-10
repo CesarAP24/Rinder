@@ -1,4 +1,5 @@
-#imports
+# IMPORTS ------------------------------------------------------------------------------------------------
+# ========================================================================================================
 from flask import(
     Flask,
     render_template,
@@ -16,35 +17,23 @@ import uuid
 import datetime
 
 
-#configuration
+# CONFIGURATIONS -----------------------------------------------------------------------------------------
+# ========================================================================================================
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:china@localhost:5432/usuariosRinder'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-    # Usuario(id_usuario: string (primary key), username: string (foreing key), correo: string, contraseña: string, active: bool, likes_restantes: int)
-
-    # Perfil(username:string (primary key), nacimiento:date, edad:int, genero: string, descripcion: string, ruta_photo:string, created_at:date, modified_at:date)
-
-    # Publicacion(id_publicacion: string (primary key), id_usuario:string (foreing key), contenido:string, modified_at:date, created_at:date, cantidad_likes: int)
-
-    # Comentario(id_publicacion: string (primary key), id_usuario:string (primary key), id_publicacion: string (foreign key), id_usuario (foreign key))
-
-    # Post(id_publicacion: string (primary key), id_usuario: string (primary key))
 
 
-    # Mensajes(id_mensaje:string (primary key), id_usuariodestinatario:string (primary key), id_usuarioremitente:string (primary key), fecha:date, contenido:string, state: string, formato: string, id_mensaje: string (foreign key), id_usuario: string (foreign key), id_usuario: string (foreign key))
-
-    # Suscripcion(nombre:string(primary key), precio: double, created: date, modified: date, duracion: int)
-
-    # RELACIONES
 
 
-    # Likea_Perfil(id_usuario: string (primary key), id_usuario: string (primary key), created_date: date)
+# MODEL --------------------------------------------------------------------------------------------------
+# ========================================================================================================
 
-    # Like_Publicacion(id_usuario: string (primary key), id_publicacion: string (primary key), id_usuario: string, created_date: date)
 
-    # Compra(id_usuario: string (primary key), name: string (foreign key), fecha: date, precio_compra: double)
+# Usuario ------------------------------------------------------------------------------------------------
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -66,7 +55,11 @@ class Usuario(db.Model):
 
     def __repr__(self):
         return f"<Usuario {self.username}>"
-        
+
+
+     
+# Perfil ------------------------------------------------------------------------------------------------
+
 class Perfil(db.Model):
     __tablename__ = 'perfil'
     username = db.Column(db.String(50), primary_key=True)
@@ -92,6 +85,11 @@ class Perfil(db.Model):
 
     def __repr__(self):
         return f"<Perfil {self.username}>"
+
+
+
+# Publicacion -------------------------------------------------------------------------------------------
+
 class Publicacion(db.Model):
     __tablename__ = 'publicacion'
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
@@ -111,6 +109,10 @@ class Publicacion(db.Model):
     def __repr__(self):
         return f"<Publicacion {self.id_publicacion}>"
     
+
+
+# Pub/Post
+
 class Post(db.Model):
     __tablename__ = 'post'
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
@@ -120,6 +122,9 @@ class Post(db.Model):
         return f"<Post {self.id_publicacion}>"
     
     
+
+# Pub/Comentario 
+
 class Comentario(db.Model):
     __tablename__ = 'comentario'
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) 
@@ -133,6 +138,10 @@ class Comentario(db.Model):
     def __repr__(self):
         return f"<Comentario {self.id_publicacion}>"
     
+
+
+# Mensaje ------------------------------------------------------------------------------------------------
+
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
     id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
@@ -164,6 +173,10 @@ class Mensaje(db.Model):
     def __repr__(self):
         return f"<Mensaje {self.id_mensaje}>"
     
+
+
+# Suscripcion --------------------------------------------------------------------------------------------
+
 class Suscripcion(db.Model):
     __tablename__ = 'suscripcion'
     nombre = db.Column(db.String(50), primary_key=True)
@@ -182,6 +195,10 @@ class Suscripcion(db.Model):
     def __repr__(self):
         return f"<Suscripcion {self.nombre}>"
     
+
+
+# Likea --------------------------------------------------------------------------------------------------
+
 class Likea_Perfil(db.Model):
     __tablename__ = 'likea_perfil'
     id_usuario = db.Column(db.String(50),primary_key=True)
@@ -196,6 +213,7 @@ class Likea_Perfil(db.Model):
     def __repr__(self):
         return f"<LikeaPerfil {self.id_usuario}>"
     
+
 class Likea_Publicacion(db.Model):
     __tablename__ = 'likea_publicacion'
     id_usuario = db.Column(db.String(50), primary_key=True)
@@ -212,6 +230,11 @@ class Likea_Publicacion(db.Model):
 
     def __repr__(self):
         return f"<LikeaPublicacion {self.id_usuario}>"
+
+
+
+# Compra -------------------------------------------------------------------------------------------------
+
 class Compra(db.Model):
     __tablename__ = 'compra'
     id_compra = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
@@ -229,14 +252,5 @@ class Compra(db.Model):
 
     def __repr__(self):
         return f"<Compra {self.id_compra}>"
-    
-
-
-
-
-
-
-
-
 
 
