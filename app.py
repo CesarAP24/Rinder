@@ -1,5 +1,8 @@
 # IMPORTS ------------------------------------------------------------------------------------------------
 # ========================================================================================================
+
+# flask --------------------------------------------------------------------------------------------------
+
 from flask import(
     Flask,
     render_template,
@@ -8,13 +11,14 @@ from flask import(
     redirect,
 )
 
-from datetime import date
-from sqlalchemy import create_engine, Column, ForeignKey, Integer, String, Date
-from sqlalchemy.orm import sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import ForeignKey
+
+# libraries ----------------------------------------------------------------------------------------------
+
 import uuid
-import datetime
+from datetime import datetime
 
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
@@ -26,7 +30,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
+# routes -------------------------------------------------------------------------------------------------
 
+from routes import *
 
 
 # MODEL --------------------------------------------------------------------------------------------------
@@ -38,7 +44,7 @@ migrate = Migrate(app, db)
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id_usuario = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-    username = db.Column(db.String(50), ForeignKey('perfil.username'))
+    username = db.Column(db.String(36), ForeignKey('perfil.username'))
     correo = db.Column(db.String(50), nullable = False)
     contraseña = db.Column(db.String(100), nullable = False)
     active = db.Column(db.Boolean, default=False)
@@ -68,8 +74,8 @@ class Perfil(db.Model):
     genero = db.Column(db.String(50), nullable = False)
     descripcion = db.Column(db.String(500))
     ruta_photo = db.Column(db.String(200))
-    created_at = db.Column(db.Date, default=datetime.utcnow)
-    modified_at = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.Date, default=datetime.utcnow())
+    modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
     
     #la diferncia entre lazy y uselist es que lazy es para cuando es una sola relacion y uselist es para cuando es una lista de relaciones
 
@@ -95,8 +101,8 @@ class Publicacion(db.Model):
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
     id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     contenido = db.Column(db.String(500))
-    modified_at = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
-    created_at = db.Column(db.Date, default=datetime.utcnow)
+    modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
+    created_at = db.Column(db.Date, default=datetime.utcnow())
     cantidad_likes = db.Column(db.Integer(), nullable =False, default=0)
 
     def __init__(self, id_usuario, contenido, modified_at, created_at, cantidad_likes):
@@ -153,7 +159,7 @@ class Mensaje(db.Model):
     id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
     id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuarioremitente'))
     
-    fecha = db.Column(db.Date, default=datetime.utcnow)
+    fecha = db.Column(db.Date, default=datetime.utcnow())
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
     formato = db.Column(db.String(50))
@@ -181,8 +187,8 @@ class Suscripcion(db.Model):
     __tablename__ = 'suscripcion'
     nombre = db.Column(db.String(50), primary_key=True)
     precio = db.Column(db.Float, nullable = False)
-    created = db.Column(db.Date, default=datetime.utcnow)
-    modified = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    created = db.Column(db.Date, default=datetime.utcnow())
+    modified = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow()) 
     day_duration = db.Column(db.Integer, default=30)
 
     def __init__(self, nombre, precio, created, modified, day_duration):
@@ -203,7 +209,7 @@ class Likea_Perfil(db.Model):
     __tablename__ = 'likea_perfil'
     id_usuario = db.Column(db.String(50),primary_key=True)
     id_usuario2 = db.Column(db.String(50), primary_key=True)
-    fecha = db.Column(db.Date, default=datetime.utcnow)
+    fecha = db.Column(db.Date, default=datetime.utcnow())
 
     def __init__(self, id_usuario, id_usuario2, fecha):
         self.id_usuario = id_usuario
@@ -219,7 +225,7 @@ class Likea_Publicacion(db.Model):
     id_usuario = db.Column(db.String(50), primary_key=True)
     id_usuario2 =  db.Column(db.String(50), primary_key=True)
     id_publicacion = db.Column(db.String(36), primary_key=True)
-    fecha = db.Column(db.Date, default=datetime.utcnow)
+    fecha = db.Column(db.Date, default=datetime.utcnow())
 
     def __init__(self, id_usuario, id_usuario2, id_publicacion, fecha):
         self.id_usuario = id_usuario
@@ -240,8 +246,8 @@ class Compra(db.Model):
     id_compra = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
     id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     nombre_suscripcion = db.Column(db.String(50), ForeignKey('suscripcion.nombre'))
-    fecha = db.Column(db.Date, default=datetime.utcnow)
-    precio_compra = db.Column(db.double, nullable = False)
+    fecha = db.Column(db.Date, default=datetime.utcnow())
+    precio_compra = db.Column(db.Float, nullable = False)
 
 
     def __init__(self, id_usuario, nombre_suscripcion, fecha, precio_compra):

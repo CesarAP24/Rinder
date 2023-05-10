@@ -1,3 +1,37 @@
+# IMPORTS ------------------------------------------------------------------------------------------------
+# ========================================================================================================
+
+# flask --------------------------------------------------------------------------------------------------
+
+from flask import(
+    Flask,
+    render_template,
+    jsonify,
+    request,
+    redirect,
+)
+
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from sqlalchemy import ForeignKey
+
+# libraries ----------------------------------------------------------------------------------------------
+
+import uuid
+from datetime import datetime
+
+# CONFIGURATIONS -----------------------------------------------------------------------------------------
+
+from app import app
+
+
+
+
+
+# ROUTES -------------------------------------------------------------------------------------------------
+# ========================================================================================================
+
+
 # Retorna el json del error con el codigo de error y el mensaje
 def error(code):
     errors = {
@@ -14,7 +48,7 @@ def error(code):
         "404": "El recurso solicitado no se encuentra en el servidor.",
         "405": "El método que se está intentando usar no está permitido en esta ruta.",
     }
-    return render_template('error.html', error={"name":errors[code], "description":messages[code]}), int(code));
+    return render_template('error.html', error={"name":errors[code], "description":messages[code]}), int(code);
 
 
 # Retorna un int con el permiso que tiene este usuario
@@ -27,10 +61,13 @@ def verificar_permisos(idUsuario):
     return 1;
 
 
+# MAIN ROUTE
 # =============================================================================
-# -------------------------------- RUTAS --------------------------------------
-# =============================================================================
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+# -----------------------------------------------------------------------------
 
 # USUARIO
 # =============================================================================
