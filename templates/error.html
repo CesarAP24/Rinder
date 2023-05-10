@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="static/styles/styles.css">
+	<title>Error</title>
+	<style type="text/css">
+		.error-container{
+			width: 100%;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="error-container">
+		<h1>{{ error["name"] }}</h1>
+		<p>{{ error["description"] }}</p>
+	</div>
+	
+</body>
+</html>
