@@ -122,19 +122,20 @@ class Post(db.Model):
     
 class Comentario(db.Model):
     __tablename__ = 'comentario'
-    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) #preguntar
-    id_publicacion2 = db.Column(db.String(36), ForeignKey('publicacion.id_publicacion'))
-    
+    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) 
+    id_publicacion2 = db.Column(db.String(36), primary_key = True, default=str(uuid.uuid4()))
    
-    def __init__(self, id_publicacion):
+    def __init__(self, id_publicacion, id_publicacion2):
         self.id_publicacion = id_publicacion
+        self.id_publicacion2 = id_publicacion2
        
     def __repr__(self):
-        return f"<Comentario {self.id_comentario}>"
+        return f"<Comentario {self.id_publicacion}>"
     
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
     id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_mensaje2 = db.Column(db.String(36), primary_key = True, default=str(uuid.uuid4()))
     id_usuariodestinatario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     id_usuarioremitente = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
     fecha = db.Column(db.Date, default=datetime.utcnow)
