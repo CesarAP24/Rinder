@@ -123,7 +123,8 @@ class Post(db.Model):
 class Comentario(db.Model):
     __tablename__ = 'comentario'
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) 
-    id_publicacion2 = db.Column(db.String(36), primary_key = True, default=str(uuid.uuid4()))
+    id_publicacion2 = db.Column(db.String(36), ForeignKey ('publicacion.id_publicacion'))
+
    
     def __init__(self, id_publicacion, id_publicacion2):
         self.id_publicacion = id_publicacion
@@ -138,10 +139,10 @@ class Mensaje(db.Model):
     id_mensaje2 = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
 
     id_usuariodestinatario = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
-    id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuariodestinario'))
 
     id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
-    id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuarioremitente'))
     
     fecha = db.Column(db.Date, default=datetime.utcnow)
     contenido = db.Column(db.String(500))
