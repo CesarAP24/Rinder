@@ -12,7 +12,8 @@ from sqlalchemy import create_engine, Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import uuid;
+import uuid
+import datetime
 
 
 #configuration
@@ -21,198 +22,221 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:china@localhost:5
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-class suscripcion(db.Model):
-    __tablename__ = 'suscripciones'
-    #keys
-    name = db.Column(db.String(50), primary_key=True)
-    
-    precio = db.Column(db.Integer, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.Date, nullable=False)
-    updated_at = db.Column(db.Date, nullable=False)
-    usuarios = db.relationship('User', backref='suscripcion', lazy=True)
-    compras = db.relationship('compra', backref='suscripcion', lazy=True)
+    # Usuario(id_usuario: string (primary key), username: string (foreing key), correo: string, contraseña: string, active: bool, likes_restantes: int)
+
+    # Perfil(username:string (primary key), nacimiento:date, edad:int, genero: string, descripcion: string, ruta_photo:string, created_at:date, modified_at:date)
+
+    # Publicacion(id_publicacion: string (primary key), id_usuario:string (foreing key), contenido:string, modified_at:date, created_at:date, cantidad_likes: int)
+
+    # Comentario(id_publicacion: string (primary key), id_usuario:string (primary key), id_publicacion: string (foreign key), id_usuario (foreign key))
+
+    # Post(id_publicacion: string (primary key), id_usuario: string (primary key))
 
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True)
+    # Mensajes(id_mensaje:string (primary key), id_usuariodestinatario:string (primary key), id_usuarioremitente:string (primary key), fecha:date, contenido:string, state: string, formato: string, id_mensaje: string (foreign key), id_usuario: string (foreign key), id_usuario: string (foreign key))
 
-    nombre = db.Column(db.String(50), nullable=False)
-    is_active = db.Column(db.Boolean, nullable=False, default=True, server_default='true')
-    name_suscripcion = db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
-    id_perfil = db.Column(db.Integer, ForeignKey('perfiles.id'), nullable=False)
-    
+    # Suscripcion(nombre:string(primary key), precio: double, created: date, modified: date, duracion: int)
 
-class Message(db.Model):
-    __tablename__ = 'messages'
-    id = db.Column(db.string(50), primary_key=True, default=lambda: str(uuid.uuid4()), unique=True)
-    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
-    
-    texto = db.Column(db.String(300), nullable=False)
-    fecha = db.Column(db.Date, nullable=False)
-    
+    # RELACIONES
 
 
+    # Likea_Perfil(id_usuario: string (primary key), id_usuario: string (primary key), created_date: date)
+
+    # Like_Publicacion(id_usuario: string (primary key), id_publicacion: string (primary key), id_usuario: string, created_date: date)
+
+    # Compra(id_usuario: string (primary key), name: string (foreign key), fecha: date, precio_compra: double)
+
+class Usuario(db.Model):
+    __tablename__ = 'usuario'
+    id_usuario = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    username = db.Column(db.String(50), ForeignKey('perfil.username'))
+    correo = db.Column(db.String(50), nullable = False)
+    contraseña = db.Column(db.String(100), nullable = False)
+    active = db.Column(db.Boolean, default=False)
+    likes_restantes = db.Column(db.Integer(), nullable=False)
+    perfil = db.relationship("Perfil", backref="usuario", lazy = True)
+    publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
+
+    def __init__(self, username, correo, contraseña, active, likes_restantes):
+        self.username = username
+        self.correo = correo
+        self.contraseña = contraseña
+        self.active = active
+        self.likes_restantes = likes_restantes
+
+    def __repr__(self):
+        return f"<Usuario {self.username}>"
+        
 class Perfil(db.Model):
-    __tablename__ = 'perfiles'
-    #keys and foreing keys
-    id_usuario = db.Column(db.String(50), ForeignKey('users.id'), nullable=False)
-    usuario= db.relationship('User', backref='perfiles', lazy=True)
+    __tablename__ = 'perfil'
+    username = db.Column(db.String(50), primary_key=True)
+    nacimiento = db.Column(db.Date, nullable = False)
+    edad = db.Column(db.Integer, nullable = False)
+    genero = db.Column(db.String(50), nullable = False)
+    descripcion = db.Column(db.String(500))
+    ruta_photo = db.Column(db.String(200))
+    created_at = db.Column(db.Date, default=datetime.utcnow)
+    modified_at = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
     
-    #atributes
-    username = db.Column(db.String(50), nullable=False)
-    edad= db.Column(db.Integer, nullable=False)
-    genero = db.Column(db.String(50), nullable=False)
-    descripcion = db.Column(db.String(300), nullable=False)
-    likes_restantes = db.Column(db.Integer, nullable=False, default=3)
-    language = db.Column(db.String(50), nullable=False)
-    fecha_nacimiento = db.Column(db.Date, nullable=False)
-    ruta_foto= db.Column(db.String(300), nullable=False)
+    #la diferncia entre lazy y uselist es que lazy es para cuando es una sola relacion y uselist es para cuando es una lista de relaciones
+
+    user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
+
+    def __init__(self, username, nacimiento, edad, genero, descripcion, ruta_photo):
+        self.username = username
+        self.nacimiento = nacimiento
+        self.edad = edad
+        self.genero = genero
+        self.descripcion = descripcion
+        self.ruta_photo = ruta_photo
+
+    def __repr__(self):
+        return f"<Perfil {self.username}>"
+class Publicacion(db.Model):
+    __tablename__ = 'publicacion'
+    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    contenido = db.Column(db.String(500))
+    modified_at = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.Date, default=datetime.utcnow)
+    cantidad_likes = db.Column(db.Integer(), nullable =False, default=0)
+
+    def __init__(self, id_usuario, contenido, modified_at, created_at, cantidad_likes):
+        self.id_usuario = id_usuario
+        self.contenido = contenido
+        self.modified_at = modified_at
+        self.created_at = created_at
+        self.cantidad_likes = cantidad_likes
+
+    def __repr__(self):
+        return f"<Publicacion {self.id_publicacion}>"
     
-    #necessary extra
-    modified_at = db.Column(db.Date, nullable=False)
-    created_at = db.Column(db.Date, nullable=False)
+class Post(db.Model):
+    __tablename__ = 'post'
+    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    def __init__(self, id_publicacion):
+        self.id_publicacion = id_publicacion
+    def __repr__(self):
+        return f"<Post {self.id_publicacion}>"
+    
+    
+class Comentario(db.Model):
+    __tablename__ = 'comentario'
+    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) 
+    id_publicacion2 = db.Column(db.String(36), ForeignKey ('publicacion.id_publicacion'))
+
+   
+    def __init__(self, id_publicacion, id_publicacion2):
+        self.id_publicacion = id_publicacion
+        self.id_publicacion2 = id_publicacion2
+       
+    def __repr__(self):
+        return f"<Comentario {self.id_publicacion}>"
+    
+class Mensaje(db.Model):
+    __tablename__ = 'mensaje'
+    id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_mensaje2 = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
+
+    id_usuariodestinatario = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
+    id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuariodestinario'))
+
+    id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
+    id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuarioremitente'))
+    
+    fecha = db.Column(db.Date, default=datetime.utcnow)
+    contenido = db.Column(db.String(500))
+    state = db.Column(db.String(50))
+    formato = db.Column(db.String(50))
+    def __init__(self, id_mensaje, id_mensaje2, id_usuariodestinatario, id_usuariodestinatario2, id_usuarioremitente, id_usuarioremitente2, fecha, contenido, state, formato ):
+        self.id_mensaje = id_mensaje
+        self.id_mensaje2 = id_mensaje2
+        self.id_usuariodestinatario = id_usuariodestinatario
+        self.id_usuariodestinatario2 = id_usuariodestinatario2
+        self.id_usuarioremitente = id_usuarioremitente
+        self.id_usuarioremitente2 = id_usuarioremitente2
+        self.fecha = fecha
+        self.contenido = contenido
+        self.state = state
+        self.formato = formato
 
 
-class publicacion(db.Model):
-    __tablename__ = 'publicaciones'
+    def __repr__(self):
+        return f"<Mensaje {self.id_mensaje}>"
+    
+class Suscripcion(db.Model):
+    __tablename__ = 'suscripcion'
+    nombre = db.Column(db.String(50), primary_key=True)
+    precio = db.Column(db.Float, nullable = False)
+    created = db.Column(db.Date, default=datetime.utcnow)
+    modified = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    day_duration = db.Column(db.Integer, default=30)
 
-    id = db.Column(db.Integer, primary_key=True)
-    texto = db.Column(db.String(300), nullable=False)
-    fecha = db.Column(db.Date, nullable=False)
-    kindofpost= db.Column(db.String(300), nullable=False)
-    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    id_message_parent = db.Column(db.Integer, ForeignKey('messages.id'), nullable=True)
-    usuario= db.relationship('User', backref='publicaciones', lazy=True)
+    def __init__(self, nombre, precio, created, modified, day_duration):
+        self.nombre = nombre
+        self.precio = precio
+        self.created = created
+        self.modified = modified
+        self.day_duration = day_duration
 
+    def __repr__(self):
+        return f"<Suscripcion {self.nombre}>"
+    
+class Likea_Perfil(db.Model):
+    __tablename__ = 'likea_perfil'
+    id_usuario = db.Column(db.String(50),primary_key=True)
+    id_usuario2 = db.Column(db.String(50), primary_key=True)
+    fecha = db.Column(db.Date, default=datetime.utcnow)
 
+    def __init__(self, id_usuario, id_usuario2, fecha):
+        self.id_usuario = id_usuario
+        self.id_usuario2 = id_usuario2
+        self.fecha = fecha
 
-class compra(db.Model):
-    __table__name = 'compras'
-    precio= db.Column(db.Integer, nullable=False)
-    suscripcion_name= db.Column(db.String(50), ForeignKey('suscripciones.name'), nullable=False)
-    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    usuario= db.relationship('User', backref='compras', lazy=True)
-    suscripcion= db.relationship('suscripcion', backref='compras', lazy=True)
+    def __repr__(self):
+        return f"<LikeaPerfil {self.id_usuario}>"
+    
+class Likea_Publicacion(db.Model):
+    __tablename__ = 'likea_publicacion'
+    id_usuario = db.Column(db.String(50), primary_key=True)
+    id_usuario2 =  db.Column(db.String(50), primary_key=True)
+    id_publicacion = db.Column(db.String(36), primary_key=True)
+    fecha = db.Column(db.Date, default=datetime.utcnow)
 
+    def __init__(self, id_usuario, id_usuario2, id_publicacion, fecha):
+        self.id_usuario = id_usuario
+        self.id_usuario2 = id_usuario2
+        self.id_publicacion = id_publicacion
+        self.fecha = fecha
+    
 
-
-class like(db.Model): 
-    __table__name = 'likes'
-    id_usuario = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
-    id_publicacion = db.Column(db.Integer, ForeignKey('publicaciones.id'), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    usuario= db.relationship('User', backref='likes', lazy=True)
-    publicacion= db.relationship('publicacion', backref='likes', lazy=True)
-
-
-
-# ... ROUTES ...
-
-@app.route('/Usuarios', methods=['POST', 'GET'])
-def procesar_registro():
-    if request.method == 'POST':
-        # FALTA IMPLEMENTAR va a depender de lo que desee isabella :v
-        return (jsonify({'error': 'Método no implementado'}), 501);
-
-    elif request.method == 'GET':
-        # Devolver todos los ids de los usuarios existentes
-        usuarios = User.query.all()
-
-        usuarios_json = [usuario.id for usuario in usuarios]
-
-        return (jsonify(usuarios_json), 200);
-
-    elif request.method == 'PATCH':
-        # FALTA IMPLEMENTAR
-        return (jsonify({'message': 'Método no implementado'}), 501);
-
-    elif request.method == 'DELETE':
-
-        # Verificar que se tenga permisos
-        if not request.headers.get('Authorization'):
-            return (jsonify({'message': 'No tienes permisos para realizar esta acción'}), 403);
-        else:
-            # verificar FALTA IMPLEMENTAR
-            return (jsonify(usuarios_json), 200);
-            pass
-
-        # ELimina TODOS los usuarios
-        usuarios = User.query.all();
-
-        with app.app_context():
-            for usuario in usuarios:
-                db.session.delete(usuario);
-            db.session.commit();
-
-        return (jsonify({'message': 'Todos los usuarios han sido eliminados'}), 200);
-
-    else:
-        return render_template('error.html', error={"name":"Error 404", "message":"Página no encontrada"}), 404;
+    def __repr__(self):
+        return f"<LikeaPublicacion {self.id_usuario}>"
+class Compra(db.Model):
+    __tablename__ = 'compra'
+    id_compra = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    nombre_suscripcion = db.Column(db.String(50), ForeignKey('suscripcion.nombre'))
+    fecha = db.Column(db.Date, default=datetime.utcnow)
+    precio_compra = db.Column(db.double, nullable = False)
 
 
-@app.route('/Usuarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
-def procesar_usuario(id):
-    if request.method == 'GET':
-        # Verificar que el usuario exista
-        usuario = User.query.filter_by(id=id).first();
+    def __init__(self, id_usuario, nombre_suscripcion, fecha, precio_compra):
+        self.id_usuario = id_usuario
+        self.nombre_suscripcion = nombre_suscripcion
+        self.fecha = fecha
+        self.precio_compra = precio_compra
 
-        if not usuario:
-            return (jsonify({'message': 'El usuario no existe'}), 404);
-
-        # Devolver los datos del usuario
-        usuario_json = {
-            'id': usuario.id,
-            'nombre': usuario.nombre,
-            'fecha_nacimiento': usuario.fecha_nacimiento,
-            'is_active': usuario.is_active,
-            'likes_restantes': usuario.likes_restantes,
-            'name_suscripcion': usuario.name_suscripcion,
-        }
-
-        return (jsonify(usuario_json), 200);
-
-    elif request.method == 'DELETE':
-        # Verificar que el usuario exista
-        usuario = User.query.filter_by(id=id).first();
-
-        if not usuario:
-            return (jsonify({'message': 'El usuario no existe'}), 404);
-
-        # Verificar que se tenga permisos
-        if not request.headers.get('Authorization'):
-            return (jsonify({'message': 'No tienes permisos para realizar esta acción'}), 403);
-        else:
-            # verificar FALTA IMPLEMENTAR
-            pass
-
-        # Eliminar el usuario
-        with app.app_context():
-            db.session.delete(usuario);
-            db.session.commit();
-
-        return (jsonify({'message': 'El usuario ha sido eliminado'}), 200);
-
-    elif request.method == 'PATCH':
-        # FALTA IMPLEMENTAR
-        return (jsonify({'message': 'Método no implementado'}), 501);
+    def __repr__(self):
+        return f"<Compra {self.id_compra}>"
+    
 
 
-@app.route('/Usuarios/<id>/Perfiles', methods=['GET', 'PATCH'])
-def procesar_perfiles(id):
-    #permisos
-    if request.method == 'GET':
-        #devolver el perfil
-        pass
-    elif request.method == 'PATCH':
-        #MODIFICAR VALORES DEL PERFIL
-        pass
-    else:
-        #metodo no permitido
-        render_template('error.html', error={"name":"Método no permitido", "description":"El método que se está intentando usar no está permitido en esta ruta."})
+
+
+
+
+
 
 
 
