@@ -97,14 +97,12 @@
 }
 
 .profile-info-main, .profile-post-box{
-    border-radius: 15px;
-    padding: 20px;
-    border: 3px solid rgba(0,0,0,.05);
     margin-bottom: 20px;
 }
 
-.profile-info-main{
+.profile-down .profile-info-main{
 	width: 30%;
+    padding: 20px;
 	height: fit-content;
 }
 
@@ -151,6 +149,11 @@
     background-color: rgba(0,0,0,.1);
 }
 
+.liked{
+    color: #ff0000;
+    background-color: rgba(0,0,0,.05);
+}
+
 
 .profile-post-content {
     margin: 27px 0;
@@ -165,3 +168,69 @@
     max-width: 100%;
 }
 
+.btn-add-photo {
+    top: 185px;
+    position: relative;
+    background-color: #007bff;
+    color: transparent;
+    border: white;
+    border-width: thick;
+    border-radius: 108px;
+    padding: 2px 2px;
+    font-size: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    width: 32px;
+    text-align: center;
+    overflow: visible;
+    left: 154px;
+    border: 2px solid white;
+}
+  
+  .btn-add-photo:hover {
+    background-color: #0062cc;
+  }
+  
+  .icon {
+    font-family: Impact;
+    display: inline-block;
+    width: 24px;
+    height: 25px;
+    background-color: transparent;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bolder;
+}
+
+.btn-edit-profile {
+    position: relative;
+    background-color: #e4e0e0;
+    color: #343434;
+    border: none;
+    border-radius: 11px;
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: bolder;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    width: 250px;
+    left: 27px;
+    top: 983px;
+}
+  .btn-edit-profile:hover {
+    background-color: #f1eded;
+    color: #343434;
+  }
+
+  p2{
+    font-size: 13px;
+    font-weight: bolder;
+  }
+
+  button.profile-post-like-btn {
+    font-family: 'Ysabeau';
+}
+  
