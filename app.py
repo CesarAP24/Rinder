@@ -114,31 +114,21 @@ class Publicacion(db.Model):
 class Post(db.Model):
     __tablename__ = 'post'
     id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-
     def __init__(self, id_publicacion):
         self.id_publicacion = id_publicacion
-       
-
     def __repr__(self):
         return f"<Post {self.id_publicacion}>"
     
     
 class Comentario(db.Model):
     __tablename__ = 'comentario'
-    id_comentario = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) #preguntar
-    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
-    id_publicacion = db.Column(db.String(36), ForeignKey('publicacion.id_publicacion'))
-    contenido = db.Column(db.String(500))
-    modified_at = db.Column(db.Date, default=datetime.utcnow, onupdate=datetime.utcnow)
-    created_at = db.Column(db.Date, default=datetime.utcnow)
-
-    def __init__(self, id_usuario, id_publicacion, contenido, modified_at, created_at):
-        self.id_usuario = id_usuario
+    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) #preguntar
+    id_publicacion2 = db.Column(db.String(36), ForeignKey('publicacion.id_publicacion'))
+    
+   
+    def __init__(self, id_publicacion):
         self.id_publicacion = id_publicacion
-        self.contenido = contenido
-        self.modified_at = modified_at
-        self.created_at = created_at
-
+       
     def __repr__(self):
         return f"<Comentario {self.id_comentario}>"
     
