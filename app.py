@@ -135,9 +135,14 @@ class Comentario(db.Model):
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
     id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-    id_mensaje2 = db.Column(db.String(36), primary_key = True, default=str(uuid.uuid4()))
-    id_usuariodestinatario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
-    id_usuarioremitente = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    id_mensaje2 = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
+
+    id_usuariodestinatario = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
+    id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    
+    id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
+    id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
+    
     fecha = db.Column(db.Date, default=datetime.utcnow)
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
