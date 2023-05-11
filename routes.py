@@ -9,6 +9,7 @@ from flask import(
     jsonify,
     request,
     redirect,
+    session,
 )
 
 from flask_sqlalchemy import SQLAlchemy
@@ -19,11 +20,11 @@ from sqlalchemy import ForeignKey
 
 import uuid
 from datetime import datetime
+import json
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
-from app import app
-
+from app import *;
 
 
 
@@ -65,313 +66,63 @@ def verificar_permisos(idUsuario):
 # =============================================================================
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # verificar cookies
+    if session.get('username'):
+        # si: iniciar sesión
+        return render_template('index.html')
+
+    # de otro modo:
+    return render_template('login.html') #redirigir al login page
 
 # -----------------------------------------------------------------------------
 
-# USUARIO
-# =============================================================================
 
-@app.route('/Usuarios', methods=['POST', 'GET'])
-def Usuarios():
-    # permisos
+
+# Login - Logout --------------------------------------------------------------
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
     if request.method == 'POST':
-        # Crea un nuevo usuario
-        return (jsonify({'error': 'Método no implementado'}), 501);
+        # buscar usuario
+        data = request.form;
 
-    elif request.method == 'GET':
-        # Devolver todos los ids de los usuarios existentes
-        return (jsonify({'message': 'Método no implementado'}), 501);
+        user = Usuario.query.filter_by(correo=data["email_login"]).first();
 
-    elif request.method == 'PATCH':
-        # modificar a algunos usuarios
-        return (jsonify({'message': 'Método no implementado'}), 501);
+        if not(user):
+            return {"success": False, "message": "Usuario no encontrado"}
+        else:
+            if user.contraseña == data['password_login']:
+                # iniciar sesión
+                session['id_usuario'] = user.id_usuario;
+                return {"success": True, "message": "Sesión iniciada"}
+            else:
+                return {"success": False, "message": "Contraseña incorrecta"}
 
-    elif request.method == 'DELETE':
-        # ELimina TODOS los usuarios
-        return (jsonify({'message': 'Método no implementado'}), 501);
+        return {"success": False, "message": "Error desconocido"}
 
-    else:
-        return error(405);
-
-
-@app.route('/Usuarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
-def Usuarios_id(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver el usuario con id
-        return (jsonify({'message': 'Método no implementado'}), 501);
-    elif request.method == 'DELETE':
-        # elimina al usuario con id y su perfil
-        return (jsonify({'message': 'Método no implementado'}), 501);
-    elif request.method == 'PATCH':
-        # modifica el usuario con id
-        return (jsonify({'message': 'Método no implementado'}), 501);
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Usuarios/<id>/Perfiles', methods=['GET', 'PATCH'])
-def Usuarios_id_perfil(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver el perfil
-        pass
-    elif request.method == 'PATCH':
-        # MODIFICAR VALORES DEL PERFIL
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Usuarios/Perfiles', methods=['GET', 'PATCH'])
-def Usuarios_perfiles():
-    # permisos
-    if request.method == 'GET':
-        #devolver todos los perfiles
-        pass
-    elif request.method == 'PATCH':
-        #modificar un perfil
-        pass
-    else:
-        #metodo no permitido
-        return error(405);
-
-
-@app.route('/Usuarios/id/Mensajes', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Usuarios_id_mensajes(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los mensajes de id
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo mensaje
-        pass
-    elif request.method == 'PATCH':
-        # modificar un mensaje
-        pass
-    elif request.method == 'DELETE':
-        # eliminar un mensaje
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-@app.route('/Usuarios/id/Posts', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Usuarios_id_posts(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los posts del usuario con id
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo post para el usuario con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar un post del usuario con id
-        pass
-    elif request.method == 'DELETE':
-        # eliminar un post del usuario con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-@app.route('/Usuarios/id/Suscripciones', methods=['GET', 'PATCH'])
-def Usuarios_id_suscripciones(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver todas las suscripciones del usuario con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar una suscripcion del usuario con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Usuarios/Suscripciones', methods=['GET', 'PATCH'])
-def Usuarios_suscripciones():
-    # permisos
-    if request.method == 'GET':
-        # devolver todas las suscripciones de todos los usuarios
-        pass
-    elif request.method == 'PATCH':
-        # modificar una suscripcion
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Usuarios/id/Comentarios', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Usuarios_id_comentarios(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los comentarios del usuario con id
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo comentario para el usuario con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar los comentarios del usuario con id
-        pass
-    elif request.method == 'DELETE':
-        # elimina TODOs los comentarios del usuario con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-# -----------------------------------------------------------------------------
+    return redirect('/')
 
 
 
+# registrar usuario ------------------------------------------------------------
+
+@app.route('/registro', methods=['POST'])
+def register():
+    session.clear(); # borrar session
+    # obtener datos
+    data = request.form;
+
+    # verificar que no exista el usuario
+    user = Usuario.query.filter_by(correo=data["email_register"]).first();
+    if not(user):
+        # crear nuevo usuario con los datos
+        new_user = Usuario(
+            
+        );
+
+    return redirect('/') # deberia darle un mensaje de error a isabella
 
 
 
-# SUSCRIPCIONES
-# =============================================================================
-
-
-@app.route('/Suscripciones', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Suscripciones():
-    # permisos
-    if request.method == 'GET':
-        # devolver todas las suscripciones
-        pass
-    elif request.method == 'POST':
-        # crear una nueva suscripcion
-        pass
-    elif request.method == 'PATCH':
-        # modificar una suscripcion
-        pass
-    elif request.method == 'DELETE':
-        # eliminar todas las sucripciones menos la gratuita
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Suscripciones/<nombre>', methods=['GET', 'DELETE', 'PATCH'])
-def Suscripciones_nombre(nombre):
-    # permisos
-    if request.method == 'GET':
-        # devolver la suscripcion con nombre
-        pass
-    elif request.method == 'DELETE':
-        # eliminar la suscripcion con nombre
-        pass
-    elif request.method == 'PATCH':
-        # modificar la suscripcion con nombre
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-# -----------------------------------------------------------------------------
-
-
-
-# POSTS
-# =============================================================================
-
-@app.route('/Posts', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Posts():
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los posts
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo post
-        pass
-    elif request.method == 'PATCH':
-        # modificar un post
-        pass
-    elif request.method == 'DELETE':
-        # eliminar todos los posts
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-@app.route('/Posts/<id>', methods=['GET', 'DELETE', 'PATCH'])
-def Posts_id(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver el post con id
-        pass
-    elif request.method == 'DELETE':
-        # eliminar el post con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar el post con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-@app.route('/Posts/<id>/Comentarios', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Posts_id_comentarios(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los comentarios del post con id
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo comentario para el post con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar un comentario del post con id
-        pass
-    elif request.method == 'DELETE':
-        # eliminar todos los comentarios del post con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-# -----------------------------------------------------------------------------
-
-
-
-# COMENTARIOS
-# =============================================================================
-
-@app.route('/Comentarios', methods=['GET', 'POST', 'PATCH', 'DELETE'])
-def Comentarios():
-    # permisos
-    if request.method == 'GET':
-        # devolver todos los comentarios
-        pass
-    elif request.method == 'POST':
-        # crear un nuevo comentario
-        pass
-    elif request.method == 'PATCH':
-        # modificar un comentario
-        pass
-    elif request.method == 'DELETE':
-        # eliminar TODOS los comentarios EXISTENTES
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
-
-
-@app.route('/Comentarios/<id>', methods=['GET', 'DELETE', 'PATCH'])
-def Comentarios_id(id):
-    # permisos
-    if request.method == 'GET':
-        # devolver el comentario con id
-        pass
-    elif request.method == 'DELETE':
-        # eliminar el comentario con id
-        pass
-    elif request.method == 'PATCH':
-        # modificar el comentario con id
-        pass
-    else:
-        # metodo no permitido
-        return error(405);
+if __name__ == "__main__":
+    app.run(debug=True)
