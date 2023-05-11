@@ -7,7 +7,7 @@
     justify-content: center;
     align-items: center;
     grid-row-gap: 15px;
-    grid-column-gap: 30px;
+    grid-column-gap: 50px;
 }
 
 .grid-item {
