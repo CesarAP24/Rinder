@@ -26,7 +26,8 @@ body {
     color: #333333;
     font-family: 'Montserrat', sans-serif;
     align-items: center;
-    height: 100%;
+    height: 100vh;
+    overflow-y: scroll;
 }
 
 html {
@@ -106,9 +107,10 @@ button {
     box-sizing: border-box;
     background: white;
     width: 80%;
-    padding: 35px;
+    padding: 32px;
     border-radius: 19px;
     align-items: center;
+    margin-top: 35px;
 }
 
 .pregunta-template h3 {
@@ -120,3 +122,35 @@ button {
     margin-bottom: 28px;
 }
 
+.pregunta {
+    display: none;
+  }
+  
+  .pregunta-actual {
+    display: block;
+  }
+  
+.preguntas {
+    display: flex;
+    justify-content: space-between;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+input{
+    appearance: none;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    color: #555;
+    padding: 7px;
+  }
+  
+  input:checked {
+    background-color: #ccc;
+  }
+  
