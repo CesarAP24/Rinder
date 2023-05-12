@@ -36,10 +36,9 @@ registerBtn.addEventListener('click', function(evenet) {
     }).then(function(response) {
         return response;
     }).then(function(data) {
-        alert(data);
         window.location.reload();
     }).catch(function(error) {
-        console.log(error);
+        alert(error);
     });
 });
 

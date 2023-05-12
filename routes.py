@@ -67,7 +67,6 @@ def verificar_permisos(idUsuario):
 @app.route('/')
 def index():
     # verificar cookies
-    print(session.get('id_usuario'))
     if session.get('id_usuario'): 
         # si: iniciar sesión
         return render_template('index.html')
@@ -136,6 +135,24 @@ def register():
         active=True,
         likes_restantes=10
     );
+
+    print(user)
+
+    # crear perfil
+    perfil = Perfil(
+        username=data["username"],
+        nombre=data["nombre"],
+        apellido=data["apellido"],
+        nacimiento=data["fecha_nacimiento"],
+        edad=0,
+        created_at=datetime.now(),
+        modified_at=datetime.now()
+        )
+
+    print(perfil)
+
+
+
 
     session['id_usuario'] = id;
 

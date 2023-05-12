@@ -50,8 +50,6 @@ class Usuario(db.Model):
     # perfil = db.relationship("Perfil", backref="usuario", lazy = True)
     # publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
 
-
-
     def __repr__(self):
         return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
 
@@ -66,7 +64,7 @@ class Perfil(db.Model):
     apellido = db.Column(db.String(50), nullable = False)
     nacimiento = db.Column(db.Date, nullable = False)
     edad = db.Column(db.Integer, nullable = False)
-    genero = db.Column(db.String(50), nullable = False)
+    genero = db.Column(db.String(50))
     descripcion = db.Column(db.String(500))
     ruta_photo = db.Column(db.String(200))
     created_at = db.Column(db.Date, default=datetime.utcnow())
@@ -74,20 +72,6 @@ class Perfil(db.Model):
 
 
     # user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
-
-
-    def __init__(self, username, nombre, apellido, nacimiento, edad, genero, descripcion, ruta_photo, created_at, modified_at):
-        self.username = username
-        self.nombre = nombre
-        self.apellido = apellido
-        self.nacimiento = nacimiento
-        self.edad = edad
-        self.genero = genero
-        self.descripcion = descripcion
-        self.ruta_photo = ruta_photo
-        self.created_at = created_at
-        self.modified_at = modified_at
-        
 
     def __repr__(self):
         return f"<Perfil {self.username}>"
