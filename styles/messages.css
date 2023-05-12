@@ -228,7 +228,7 @@
     padding: 10px;
     border-radius: 100%;
     border: 0;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: transparent;
 }
 
 /*hover*/

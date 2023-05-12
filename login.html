@@ -4,6 +4,8 @@
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
 	<title>Únete a la comunidad de Rinder</title>
     <link rel="stylesheet" href="styles/login_register.css">
+    <script type="text/javascript" src="scripts/cifrado.js"></script>
+    <script src="./bcrypt.js"></script>
 </head>
 <body>
 	<!-- Formulario de registro -->
@@ -58,12 +60,13 @@
         <form action="/login" method="POST">
             <div class ="container_register" >
                 <label for="email_login">Username:</label>
-                <input type="email" name="email_login" id="email_login" required placeholder="Ingrese su usuario">
-        
+                <input type="email" name="email_login" id="email_login" required placeholder="Ingrese su email">
+                <div id="mensaje-mail" style="display:none;">Ingrese un email válido.</div>
                 <label for="password_login">Contraseña:</label>
-                <input type="password" name="password_login" id="password_login" required placeholder="Ingrese su contraseña"> 
+                <input type="password" name="password_login" id="password_login" required placeholder="Ingrese su contraseña">
+                <div id="contrasena_incorrecta" style="display:none;">Las contraseña es incorrecta.</div>
         
-                <button type="submit">Iniciar sesión</button>
+                <button type="submit" onclick="validarClave(event)">Iniciar Sesion</button>
                 </div>
         </form>
         <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
@@ -71,6 +74,7 @@
     </div>
 </body>
 <script>
+
     const showRegisterLink = document.getElementById('show-register');
     const showLoginLink = document.getElementById('show-login');
     const loginSection = document.getElementById('login-section');
@@ -156,5 +160,6 @@ showLoginLink.addEventListener('click', function(event) {
             validarMail(event);
         }
 
+        
   </script>
 </html>
