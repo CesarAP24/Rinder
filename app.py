@@ -70,7 +70,7 @@ class Perfil(db.Model):
     created_at = db.Column(db.Date, default=datetime.utcnow())
     modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
-
+    
     # user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
 
     def __repr__(self):

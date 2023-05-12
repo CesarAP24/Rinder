@@ -151,7 +151,11 @@ def register():
 
     print(perfil)
 
+    # gurdar usuario y perfil
 
+    db.session.add(user);
+    db.session.add(perfil);
+    db.session.commit();
 
 
     session['id_usuario'] = id;
