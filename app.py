@@ -47,8 +47,8 @@ class Usuario(db.Model):
     likes_restantes = db.Column(db.Integer(), nullable=False)
 
 
-    perfil = db.relationship("Perfil", backref="usuario", lazy = True)
-    publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
+    # perfil = db.relationship("Perfil", backref="usuario", lazy = True)
+    # publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
 
     def __init__(self, username, correo, contraseña, active, likes_restantes):
         self.username = username
@@ -78,7 +78,7 @@ class Perfil(db.Model):
     modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
 
-    user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
+    # user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
 
 
     def __init__(self, username, nombre, apellido, nacimiento, edad, genero, descripcion, ruta_photo, created_at, modified_at):

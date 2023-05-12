@@ -106,19 +106,34 @@ def login():
 
 # registrar usuario ------------------------------------------------------------
 
-@app.route('/registro', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def register():
     session.clear(); # borrar session
+
     # obtener datos
     data = request.form;
 
     # verificar que no exista el usuario
-    user = Usuario.query.filter_by(correo=data["email_register"]).first();
-    if not(user):
-        # crear nuevo usuario con los datos
-        new_user = Usuario(
-            
-        );
+    user = Usuario.query.filter_by(correo=data["email"]).first();
+
+    if user: 
+        return {"success": False, "message": "Correo ya registrado"}
+    
+    user = Usuario.query.filter_by(username=data["username"]).first();
+
+    if user:
+        return {"success": False, "message": "El username ya existe"}
+
+    # crear usuario
+    user = Usuario(
+        username=data["username"],
+        correo=data["email"],
+        contraseña=data["password"],
+        active=True,
+        likes_restantes=10,
+    );
+
+    print(user);
 
     return redirect('/') # deberia darle un mensaje de error a isabella
 

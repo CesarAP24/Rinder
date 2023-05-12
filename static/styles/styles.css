@@ -29,16 +29,15 @@ body {
 
 /* Estilo para la barra lateral */
 .sidebar {
-  width: 30%;
-  max-width: 300px;
-  height: 100vh;
-  z-index: 1;
-  /*degradado de background*/
-  background-image: linear-gradient(to bottom, #E62E6B, #F4529D);
-  overflow-x: hidden;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+    width: 30%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 1;
+    background-image: linear-gradient(to bottom, #ff0054, #ff00a2);
+    overflow-x: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Estilo para el título del sidebar */
@@ -63,7 +62,7 @@ body {
 }
 
 .sidebar a:hover{
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 
 }

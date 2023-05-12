@@ -16,7 +16,7 @@
     padding: 10px;
     border: none;
     font-size: 15px;
-    background: #ee628e;
+    background: #ff00a2;
     color: white;
     border-radius: 6px;
     font-family: 'Montserrat';
@@ -24,10 +24,13 @@
 
 .main_container {
     width: 35%;
+    max-width: 375px;
 }
 
+
 button:hover {
-    background: #E62E68;
+    cursor: pointer;
+    background: #ff0089;
 }
 
 input[type=text], input[type=password], input[type=email], input[type=date] {
@@ -66,10 +69,8 @@ form {
     overflow: hidden;
 }
 
-html {
-    border-top: solid;
-    border-top-width: 12px;
-    border-top-color: #ee628e;
+p{
+    text-align: center;
 }
   
 .container {
@@ -116,15 +117,14 @@ html {
 }
 
 #datos{
-    color: #E62E68;
+    color: #ff00a2;
     font-weight: bolder;
     font-size: 20px;
 }
 
-#logoinicio{
-    width: 180px;
+#logoinicio {
+    width: 86px;
     margin-bottom: 20px;
-    margin-top:-50px;
 }
 
 
@@ -134,6 +134,7 @@ body {
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
+    height: 100vh;
     margin: 0;
     padding: 0;
     align-items: center;
