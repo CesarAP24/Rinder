@@ -40,28 +40,12 @@ input[type=text], input[type=password], input[type=email], input[type=date] {
     font-family: 'Montserrat';
 }
 
-body {
-    background-color: #F7F3F7;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    color: #333333;
-    font-family: 'Montserrat', sans-serif;
-    align-items: center;
-    margin-top: 90px;
-    overflow-y: scroll;
-    margin-bottom: 90px;
-}
-
 label {
     margin-bottom: 5px;
     margin-top: 11px;
     margin-left: 22px;
     width: 100%;
+    font-size: 13px;
 }
 
 h2 {
@@ -96,3 +80,64 @@ html {
 #register-section {
     display: none;
   }
+
+#contraseñas_distintas{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    margin-left: 27px;
+}
+
+#mensaje-mail{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    margin-left: 27px;
+}
+
+#mensaje-menor-edad {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    margin-left: 27px;
+}
+
+#encap{
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    justify-content: space-between;
+}
+
+#datos{
+    color: #E62E68;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+#logoinicio{
+    width: 180px;
+    margin-bottom: 20px;
+    margin-top:-50px;
+}
+
+
+body {
+    background-color: #F7F3F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    box-sizing: border-box;
+    color: #333333;
+    font-family: 'Montserrat', sans-serif;
+}

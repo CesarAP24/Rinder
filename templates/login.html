@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Únete a la comunidad de Rinder</title>
     <link rel="stylesheet" type="text/css" href="static/styles/styles.css">
-	<title>Únete a la comunidad de Rinder</title>
     <link rel="stylesheet" href="static/styles/login_register.css">
 </head>
 <body>
 	<!-- Formulario de registro -->
     <div class = "logo">
-        <img src="images/logofucsia.PNG" alt="logo" id="logoinicio">
+        <img src="static/images/logofucsia.PNG" alt="logo" id="logoinicio">
     </div>
     <div class = "main_container">
         <section id="register-section">
 	<!-- <h2>Regístrate</h2> -->
 	<form action="/registro" method="POST">
         <div class ="container_register">
-            <label id= "datos" for="datos">Regístrate aquí</label>
-                <div id="encap">
-            <input type="text" name="nombre" id="nombre" required placeholder="Ingrese su nombre">
+            <h3 id= "datos" for="datos">Regístrate aquí</h3>
+            <div id="encap">
+                <input type="text" name="nombre" id="nombre" required placeholder="Ingrese su nombre">
+                <input type="text" name="apellido" id="apellido" required placeholder="Ingrese su apellido">
+            </div>
 
-            <!-- <label for="apellido">Apellido</label> -->
-            <input type="text" name="apellido" id="apellido" required placeholder="Ingrese su apellido">
-                </div>
-
-            <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email" required placeholder="Ingrese su correo electrónico">
             <div id="mensaje-mail" style="display:none;">Ingrese un email válido.</div>    
 
