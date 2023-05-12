@@ -11,19 +11,14 @@
 body {
   background-color: #F7F3F7;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* overflow: hidden; */
-  height: 100vh;
-  /* margin: 0; */
-  /* padding: 0; */
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden; 
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   color: #333333;
   font-family: 'Montserrat', sans-serif;
-  align-items: center;
-  /* margin-top: 73px; */
-  /* overflow-y: scroll; */
-  margin-bottom: 90px;
 }
 
 .main{
@@ -39,7 +34,7 @@ body {
   height: 100vh;
   z-index: 1;
   /*degradado de background*/
-  background-color: #E62E6B;
+  background-image: linear-gradient(to bottom, #E62E6B, #F4529D);
   overflow-x: hidden;
   padding: 20px;
   display: flex;
@@ -135,6 +130,9 @@ h1, h2, h3, h4 {
     padding: 0 20px;
   }
 }
+
+
+
 
 /*adds section*/
 .adds-container {
