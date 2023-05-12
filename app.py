@@ -50,15 +50,10 @@ class Usuario(db.Model):
     # perfil = db.relationship("Perfil", backref="usuario", lazy = True)
     # publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
 
-    def __init__(self, username, correo, contraseña, active, likes_restantes):
-        self.username = username
-        self.correo = correo
-        self.contraseña = contraseña
-        self.active = active
-        self.likes_restantes = likes_restantes
+
 
     def __repr__(self):
-        return f"<Usuario {self.username}>"
+        return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
 
 
      

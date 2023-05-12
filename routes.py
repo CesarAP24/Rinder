@@ -67,7 +67,8 @@ def verificar_permisos(idUsuario):
 @app.route('/')
 def index():
     # verificar cookies
-    if session.get('username'):
+    print(session.get('id_usuario'))
+    if session.get('id_usuario'): 
         # si: iniciar sesión
         return render_template('index.html')
 
@@ -124,18 +125,21 @@ def register():
     if user:
         return {"success": False, "message": "El username ya existe"}
 
+
     # crear usuario
+    id = str(uuid.uuid4());
     user = Usuario(
+        id_usuario=id,
         username=data["username"],
         correo=data["email"],
         contraseña=data["password"],
         active=True,
-        likes_restantes=10,
+        likes_restantes=10
     );
 
-    print(user);
+    session['id_usuario'] = id;
 
-    return redirect('/') # deberia darle un mensaje de error a isabella
+    return redirect('/')
 
 
 

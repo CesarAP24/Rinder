@@ -3,7 +3,7 @@ const showLoginLink = document.getElementById('show-login');
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
 const registerBtn = document.getElementById('register-btn');
-
+const registerForm = document.getElementById('register-form');
 
 
 // Cuando se hace clic en el enlace para registrarse desde el formulario de inicio de sesión, ocultar el formulario de inicio de sesión y mostrar el de registro, y mostrar el botón de "Registrarse"
@@ -25,9 +25,14 @@ registerBtn.addEventListener('click', function(evenet) {
     const is_valid = validarTodo(event);
 
     if (!is_valid) {return}
+
+    //data from form
+    const datos = new FormData(registerForm);
+
     //fetch 
     fetch('/register', {
-        method: 'POST'
+        method: 'POST', 
+        body: datos
     }).then(function(response) {
         return response;
     }).then(function(data) {
