@@ -92,7 +92,7 @@
 					</div>
 					<div class="grid-item">
 						<div class="grid-image-container">
-							<img src="images/otro.PNG" alt="placeholder">
+							<img src="images/otros.PNG" alt="placeholder">
 						</div>
 						<input type="radio" name="pregunta2" value="otro2">Otro</input>
 					</div>
@@ -290,36 +290,51 @@
 
 		// Agregar un controlador de eventos para el botón ">"
 		botonSiguiente.addEventListener('click', () => {
-		// Ocultar la pregunta actual
-		preguntas[preguntaActual].style.display = 'none';
+		// Verificar si la pregunta actual es menor que la longitud del arreglo de preguntas
+		if (preguntaActual < preguntas.length - 1) {
+			// Ocultar la pregunta actual
+			preguntas[preguntaActual].style.display = 'none';
 
-		// Incrementar el índice de la pregunta
-		preguntaActual++;
+			// Incrementar el índice de la pregunta
+			preguntaActual++;
 
-		// Mostrar la siguiente pregunta
-		if (preguntaActual < preguntas.length) {
+			// Mostrar la siguiente pregunta
 			preguntas[preguntaActual].style.display = 'block';
-
-		} else {
-			preguntaActual--;
 		}
+
+		// Verificar si se ha alcanzado la última pregunta
+		if (preguntaActual === preguntas.length - 1) {
+			// Desactivar el botón ">"
+			botonSiguiente.disabled = true;
+		}
+
+		// Activar el botón "<"
+		botonAnterior.disabled = false;
 		});
+
 
 		// Agregar un controlador de eventos para el botón "<"
 		botonAnterior.addEventListener('click', () => {
-			console.log(preguntaActual);
-		// Ocultar la pregunta actual
-		preguntas[preguntaActual].style.display = 'none';
+		  // Verificar si la pregunta actual es mayor a cero
+		  if (preguntaActual > 0) {
+			// Ocultar la pregunta actual
+			preguntas[preguntaActual].style.display = 'none';
 
-		// Decrementar el índice de la pregunta
-		preguntaActual--;
+			// Decrementar el índice de la pregunta
+			preguntaActual--;
 
-		// Mostrar la pregunta anterior
-		if (preguntaActual >= 0) {
+			// Mostrar la pregunta anterior
 			preguntas[preguntaActual].style.display = 'block';
-		} else {
-			preguntaActual++;
 		}
+
+		// Verificar si se ha alcanzado la primera pregunta
+		if (preguntaActual === 0) {
+			// Desactivar el botón "<"
+			botonAnterior.disabled = true;
+		}
+
+		// Activar el botón ">"
+		botonSiguiente.disabled = false;
 		});
 
 		// Agregar un controlador de eventos para cada botón "omitir"
@@ -334,9 +349,10 @@
 			preguntas[preguntaActual].style.display = 'block';
 			} else {
 			preguntaActual--;
-			}
+			} 
 		});
 		}
+
 
 		const checks = document.getElementsByClassName("grid-image-container")
 		for(let i=0; i< checks.length; i++){
