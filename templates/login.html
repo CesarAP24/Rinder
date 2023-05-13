@@ -55,7 +55,7 @@
     <div class = "main_container">
         <section id="login-section">
     	   <!-- <h2>Iniciar sesión</h2> -->
-            <form action="/login" method="POST">
+            <form id="login-form" action="/login" method="POST">
                 <div class ="container_register" >
                     <label for="email_login">Correo electrónico:</label>
                     <input type="email" name="email_login" id="email_login" required>
@@ -63,7 +63,7 @@
                     <label for="password_login">Contraseña:</label>
                     <input type="password" name="password_login" id="password_login" required>
             
-                    <button type="submit">Iniciar sesión</button>
+                    <button type="submit" id="login-btn">Iniciar sesión</button>
                     </div>
             </form>
             <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>

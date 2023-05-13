@@ -41,6 +41,7 @@ def error(code):
         "403": "Prohibido",
         "404": "Página no encontrada",
         "405": "Método no permitido",
+        "-1": "Error desconocido"
     }
     messages = {
         "400": "La solicitud no se pudo entender por una sintaxis incorrecta.",
@@ -48,6 +49,7 @@ def error(code):
         "403": "No tiene permiso para acceder a este recurso.",
         "404": "El recurso solicitado no se encuentra en el servidor.",
         "405": "El método que se está intentando usar no está permitido en esta ruta.",
+        "-1": "Lo sentimos, algo salió mal."
     }
     return render_template('error.html', error={"name":errors[code], "description":messages[code]}), int(code);
 
@@ -89,18 +91,18 @@ def login():
         user = Usuario.query.filter_by(correo=data["email_login"]).first();
 
         if not(user):
-            return jsonify({"success": False, "message": "Usuario no encontrado"})
+            return jsonify({"success": False, "message": "Usuario no encontrado"}), 400;
         else:
             if user.contraseña == data['password_login']:
                 # iniciar sesión
                 session['id_usuario'] = user.id_usuario;
-                return jsonify({"success": True, "message": "Sesión iniciada"})
+                return jsonify({"success": True, "message": "Sesión iniciada"}), 200;
             else:
-                return jsonify({"success": False, "message": "Contraseña incorrecta"})
+                return jsonify({"success": False, "message": "Contraseña incorrecta"}), 400;
 
-        return jsonify({"success": False, "message": "Error desconocido"})
+        return error("400");
 
-    return redirect('/')
+    return error("405");
 
 
 

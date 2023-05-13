@@ -1,9 +1,14 @@
 const showRegisterLink = document.getElementById('show-register');
 const showLoginLink = document.getElementById('show-login');
+
 const loginSection = document.getElementById('login-section');
 const registerSection = document.getElementById('register-section');
+
 const registerBtn = document.getElementById('register-btn');
 const registerForm = document.getElementById('register-form');
+
+const loginBtn = document.getElementById('login-btn');
+const loginForm = document.getElementById('login-form');
 
 
 // Cuando se hace clic en el enlace para registrarse desde el formulario de inicio de sesión, ocultar el formulario de inicio de sesión y mostrar el de registro, y mostrar el botón de "Registrarse"
@@ -126,3 +131,32 @@ function validarTodo(event){
 
     return edad && contra && mail;
 }
+
+
+
+
+
+// ENVIAR LOGIN
+
+loginBtn.addEventListener('click', function(event) {
+    event.preventDefault();
+    const datos = new FormData(loginForm);
+    fetch('/login', {
+        method: 'POST', 
+        body: datos
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        if (data.success == true) {
+            window.location.reload();
+        } else {
+            /*IMPLEMENTAR MENSAJES DE ERROR SEGÚN EL ERROR QUE MANDO (
+            (
+            {"success": True, "message": "MENSAJE DE ERROR"}
+            )*/
+            alert(data.message); //pone la alerta que sale en toda la pantalla :v
+        }
+    }).catch(function(error) {
+        alert(error);
+    });
+});
