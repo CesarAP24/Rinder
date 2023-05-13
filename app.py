@@ -70,7 +70,7 @@ class Perfil(db.Model):
     created_at = db.Column(db.Date, default=datetime.utcnow())
     modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
 
-    
+
     # user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
 
     def __repr__(self):
@@ -134,7 +134,7 @@ class Comentario(db.Model):
 
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
-    id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_mensaje = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     id_usuariodestinatario = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
     id_usuarioremitente = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
     
@@ -253,3 +253,7 @@ class Compra(db.Model):
 
 from routes import *
 
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")

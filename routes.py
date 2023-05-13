@@ -89,16 +89,16 @@ def login():
         user = Usuario.query.filter_by(correo=data["email_login"]).first();
 
         if not(user):
-            return {"success": False, "message": "Usuario no encontrado"}
+            return jsonify({"success": False, "message": "Usuario no encontrado"})
         else:
             if user.contraseña == data['password_login']:
                 # iniciar sesión
                 session['id_usuario'] = user.id_usuario;
-                return {"success": True, "message": "Sesión iniciada"}
+                return jsonify({"success": True, "message": "Sesión iniciada"})
             else:
-                return {"success": False, "message": "Contraseña incorrecta"}
+                return jsonify({"success": False, "message": "Contraseña incorrecta"})
 
-        return {"success": False, "message": "Error desconocido"}
+        return jsonify({"success": False, "message": "Error desconocido"})
 
     return redirect('/')
 
@@ -164,5 +164,66 @@ def register():
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route("/Mensajes", methods=["GET", "POST"])
+def Mensajes():
+    if request.method == "POST":
+        pass
+    elif request.method == "GET":
+        data = request.args;
+        user_id = data["id_usuario"];
+
+        pass
+
+    return render_template("Mensajes.html")
