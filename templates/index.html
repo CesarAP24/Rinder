@@ -22,13 +22,18 @@
 <body>
   <!-- Barra lateral -->
   <div class="sidebar">
-    <div class="title"> <img src="static/images/logoTitle.png"></div>
-    <a id="Matches" href="#">Rind your love!</a>
-    <a id="Posts" href="#">Posts</a>
-    <a id="Mensajes" href="#">Mensajes</a>
-    <a id="Perfil" href="#">Mi Perfil</a>
-    <a id="Planes" href="#">Planes</a>
-    <a id="Soporte" href="#">Soporte</a>
+    <div>
+        <div class="title"> <img src="static/images/logoTitle.png"></div>
+        <a id="Matches" href="#">Rind your love!</a>
+        <a id="Posts" href="#" style="display: none;">Posts</a>
+        <a id="Mensajes" href="#">Mensajes</a>
+        <a id="Perfil" href="#">Mi Perfil</a>
+        <a id="Planes" href="#">Planes</a>
+        <a id="Soporte" href="#">Soporte</a>
+    </div>
+    <div>
+        <a href="/logout">Cerrar sesión</a>
+    </div>
   </div>
 
 
@@ -406,7 +411,7 @@
 
   <script type="text/javascript">
         $(document).ready(function(){
-            $("#Posts").click();
+            $("#Matches").click();
         });
   </script>
 
