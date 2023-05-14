@@ -18,7 +18,9 @@ from sqlalchemy import ForeignKey
 # libraries ----------------------------------------------------------------------------------------------
 
 import uuid
+import json
 from datetime import datetime
+from flask_bcrypt import Bcrypt
 
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
@@ -29,6 +31,9 @@ app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis';
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:3028222024@localhost:5432/postgres'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+#hash key
+bcrypt = Bcrypt(app);
 
 
 # MODEL --------------------------------------------------------------------------------------------------
@@ -75,6 +80,20 @@ class Perfil(db.Model):
 
     def __repr__(self):
         return f"<Perfil {self.username}>"
+
+    def serialize(self):
+        return {
+            "username": self.username,
+            "nombre": self.nombre,
+            "apellido": self.apellido,
+            "nacimiento": self.nacimiento,
+            "edad": self.edad,
+            "genero": self.genero,
+            "descripcion": self.descripcion,
+            "ruta_photo": self.ruta_photo,
+            "created_at": self.created_at,
+            "modified_at": self.modified_at
+        }
 
 
 

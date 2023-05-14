@@ -4,9 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>App de citas</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-
+  
   <!-- icons -->
   <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 
@@ -18,18 +16,22 @@
   <link rel="stylesheet" type="text/css" href="static/styles/messages.css">
   <link rel="stylesheet" type="text/css" href="static/styles/profile.css">
   <link rel="stylesheet" type="text/css" href="static/styles/posts.css">
+
+  <!-- Jquery JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
 </head>
 <body>
   <!-- Barra lateral -->
   <div class="sidebar">
     <div>
         <div class="title"> <img src="static/images/logoTitle.png"></div>
-        <a id="Matches" href="#">Rind your love!</a>
-        <a id="Posts" href="#" style="display: none;">Posts</a>
-        <a id="Mensajes" href="#">Mensajes</a>
-        <a id="Perfil" href="#">Mi Perfil</a>
-        <a id="Planes" href="#">Planes</a>
-        <a id="Soporte" href="#">Soporte</a>
+        <a id="Matches">Rind your love!</a>
+        <a id="Posts" style="display: none;">Posts</a>
+        <a id="Mensajes">Mensajes</a>
+        <a id="Perfil">Mi Perfil</a>
+        <a id="Planes">Planes</a>
+        <a id="Soporte">Soporte</a>
     </div>
     <div>
         <a href="/logout">Cerrar sesión</a>
@@ -40,7 +42,7 @@
   <!-- Secciones para cada link (matches, posts, mensajes, perfil y soporte) -->
     <div class="main">
         <!-- Seccion de matches -->
-        <div id="Matches-Content" class="container slide-in-top Matches-container">
+        <div id="Matches-Content" class="container slide-in-top Matches-container" style="display:none;">
             <div class="left-matches">
                 <button>
                     <!--placeholder-->
@@ -74,7 +76,7 @@
         </div>
 
         <!-- Seccion de posts -->
-        <div id="Posts-Content" class="container slide-in-top Posts-container">
+        <div id="Posts-Content" class="container slide-in-top Posts-container" style="display:none;">
             <div class="new-post-container">
                 <h3>Bienvenido a Rinder</h3>
                 <input type="text" placeholder="¿Qué tienes en mente?">
@@ -137,7 +139,7 @@
         </div>
 
         <!-- Seccion de mensajes -->
-        <div id="Mensajes-Content" class="container slide-in-top Messages-container">
+        <div id="Mensajes-Content" class="container slide-in-top Messages-container" style="display:none;">
                     <div class="left-Messages-container">
                         <h3>Mensajes</h3>
                         <div class="messages-list-container">
@@ -174,7 +176,7 @@
                     <div class="right-Messages-container">
                         <div class="main-Messages-container">
                             <div class="user-Message-info">
-                                <img src="https://via.placeholder.com/150" alt="Foto de perfil">
+                                <img src="static/profilePhotos/default/defaultProfile.png" alt="Foto de perfil">
                                 <h4>César Perales</h4>
                                 <p><strong>Descripción: </strong>Con propietaria pero sin dueña siuuu</p>
                             </div>
@@ -207,7 +209,6 @@
                         </div>
                         <div class="send-Messages-container">
                             <button id="emoji-btn" class="emoji-btn">🧐</button>
-                            <button id="file-btn" class="file-btn">🧷</button>
                             <input type="text" placeholder="Escribe un mensaje">
                             <button id="send-btn" class="send-btn">Enviar</button>
                         </div>
@@ -215,64 +216,57 @@
         </div>
 
         <!-- Seccion de perfil -->
-        <div id="Perfil-Content" class="container Perfil-container slide-in-top">
+        <div id="Perfil-Content" class="container Perfil-container slide-in-top" style="display:none;">
             <!--Estructura básica para el perfil con foto de perfil, descripción, etc-->
-            <button class="btn-edit-profile"><p2>Editar perfil</button>
-            <button class="btn-add-photo">
-                <span class="icon">+</span>
-              </button>
             <div class="profile-container">
                 <div class="profile-top">
                     <div class="profile-info-fast">
                         <div class="profile-info-immage">
-                            <img src="https://via.placeholder.com/150" alt="Foto de perfil">
+                            <img id="profile-section-photo-img" src="https://via.placeholder.com/150" alt="Foto de perfil">
+                            <button class="btn-add-photo">
+                                <span class="icon">+</span>
+                            </button>
                         </div>
                         <!--Información rapida, num likes recibidos, seguidores, -->
                         <div class="profile-info-fast-box">
                             <div class="fast-info-box">
-                                <h5>Seguidores</h5>
-                                <p>10</p>
-                            </div>
-                            <div class="fast-info-box">
-                                <h5>Estado Civil</h5>
-                                <p>Divorciado</p>
+                                <h3 id="profile-name">Cesar Perales</h3>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="profile-down">
                     <div class="profile-info-main rounded-pink-border" style="width: 100%">
-                        <h3>Cesar Perales</h3>
-                        <p><strong>Descripción: </strong>Con propietaria pero sin dueña siuuu Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat. </p>
-                        <p><strong>Intereses: </strong>Autos, Motos, Música, etc</p>
-                        <p><strong>Edad: </strong>23</p>
-                        <p><strong>Sexo: </strong>Masculino</p>
-                        <p><strong>Ubicación: </strong>Argentina</p>
-                        <p><strong>Idiomas: </strong>Español, Inglés</p>
-                        <p><strong>Profesión: </strong>Programador</p>
+                        <h5 id="profile-username">Username</h5>
+                        <br>
+                        <p id="profile-description"><strong>Descripción:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <p id="profile-nacimiento"><strong>Fecha nacimiento:</strong> 20/05/2005</p>
+                        <p id="profile-edad"><strong>Edad:</strong> 23</p>
+                        <p id="profile-genero"><strong>Género:</strong> M</p>
+
+                        
+                        <button class="btn-edit-profile"><p2>Editar perfil</button>
                     </div>
 
                     <div class="profile-posts" style="display:none;">
                         <div class="profile-post-box rounded-pink-border">
                             <div class="profile-post-header">
                                 <div class="profile-post-user-image">
-                                        <img src="https://via.placeholder.com/60" alt="Foto de perfil">
-                                    </div>
-                                    <div class="profile-post-user-name">
-                                        <h5>Cesar Perales</h5>
-                                    </div>
+                                    <img src="https://via.placeholder.com/60" alt="Foto de perfil">
                                 </div>
-                                <div class="profile-post-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                        cillum dolore eu fugiat nulla pariatur.</p>
-                                    <img src="https://via.placeholder.com/400" alt="Foto de perfil">
+                                <div class="profile-post-user-name">
+                                    <h5>Cesar Perales</h5>
                                 </div>
+                            </div>
+                            <div class="profile-post-content">
+                                <p>Tu descripción</p>
+                                <img src="https://via.placeholder.com/400" alt="Foto de perfil">
+                            </div>
                             <div class="profile-post-footer">
                                 <div class="profile-post-footer-left">
                                     <p>12/12/2020 12:00</p>
@@ -372,7 +366,7 @@
         </div>
 
         <!--Secciones de pago-->
-        <div id="Planes-Content" class="container slide-in-top">
+        <div id="Planes-Content" class="container slide-in-top" style="display:none;">
             <div class="row">
                 <div class="col-12">
                     <h3>Planes</h3>
@@ -382,7 +376,7 @@
 
 
         <!-- Seccion de soporte -->
-        <div id="Soporte-Content" class="container slide-in-top">
+        <div id="Soporte-Content" class="container slide-in-top" style="display:none;">
             <div class="row">
                 <div class="col-12">
                     <h3>Soporte</h3>
@@ -391,44 +385,28 @@
         </div>
     </div>
 
-    <div class="adds-container rounded-pink-border">
+    <div class="adds-container rounded-pink-border" style="display:none;">
         <div class="row">
             <div class="col-12">
                 <h3>Publicidad</h3>
                 <br>
                 <p>Nos estas viendo? Ellos te verán</p>
-                <a href="#">Anunciate aqui!</a>
+                <a>Anunciate aqui!</a>
             </div>
         </div>
     </div>
 
-  <!-- Bootstrap JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
   <script src="static/scripts/navBar.js"></script>
   <script src="static/scripts/chatsLoad.js"></script>
+  <script src="static/scripts/likes.js"></script> 
+  <script src="static/scripts/loadProfile.js"></script>
 
+  <!-- inicio de la web -->   
   <script type="text/javascript">
         $(document).ready(function(){
             $("#Matches").click();
         });
   </script>
-
-<script> 
-    var likeButton = document.getElementsByClassName("profile-post-like-btn");
-    console.log(likeButton)
-    for (var i = 0; i < likeButton.length; i++){
-        likeButton[i].addEventListener("click", function(){
-            console.log("presionado!")
-            if(this.classList.contains("liked")){
-                this.classList.remove("liked")
-            }else{
-                this.classList.add("liked")
-            }
-        });
-    }
-</script>
 
 </body>
 </html>

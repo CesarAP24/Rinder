@@ -21,6 +21,7 @@ from sqlalchemy import ForeignKey
 import uuid
 from datetime import datetime
 import json
+from flask_bcrypt import Bcrypt
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
@@ -39,7 +40,7 @@ def error(code):
         "400": "Solicitud incorrecta",
         "401": "No autorizado",
         "403": "Prohibido",
-        "404": "Página no encontrada",
+        "404": "404 no encontrado :(",
         "405": "Método no permitido",
         "-1": "Error desconocido"
     }
@@ -69,7 +70,7 @@ def verificar_permisos(idUsuario):
 @app.route('/')
 def index():
     # verificar cookies
-    if session.get('id_usuario'): 
+    if session.get('id_usuario'):
         # si: iniciar sesión
         return render_template('index.html')
 
@@ -82,7 +83,7 @@ def index():
 
 # Login - Logout --------------------------------------------------------------
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         # buscar usuario
@@ -93,12 +94,17 @@ def login():
         if not(user):
             return jsonify({"success": False, "message": "Usuario no encontrado"}), 400;
         else:
-            if user.contraseña == data['password_login']:
-                # iniciar sesión
-                session['id_usuario'] = user.id_usuario;
-                return jsonify({"success": True, "message": "Sesión iniciada"}), 200;
-            else:
-                return jsonify({"success": False, "message": "Contraseña incorrecta"}), 400;
+            # verificar contraseña
+            try:
+                if bcrypt.check_password_hash(user.contraseña, data["password_login"]):
+                    # iniciar sesión
+                    session['id_usuario'] = user.id_usuario;
+                    return jsonify({"success": True, "message": "Sesión iniciada"}), 200;
+                else:
+                    return jsonify({"success": False, "message": "Contraseña incorrecta"}), 400;
+
+            except Exception as e:
+                return jsonify({"success": False, "message": "Error desconocido, inicia sesión con otra cuenta"}), 500;
 
         return error("400");
 
@@ -126,6 +132,10 @@ def register():
     if user:
         return {"success": False, "message": "El username ya existe"}
 
+    # hashear la contraseña
+
+    hashed_password = bcrypt.generate_password_hash(data["password"]).decode('utf-8');
+
 
     # crear usuario
     id = str(uuid.uuid4());
@@ -133,7 +143,7 @@ def register():
         id_usuario=id,
         username=data["username"],
         correo=data["email"],
-        contraseña=data["password"],
+        contraseña=hashed_password,
         active=True,
         likes_restantes=10
     );
@@ -178,17 +188,33 @@ def logout():
 
 @app.route('/mensajes/list', methods=['GET'])
 def mensajes():
-    id_usuario = request.get['id_usuario']
-    mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-        .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
-        .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
-        .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-        .all()
+    # id_usuario = request.get['id_usuario']
+    # mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
+    #     .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
+    #     .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
+    #     .order_by(db.func.MAX(Mensaje.fecha).desc()) \
+    #     .all()
 
-    resultado = []
+    # resultado = []
+    pass
 
 
+@app.route('/perfil', methods=['POST'])
+def perfil():
+    if request.method == 'POST':
+        id = session.get('id_usuario'); 
+        print(id);
+        if not(id): return error("401"); # no se ha iniciado sesión
 
+        user = Usuario.query.filter_by(id_usuario=id).first();
+        if not(user): return error("404"); # no se encontró el usuario
+
+        perfil = Perfil.query.filter_by(username=user.username).first();
+        if not(perfil): return error("404"); # no se encontró el perfil
+
+        return jsonify(perfil.serialize()), 200;
+
+    return error("405");
 
 
 
@@ -253,3 +279,13 @@ def Mensajes():
         pass
 
     return render_template("Mensajes.html")
+
+
+#manejo de errores
+@app.errorhandler(405)
+def page_not_found(e):
+    return error("405");
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return error("404");
