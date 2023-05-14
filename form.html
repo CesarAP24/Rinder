@@ -274,7 +274,7 @@
 			</div>
 			<button id="siguiente" type="button">></button>
 		</div>
-		<p>¿No deseas contestar la pregunta? <a href="#" id="omitir">Omítela</a></p>
+		<button type="submit" id="enviarForm">Enviar</button>
 	</form>
 
 	<script>
@@ -284,10 +284,9 @@
 		const botonSiguiente = document.getElementById('siguiente');
 		const botonAnterior = document.getElementById('anterior');
 		const preguntas = document.querySelectorAll('.pregunta-template');
-		const botonesOmitir = document.querySelectorAll('.omitir');
 		let preguntaActual =0;
 
-
+		actualizarBotonEnviar();
 		// Agregar un controlador de eventos para el botón ">"
 		botonSiguiente.addEventListener('click', () => {
 		// Verificar si la pregunta actual es menor que la longitud del arreglo de preguntas
@@ -307,9 +306,9 @@
 			// Desactivar el botón ">"
 			botonSiguiente.disabled = true;
 		}
-
 		// Activar el botón "<"
 		botonAnterior.disabled = false;
+		actualizarBotonEnviar();
 		});
 
 
@@ -335,25 +334,12 @@
 
 		// Activar el botón ">"
 		botonSiguiente.disabled = false;
+		actualizarBotonEnviar();
+		
 		});
 
-		// Agregar un controlador de eventos para cada botón "omitir"
-		for (let i = 0; i < botonesOmitir.length; i++) {
-		botonesOmitir[i].addEventListener('click', (event) => {
-			event.preventDefault();
-			// Saltar la pregunta actual
-			preguntas[preguntaActual].style.display = 'none';
-			preguntaActual++;
-			// Mostrar la siguiente pregunta
-			if (preguntaActual < preguntas.length) {
-			preguntas[preguntaActual].style.display = 'block';
-			} else {
-			preguntaActual--;
-			} 
-		});
-		}
 
-
+		//Esto es para hacer que se pueda hacer click en la imagen y se seleccione el radio button
 		const checks = document.getElementsByClassName("grid-image-container")
 		for(let i=0; i< checks.length; i++){
 			const padre = checks[i].parentElement;
@@ -363,6 +349,26 @@
 				input[0].click();
 			})
 		}
+
+		// Función para actualizar el botón de enviar
+		function actualizarBotonEnviar() {
+		const botonEnviar = document.getElementById('enviarForm');
+		if (preguntaActual === preguntas.length - 1) {
+			botonEnviar.style.display = 'block';
+		} else {
+			botonEnviar.style.display = 'none';
+		}
+		}
+
+		// Agregar un controlador de eventos para el botón "Enviar"
+		botonEnviar.addEventListener('click', (event) => {
+		event.preventDefault(); // Evitar que se envíe el formulario
+		// Agregar lógica para enviar el formulario
+		actualizarBotonEnviar(); // Actualizar el botón de enviar
+		});
+
+
+
 
 	</script>
 </body>

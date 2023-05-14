@@ -88,6 +88,7 @@ button {
     width: 150px;
     font-family: Consolas;
     transition: 0.2s;
+    margin-bottom: 179px;
 }
 .preguntas button:hover{
     cursor: pointer;
@@ -110,7 +111,7 @@ button {
     padding: 32px;
     border-radius: 19px;
     align-items: center;
-    margin-top: 35px;
+    margin-top: -175px;
 }
 
 .pregunta-template h3 {
@@ -154,3 +155,8 @@ input{
     background-color: #ccc;
   }
   
+#enviarForm{
+    display: block;
+    margin-top: 30px;
+    width: 205px;
+}
