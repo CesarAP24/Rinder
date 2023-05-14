@@ -1,0 +1,98 @@
+.container_register {
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    align-content: space-around;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    width: 100%;
+    padding: 15px;
+}
+
+.container_register button {
+    margin: 11px;
+    width: 95%;
+    padding: 10px;
+    border: none;
+    font-size: 15px;
+    background: #ee628e;
+    color: white;
+    border-radius: 6px;
+    font-family: 'Montserrat';
+}
+
+.main_container {
+    width: 35%;
+}
+
+button:hover {
+    background: #E62E68;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=date] {
+    width: 95%;
+    margin: 7px;
+    padding: 11px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    border: 1px solid #d5d5d5;
+    font-family: 'Montserrat';
+}
+
+body {
+    background-color: #F7F3F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    align-items: center;
+    margin-top: 90px;
+    overflow-y: scroll;
+    margin-bottom: 90px;
+}
+
+label {
+    margin-bottom: 5px;
+    margin-top: 11px;
+    margin-left: 22px;
+    width: 100%;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    border-radius: 16px;
+    width: 100%;
+    overflow: hidden;
+}
+
+html {
+    border-top: solid;
+    border-top-width: 12px;
+    border-top-color: #ee628e;
+}
+  
+.container {
+    overflow-y: scroll;
+    height: 500px; 
+}
+
+#register-section {
+    display: none;
+  }
