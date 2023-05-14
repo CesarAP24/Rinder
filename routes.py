@@ -188,15 +188,15 @@ def logout():
 
 @app.route('/mensajes/list', methods=['GET'])
 def mensajes():
-    # id_usuario = request.get['id_usuario']
-    # mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-    #     .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
-    #     .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
-    #     .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-    #     .all()
+    id_usuario = request.get['id_usuario']
+    mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
+        .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
+        .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
+        .order_by(db.func.MAX(Mensaje.fecha).desc()) \
+        .all()
 
-    # resultado = []
-    pass
+    resultado = []
+    return jsonify({'success': True, 'data': resultado}), 200
 
 
 @app.route('/perfil', methods=['POST'])
