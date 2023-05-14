@@ -26,3 +26,9 @@ Rinder es una app web de citas que propone un emparejamiento de aprendizaje auto
 		Los premium tieneen hasta 50 likes por día y a diferencia de los gratuitos estos no poseen anuncios.
 	- Vip
 		Los usuarios VIP pueden observar a los usuarios que le dieron like, tienen likes ilimitados y no poseen anuncios.
+
+
+
+## Instalación:
+
+## Rutas:
