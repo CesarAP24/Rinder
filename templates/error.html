@@ -19,8 +19,19 @@
 <body>
 	<div class="error-container">
 		<h1>{{ error["name"] }}</h1>
+		<br>
 		<p>{{ error["description"] }}</p>
+		<p id="seconds">Redirecting in 5 seconds...</p>
 	</div>
-	
+	<script type="text/javascript">
+		var seconds = 5;
+		setInterval(function(){
+			seconds--;
+			document.getElementById("seconds").innerHTML = "Redirigiendo " + seconds + " segundos...";
+			if(seconds == 0){
+				window.location.href = "/";
+			}
+		}, 1000);
+	</script>
 </body>
 </html>
