@@ -7,6 +7,43 @@
   src: url('../fonts/FireFoxesDemoRegular.ttf');
 }
 
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+h4 {
+    font-size: 1.5em;
+}
+
+
 /* Estilo para el body */
 body {
   background-color: #F7F3F7;
@@ -34,16 +71,16 @@ body {
 
 /* Estilo para la barra lateral */
 .sidebar {
-  width: 30%;
-  max-width: 300px;
-  height: 100vh;
-  z-index: 1;
-  /*degradado de background*/
-  background-color: #E62E6B;
-  overflow-x: hidden;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+    width: 30%;
+    max-width: 300px;
+    height: 100vh;
+    z-index: 1;
+    background-image: linear-gradient(to bottom, #ff0054, #ff00a2);
+    overflow-x: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Estilo para el título del sidebar */
@@ -68,10 +105,15 @@ body {
 }
 
 .sidebar a:hover{
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 
 }
+
+.sidebar a:visited{
+  color: #fff;
+}
+
 
 .sidebar .title{
   display: flex;
@@ -147,4 +189,10 @@ h1, h2, h3, h4 {
     align-items: center;
     text-align: center;
     background: linear-gradient(to bottom, #f5f5f5, #ffffff);
+}
+
+
+/*animacion de entrada para .title img*/
+.title img {
+    animation: fadeIn 1s;
 }

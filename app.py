@@ -18,21 +18,22 @@ from sqlalchemy import ForeignKey
 # libraries ----------------------------------------------------------------------------------------------
 
 import uuid
+import json
 from datetime import datetime
+from flask_bcrypt import Bcrypt
 
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 # ========================================================================================================
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:china@localhost:5432/usuariosRinder'
+app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis';
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:3028222024@localhost:5432/postgres'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
-# routes -------------------------------------------------------------------------------------------------
-
-from routes import *
+#hash key
+bcrypt = Bcrypt(app);
 
 
 # MODEL --------------------------------------------------------------------------------------------------
@@ -49,18 +50,13 @@ class Usuario(db.Model):
     contraseña = db.Column(db.String(100), nullable = False)
     active = db.Column(db.Boolean, default=False)
     likes_restantes = db.Column(db.Integer(), nullable=False)
-    perfil = db.relationship("Perfil", backref="usuario", lazy = True)
-    publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
 
-    def __init__(self, username, correo, contraseña, active, likes_restantes):
-        self.username = username
-        self.correo = correo
-        self.contraseña = contraseña
-        self.active = active
-        self.likes_restantes = likes_restantes
+
+    # perfil = db.relationship("Perfil", backref="usuario", lazy = True)
+    # publicacion = db.relationship("Publicacion", backref="usuario", lazy = True)
 
     def __repr__(self):
-        return f"<Usuario {self.username}>"
+        return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
 
 
      
@@ -69,28 +65,35 @@ class Usuario(db.Model):
 class Perfil(db.Model):
     __tablename__ = 'perfil'
     username = db.Column(db.String(50), primary_key=True)
+    nombre = db.Column(db.String(50), nullable = False)
+    apellido = db.Column(db.String(50), nullable = False)
     nacimiento = db.Column(db.Date, nullable = False)
     edad = db.Column(db.Integer, nullable = False)
-    genero = db.Column(db.String(50), nullable = False)
+    genero = db.Column(db.String(50))
     descripcion = db.Column(db.String(500))
     ruta_photo = db.Column(db.String(200))
     created_at = db.Column(db.Date, default=datetime.utcnow())
     modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
-    
-    #la diferncia entre lazy y uselist es que lazy es para cuando es una sola relacion y uselist es para cuando es una lista de relaciones
 
-    user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
 
-    def __init__(self, username, nacimiento, edad, genero, descripcion, ruta_photo):
-        self.username = username
-        self.nacimiento = nacimiento
-        self.edad = edad
-        self.genero = genero
-        self.descripcion = descripcion
-        self.ruta_photo = ruta_photo
+    # user = db.relationship('Usuario', backref=db.backref('perfil', lazy=False))
 
     def __repr__(self):
         return f"<Perfil {self.username}>"
+
+    def serialize(self):
+        return {
+            "username": self.username,
+            "nombre": self.nombre,
+            "apellido": self.apellido,
+            "nacimiento": self.nacimiento,
+            "edad": self.edad,
+            "genero": self.genero,
+            "descripcion": self.descripcion,
+            "ruta_photo": self.ruta_photo,
+            "created_at": self.created_at,
+            "modified_at": self.modified_at
+        }
 
 
 
@@ -150,19 +153,19 @@ class Comentario(db.Model):
 
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
-    id_mensaje = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_mensaje = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id_usuariodestinatario = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
+    id_usuarioremitente = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
+    
     id_mensaje2 = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
 
-    id_usuariodestinatario = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
-    id_usuariodestinatario2 = db.Column(db.String(50), ForeignKey('usuario.id_usuariodestinario'))
-
-    id_usuarioremitente = db.Column(db.String(50), primary_key=True, default=str(uuid.uuid4()))
-    id_usuarioremitente2 = db.Column(db.String(50), ForeignKey('usuario.id_usuarioremitente'))
     
+
     fecha = db.Column(db.Date, default=datetime.utcnow())
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
     formato = db.Column(db.String(50))
+
     def __init__(self, id_mensaje, id_mensaje2, id_usuariodestinatario, id_usuariodestinatario2, id_usuarioremitente, id_usuarioremitente2, fecha, contenido, state, formato ):
         self.id_mensaje = id_mensaje
         self.id_mensaje2 = id_mensaje2
@@ -260,3 +263,16 @@ class Compra(db.Model):
         return f"<Compra {self.id_compra}>"
 
 
+
+
+
+
+
+# routes -------------------------------------------------------------------------------------------------
+
+from routes import *
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")

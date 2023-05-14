@@ -34,7 +34,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Matches-Content').show();
-                console.log("Matches");
 
             }, 300);
         });
@@ -52,7 +51,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Mensajes-Content').show();
-                console.log("Mensajes");
 
             }, 300);
 
@@ -71,7 +69,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Perfil-Content').show();
-                console.log("Perfil");
 
             }, 300);
 
@@ -90,7 +87,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Soporte-Content').show();
-                console.log("Soporte");
 
             }, 300);
 
@@ -109,7 +105,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Posts-Content').show();
-                console.log("Posts");
 
             }, 300);
 
@@ -128,7 +123,6 @@
             setTimeout(function(){
                 contents.hide();
                 $('#Planes-Content').show();
-                console.log("Planes");
 
             }, 300);
 

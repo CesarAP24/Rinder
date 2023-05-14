@@ -67,6 +67,7 @@
 	flex-direction: row;
 	justify-content: right;
 	align-items: center;
+    padding-left: 15px;
 }
 
 .fast-info-box{
@@ -79,18 +80,21 @@
 }
 
 .profile-info-immage {
+    display: flex;
     border-radius: 15px;
     overflow: hidden;
     margin: 25px;
     margin-top: -80px;
     border: 4px solid white;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
-
 
 
 
 .profile-down {
     padding: 15px;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     flex-direction: row;
@@ -169,13 +173,10 @@
 }
 
 .btn-add-photo {
-    top: 185px;
-    position: relative;
+    position: fixed;
     background-color: #007bff;
-    color: transparent;
-    border: white;
     border-width: thick;
-    border-radius: 108px;
+    border-radius: 100%;
     padding: 2px 2px;
     font-size: 8px;
     font-weight: bold;
@@ -184,8 +185,9 @@
     width: 32px;
     text-align: center;
     overflow: visible;
-    left: 154px;
     border: 2px solid white;
+    margin-bottom: -7px;
+    margin-right: -7px;
 }
   
   .btn-add-photo:hover {
@@ -206,7 +208,6 @@
 }
 
 .btn-edit-profile {
-    position: relative;
     background-color: #e4e0e0;
     color: #343434;
     border: none;
@@ -216,21 +217,25 @@
     font-weight: bolder;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    width: 250px;
-    left: 27px;
-    top: 983px;
+    width: 100%;
 }
-  .btn-edit-profile:hover {
+
+.btn-edit-profile:hover {
     background-color: #f1eded;
     color: #343434;
-  }
+}
 
-  p2{
+.btn-edit-profile:active {
+    background-color: #e4e0e0;
+}
+
+
+
+p2{
     font-size: 13px;
     font-weight: bolder;
-  }
+}
 
-  button.profile-post-like-btn {
+button.profile-post-like-btn {
     font-family: 'Ysabeau';
 }
-  
