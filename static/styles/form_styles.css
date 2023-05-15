@@ -157,6 +157,12 @@ input{
   
 #enviarForm{
     display: block;
-    margin-top: 30px;
+    margin-top: -13px;
     width: 205px;
+}
+
+#cont_pregs{
+    font-size: 15px;
+    margin-top: 10px;
+    color: #b5b5b5;
 }

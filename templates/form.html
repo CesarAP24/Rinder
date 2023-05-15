@@ -274,6 +274,7 @@
 			</div>
 			<button id="siguiente" type="button">></button>
 		</div>
+		<p id="cont_pregs">Pregunta <span id="numero_pregunta"></span> de <span id="total_preguntas"></span></p>
 		<button type="submit" id="enviarForm">Enviar</button>
 	</form>
 
@@ -287,6 +288,18 @@
 		let preguntaActual =0;
 
 		actualizarBotonEnviar();
+
+		const numeroPregunta = preguntaActual + 1; // Sumar 1 para que empiece desde 1 en lugar de 0
+		const totalPreguntas = preguntas.length;
+		const numeroPregunta2 = document.getElementById('numero_pregunta');
+		const totalPreguntas2 = document.getElementById('total_preguntas');
+
+		// Actualizar el texto del contador de preguntas
+		function actualizarContadorPreguntas() {
+		numeroPregunta2.innerHTML = preguntaActual + 1;
+		totalPreguntas2.innerHTML = preguntas.length;
+		}
+
 		// Agregar un controlador de eventos para el botón ">"
 		botonSiguiente.addEventListener('click', () => {
 		// Verificar si la pregunta actual es menor que la longitud del arreglo de preguntas
@@ -309,6 +322,7 @@
 		// Activar el botón "<"
 		botonAnterior.disabled = false;
 		actualizarBotonEnviar();
+		actualizarContadorPreguntas();
 		});
 
 
@@ -335,9 +349,10 @@
 		// Activar el botón ">"
 		botonSiguiente.disabled = false;
 		actualizarBotonEnviar();
-		
+		actualizarContadorPreguntas();
 		});
 
+		actualizarContadorPreguntas();
 
 		//Esto es para hacer que se pueda hacer click en la imagen y se seleccione el radio button
 		const checks = document.getElementsByClassName("grid-image-container")
@@ -360,15 +375,12 @@
 		}
 		}
 
-		// Agregar un controlador de eventos para el botón "Enviar"
-		botonEnviar.addEventListener('click', (event) => {
-		event.preventDefault(); // Evitar que se envíe el formulario
-		// Agregar lógica para enviar el formulario
-		actualizarBotonEnviar(); // Actualizar el botón de enviar
-		});
-
-
-
+		// // Agregar un controlador de eventos para el botón "Enviar"
+		// botonEnviar.addEventListener('click', (event) => {
+		// event.preventDefault(); // Evitar que se envíe el formulario
+		// // Agregar lógica para enviar el formulario
+		// actualizarBotonEnviar(); // Actualizar el botón de enviar
+		// });
 
 	</script>
 </body>
