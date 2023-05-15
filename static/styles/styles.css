@@ -48,18 +48,14 @@ h4 {
 body {
   background-color: #F7F3F7;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  /* overflow: hidden; */
+  overflow: hidden; 
   height: 100vh;
-  /* margin: 0; */
-  /* padding: 0; */
   box-sizing: border-box;
   color: #333333;
   font-family: 'Montserrat', sans-serif;
   align-items: center;
-  /* margin-top: 73px; */
-  /* overflow-y: scroll; */
   margin-bottom: 90px;
 }
 
@@ -158,24 +154,6 @@ h1, h2, h3, h4 {
   align-items: center;
   margin: 10px;
   overflow: hidden;
-}
-
-/* Media query para pantallas pequeñas */
-@media screen and (max-width: 700px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {
-    float: left;
-    margin-right: 10px;
-    margin-bottom: 0;
-  }
-  .container {
-    margin-left: 0;
-    padding: 0 20px;
-  }
 }
 
 /*adds section*/
