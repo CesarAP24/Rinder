@@ -16,7 +16,7 @@ function assingChatsActions(){
 			$(this).addClass('contact-box-active');
 			//data-id
 			var id = $(this).attr('data-id');
-			loadChat(id);
+			showChat(id);
 		}
 	});
 }
@@ -33,6 +33,22 @@ function loadChats(){
 	.then(function(data){
 		if (data.success) {
 			//cargar chats
+			/*
+			{
+				"success": true,
+				"chats": [
+				{
+				"id": 1,
+				"username": "test",
+				"lastMessageContent": "test",
+				"lastMessageDate": "2020-05-26T20:47:41.000Z"
+				},
+				{},
+				{},
+				...
+				];
+			}
+			*/
 		}else{
 			//error
 			console.log(data);
@@ -43,3 +59,6 @@ function loadChats(){
 	});
 
 }
+
+
+assingChatsActions();
