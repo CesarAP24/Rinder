@@ -13,8 +13,6 @@ for option in ['Salir a Comer', 'Ir al cine', 'Aire libre', 'Viaje', 'Evento art
 data.drop('¿Cuál seria tu idea de cita ideal?', axis=1, inplace=True)
 
 
-
-
 # columna edad, estatura, sexo
 # ----------------------------------------------------------------------
 data['¿Cuál es tu edad?']= data['¿Cuál es tu edad?'].astype(int)
@@ -57,8 +55,3 @@ data['¿A qué te dedicas?']=data['¿A qué te dedicas?'].map({'Estudias':0, 'Tr
 data['Orientación Sexual']=data['Orientación Sexual'].map({'Heterosexual':0, 'Bisexual':1, 'Gay':2, 'otra':3}).astype(int)
 
 
-#imprimir el dato 11
-print(data.iloc[11])
-
-#imprimir las columnas
-print(data.columns)
