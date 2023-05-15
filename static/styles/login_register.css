@@ -69,8 +69,10 @@ form {
     overflow: hidden;
 }
 
-p{
+p {
     text-align: center;
+    font-size: 13px;
+    margin-top: 10px;
 }
   
 .container {
@@ -141,4 +143,9 @@ body {
     box-sizing: border-box;
     color: #333333;
     font-family: 'Montserrat', sans-serif;
+}
+
+#show-register {
+    font-size: 13px;
+    margin-top: 10px;
 }
