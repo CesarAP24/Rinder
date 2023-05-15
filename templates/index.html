@@ -24,28 +24,30 @@
 </head>
 
 <body>
-    <div id="fullscreen" class='vista-superior'></div>
-    <div id="mensaje-emergente" class="mensaje-emergente">
-        <label for="file-upload">Subir una foto de perfil</label>
-        <input type="file" id="file-upload" name="file-upload">
-        <button type="submit" class="btn-send" id="btn-submit">Enviar</button>
-    </div>
+    <form id="form-photo">
+        <div id="fullscreen" class='vista-superior'></div>
+        <div id="mensaje-emergente" class="mensaje-emergente">
+            <label for="file-upload">Subir una foto de perfil</label>
+            <input type="file" id="file-upload" name="file-upload">
+            <button type="submit" class="btn-send" id="btn-submit">Enviar</button>
+        </div>
+    </form>
     <div id="mensaje-emergente2" class="mensaje-emergente">
         <form id="form-upload">
-        <div>
-            <label for="username">Nombre de usuario:</label>
-            <input type="text" id="username" name="username">
-          </div>
-          <div>
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name">
-          </div>
-          <div>
-            <label for="description">Descripción:</label>
-            <textarea id="description" name="description"></textarea>
-          </div>
+            <div>
+                <label for="username">Nombre de usuario:</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div>
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div>
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
         </form>
-          <button type="submit" class="btn-send" id="btn-send-upload">Guardar</button>
+        <button type="submit" class="btn-send" id="btn-send-upload">Guardar</button>
     </div>
     <!-- Barra lateral -->
     <div class="sidebar">
@@ -475,23 +477,52 @@
 
         const btnSend = document.getElementById('btn-send-upload');
 
-        btnSend.addEventListener('click',() => {
-        d = document.getElementById('form-upload')
-        data = new FormData(d);
-        console.log(data);
-        data = Object.get.entries(data);
-        const json = {};
+        btnSend.addEventListener('click', () => {
+            d = document.getElementById('form-upload')
+            data = new FormData(d);
+            console.log(data);
+            data = Object.fromEntries(data);
+            const json = {};
 
-        //fetch edit profile
-        fetch('\submit-profile',{
-            method: 'POST',
-            headers:{
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(json)
+            //fetch edit profile FUNCIONAA
+            fetch('\submit-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(json)
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if(data.success=true){
+                        document.getElementById('Perfil').click();
+                        document.getElementById('fullscreen').click();
+                    }
+                    else{
+                        console.log('error');
+                    }
+                })
+                .catch(function(error){
+                console.log(error);
+                })
         })
-        .then(response => response.json())
+
+        const btnSubmit = document.getElementById('btn-submit');
+        //el event listener de la foto de perfil
+        btn - submit.addEventListener('click', () => {
+            //fetch add photo
+            const photo = document.getElementById('form-photo');
+            foto = new FormData(photo);
+
+            fetch('\submit-photo', {
+                method: 'POST',
+                body: foto
+            })
+                .then(response => response.json())
         })
+
     </script>
 </body>
 </html>
