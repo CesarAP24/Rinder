@@ -12,7 +12,7 @@
 
 <body>
 	<p></p>
-	<form>
+	<form id="form_grande">
 		<div class="preguntas">
 			<button id="anterior" type="button"><</button>
 					<div class="pregunta-template" id="pregunta2">
@@ -306,6 +306,38 @@
 							</div>
 						</div>
 					</div>
+					<div id="pregunta-10" class="pregunta-template" style="display:none">
+						<h3>Te gusta salir?</h3>
+						<!--display grid for 4 options-->
+						<div class="pregunta9">
+							<label for="puntuacion"></label>
+							<div class = "cont_preg9">
+							<!-- <div class = 'grid-image-container'> -->
+							<img src="static/images/nosale.png" alt="0" class="preg9">
+							<!-- </div> -->
+							<!-- <div class = 'grid-image-container'> -->
+							<img src="static/images/sale.png" alt="0" class="preg9">
+							<!-- </div> -->
+							</div>
+							<div class="slider-container">
+							<input type="range" id="puntuacion" name="puntuacion" min="1" max="10" step="1" class="slider" id="mySlider" default="1">
+							<div class="slider-ticks">
+								<span class="slider-tick"></span>
+								<span class="slider-tick">1</span>
+								<span class="slider-tick">2</span>
+								<span class="slider-tick">3</span>
+								<span class="slider-tick">4</span>
+								<span class="slider-tick">5</span>
+								<span class="slider-tick">6</span>
+								<span class="slider-tick">7</span>
+								<span class="slider-tick">8</span>
+								<span class="slider-tick">9</span>
+								<span class="slider-tick">10</span>
+								<span class="slider-tick"></span>
+							  </div>
+							</div>
+						</div>
+					</div>
 				<button id="siguiente" type="button">></button>
 		</div>
 		<p id="cont_pregs">Pregunta <span id="numero_pregunta"></span> de <span id="total_preguntas"></span></p>
@@ -409,12 +441,30 @@
 			}
 		}
 
-		// // Agregar un controlador de eventos para el botón "Enviar"
-		// botonEnviar.addEventListener('click', (event) => {
-		// event.preventDefault(); // Evitar que se envíe el formulario
-		// // Agregar lógica para enviar el formulario
-		// actualizarBotonEnviar(); // Actualizar el botón de enviar
-		// });
+		//FETCH PARA MANDAR EL FORM
+		const enviar_form = document.getElementById('enviarForm');
+		enviar_form.addEventListener('click', function () {
+			const form = document.getElementById('form_grande');
+			const formData = new FormData(form);
+			const plainFormData = Object.fromEntries(formData.entries());
+			const jsonData = JSON.stringify(plainFormData);
+			console.log(jsonData);
+			fetch('/form-inicio', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: jsonData
+				})
+				.then(response => response.json())
+				.then(data => {
+					console.log('Success:', data);
+					window.location.href = "/";
+				})
+				.catch((error) => {
+					console.error('Error:', error);
+				});
+		});
 
 	</script>
 </body>
