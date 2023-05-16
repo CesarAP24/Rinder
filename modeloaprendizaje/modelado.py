@@ -13,8 +13,6 @@ for option in ['Salir a Comer', 'Ir al cine', 'Aire libre', 'Viaje', 'Evento art
 data.drop('¿Cuál seria tu idea de cita ideal?', axis=1, inplace=True)
 
 
-
-
 # columna edad, estatura, sexo
 # ----------------------------------------------------------------------
 data['¿Cuál es tu edad?']= data['¿Cuál es tu edad?'].astype(int)
