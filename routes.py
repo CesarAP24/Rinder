@@ -191,11 +191,6 @@ def logout():
 @app.route('/mensajes/list', methods=['GET'])
 def mensajes():
     id_usuario = request.get['id_usuario']
-    mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-        .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
-        .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
-        .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-        .all()
     #obtener los mensajes con id_destinatario = id_usuario, agruparlos por id_remitente y eescoger la fecha máxima.
     mensajes_destinatario = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
         .filter(Mensaje.id_usuariodestinatario == id_usuario) \
@@ -232,91 +227,62 @@ def perfil():
 
 
 
+@app.route('/submit-photo', methods=['POST'])
+def submit_photo():
+    #checkear cookies
+    if not(session.get('id_usuario')):
+        return error("401");
 
+    #obtener los datos de la imagen
+    image = request.files['file-upload']
+    folderName = os.getcwd()
+    folderName = os.path.join(folderName, 'static', 'profilePhotos', session.get('id_usuario'))
 
+    #crea el directorio para guardar la foto
+    os.makedirs(folderName, exist_ok=True)
 
 
+    image.save(os.path.join(folderName, image.filename))
 
+    #guardar la imagen en la base de datos
+    perfil = Perfil.query.filter_by(username=session.get('id_usuario')).first();
+    perfil.foto = image.filename;
+    db.session.commit();
 
 
+    return jsonify({'success': True}), 200;
 
 
+    #guardar la imagen
+def submit_profile():
 
 
 
 
 
+# @app.route("vpreferencias", method="POST")
+# def vpreferencias():
+#     idusuario = request.form["id_usuario"];
+#     a1= request.form["a1"];
+#     a2= request.form["a2"];
+#     a3= request.form["a3"];
+#     a4= request.form["a4"];
+#     a5= request.form["a5"];
+#     a6= request.form["a6"];
+#     a7= request.form["a7"];
+#     a8= request.form["a8"];
+#     a9= request.form["a9"];
+#     a10= request.form["a10"];
+#     a11= request.form["a11"];
 
 
+#     vector = np.array([a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route("vpreferencias", method="POST")
-def vpreferencias():
-    idusuario = request.form["id_usuario"];
-    a1= request.form["a1"];
-    a2= request.form["a2"];
-    a3= request.form["a3"];
-    a4= request.form["a4"];
-    a5= request.form["a5"];
-    a6= request.form["a6"];
-    a7= request.form["a7"];
-    a8= request.form["a8"];
-    a9= request.form["a9"];
-    a10= request.form["a10"];
-    a11= request.form["a11"];
-
-
-    vector = np.array([a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11])
-
-    #crear un diccionario con el id y el vector del usuario para json
-    diccionario = {
-        "id_usuario": idusuario,
-        "vector": vector
-    }return jsonify(diccionario)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#     #crear un diccionario con el id y el vector del usuario para json
+#     diccionario = {
+#         "id_usuario": idusuario,
+#         "vector": vector
+#     }return jsonify(diccionario)
 
 
 
