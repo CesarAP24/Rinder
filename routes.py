@@ -253,9 +253,10 @@ def submit_photo():
     return jsonify({'success': True}), 200;
 
 
+@app.route('/submit-profile', methods=['POST'])
     #guardar la imagen
 def submit_profile():
-
+    pass
 
 
 

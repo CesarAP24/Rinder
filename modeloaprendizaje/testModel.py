@@ -26,3 +26,4 @@ print()
 print("Final results:")
 print(matches.predict(test_data))
 
+keras.utils.plot_model(matches, to_file='model.png')
