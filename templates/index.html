@@ -43,7 +43,7 @@
                 <input type="text" id="name" name="name">
             </div>
             <div>
-                <label for="description">Descripción:</label>
+                <label for="description" id="labelDescrip">Descripción:</label>
                 <textarea id="description" name="description"></textarea>
             </div>
         </form>
@@ -71,16 +71,16 @@
         <!-- Seccion de matches -->
         <div id="Matches-Content" class="container slide-in-top Matches-container" style="display:none;">
             <div class="left-matches">
-                <button>
+                <button id="like">
                     <!--placeholder-->
                     <img src="static/images/c_rosado.PNG" alt="Acepta">
                 </button>
             </div>
 
-            <div class="center-matches">
-                <div class="profile-photo-matches">
+            <div class="center-matches" id="center-matches">
+                <div class="profile-photo-matches" id="container_image">
                     <!--placeholder-->
-                    <img src="https://via.placeholder.com/525x425" alt="Foto de perfil">
+                    <img id="foto_perfil" src="https://via.placeholder.com/525x425" alt="Foto de perfil">
 
                     <div class="profile-photo-footer">
                         <h4>Cesar Perales</h4>
@@ -96,9 +96,9 @@
             </div>
 
             <div class="right-matches">
-                <button>
+                <button id="equis">
                     <!--placeholder-->
-                    <img src="static/images/equis.PNG" alt="Rechaza">
+                    <img id="equis_image" src="static/images/equis.PNG" alt="Rechaza">
                 </button>
             </div>
         </div>
@@ -475,6 +475,7 @@
             mEmergente2.style.display = 'none';
         })
 
+        //ACTUALIZAR INFORMACION DEL PERFIL
         const btnSend = document.getElementById('btn-send-upload');
 
         btnSend.addEventListener('click', () => {
@@ -496,18 +497,21 @@
                     return response.json();
                 })
                 .then(function (data) {
-                    if(data.success=true){
-                        document.getElementById('Perfil').click();
+                    if (data.success = true) {
                         document.getElementById('fullscreen').click();
+                        document.getElementById('Perfil').click();
                     }
-                    else{
+                    else {
                         console.log('error');
                     }
                 })
-                .catch(function(error){
-                console.log(error);
+                .catch(function (error) {
+                    console.log(error);
                 })
         })
+
+
+        //ACTUALIZAR FOTO DE PERFIL
 
         const btnSubmit = document.getElementById('btn-submit');
         //el event listener de la foto de perfil
@@ -521,8 +525,49 @@
                 body: foto
             })
                 .then(response => response.json())
+                .then(function (foto) {
+                    if (foto.success = true) {
+                        document.getElementById('fullscreen').click();
+                        document.getElementById('Perfil').click();
+                    }
+                    else {
+                        console.log('error');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
         })
 
     </script>
+    <script>
+
+
+
+        //funcion MOVE IMAGE para los matches
+        //RECHAZO (EQUIS)
+
+        function moveMatches() {
+        const centerMatches = document.getElementById("center-matches");
+        centerMatches.classList.add("slide-out-right");
+        }
+
+        function moveMatches2() {
+        const centerMatches = document.getElementById("center-matches");
+        centerMatches.classList.add("slide-out-left");
+        }
+
+        const btnEquis = document.getElementById("equis");
+        btnEquis.addEventListener("click", () => {
+            moveMatches();
+        });
+
+        const btnLike = document.getElementById("like");
+        btnLike.addEventListener("click", () => {
+            moveMatches2();
+        });
+
+    </script>
 </body>
+
 </html>
