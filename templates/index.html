@@ -29,21 +29,21 @@
         <div id="mensaje-emergente" class="mensaje-emergente">
             <label for="file-upload">Subir una foto de perfil</label>
             <input type="file" id="file-upload" name="file-upload">
-            <button type="submit" class="btn-send" id="btn-submit">Enviar</button>
+            <button type="submit" class="btn-send" id="btn-submit-profile-photo">Enviar</button>
         </div>
     </form>
     <div id="mensaje-emergente2" class="mensaje-emergente">
         <form id="form-upload">
             <div>
-                <label for="username">Nombre de usuario:</label>
+                <label for="username">Nuevo nombre de usuario:</label>
                 <input type="text" id="username" name="username">
             </div>
             <div>
-                <label for="name">Nombre:</label>
+                <label for="name">Nuevo nombre:</label>
                 <input type="text" id="name" name="name">
             </div>
             <div>
-                <label for="description" id="labelDescrip">Descripción:</label>
+                <label for="description" id="labelDescrip">Nueva Descripción:</label>
                 <textarea id="description" name="description"></textarea>
             </div>
         </form>
@@ -169,31 +169,13 @@
             <div class="left-Messages-container">
                 <h3>Mensajes</h3>
                 <div class="messages-list-container">
-                    <div class="contact-box" data-id="1">
+                    <div class="contact-box" data-id="1" id="template-contact-box">
                         <div class="contact-box-immage">
                             <img src="https://via.placeholder.com/60" alt="Foto de perfil">
                         </div>
                         <div class="contact-box-message">
                             <p><strong>Cesar Perales</strong></p>
                             <p>Last message here!</p>
-                        </div>
-                    </div>
-                    <div class="contact-box" data-id="2">
-                        <div class="contact-box-immage">
-                            <img src="https://via.placeholder.com/60" alt="Foto de perfil">
-                        </div>
-                        <div class="contact-box-message">
-                            <p><strong>Melisa Rivera</strong></p>
-                            <p>Other Last message here!</p>
-                        </div>
-                    </div>
-                    <div class="contact-box" data-id="2">
-                        <div class="contact-box-immage">
-                            <img src="https://via.placeholder.com/60" alt="Foto de perfil">
-                        </div>
-                        <div class="contact-box-message">
-                            <p><strong>Fernando uwu</strong></p>
-                            <p>No te pido que me perdones solo que me comprendas</p>
                         </div>
                     </div>
                 </div>
@@ -404,6 +386,33 @@
             <div class="row">
                 <div class="col-12">
                     <h3>Planes</h3>
+                    <div class="Planes" id="basicPlan">
+                        <div id="placeholder-plan">
+                    </div>
+                        <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
+                        <p class="Planes-abajo">____________________________________________</p>
+                        <div class="Button-Plan">
+                            <p class="Planess">Plan Básico (Actual)</p>
+                        </div>
+                    </div>
+                    <div class="Planes" id="VIPPlan">
+                        <div id="placeholder-plan">
+                        </div>
+                        <p class="Planes-abajo">Consta en likes limitados, máximo 50 por día</p>
+                        <p class="Planes-abajo">____________________________________________</p>
+                        <div class="Button-Plan">
+                            <p class="Planess">Plan VIP (Actualizar)</p>
+                        </div>
+                    </div>
+                    <div class="Planes" id="SuperVIPPlan">
+                        <div id="placeholder-plan">
+                        </div>
+                        <p class="Planes-abajo">Consta en likes ilimtados</p>
+                        <p class="Planes-abajo">____________________________________________</p>
+                        <div class="Button-Plan">
+                            <p class="Planess">Plan Súper-VIP (Actualizar)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -513,10 +522,12 @@
 
         //ACTUALIZAR FOTO DE PERFIL
 
-        const btnSubmit = document.getElementById('btn-submit');
+        const btnSubmit = document.getElementById('btn-submit-profile-photo');
         //el event listener de la foto de perfil
-        btn - submit.addEventListener('click', () => {
+        btnSubmit.addEventListener('click', () => {
+            event.preventDefault();
             //fetch add photo
+            console.log('hola');
             const photo = document.getElementById('form-photo');
             foto = new FormData(photo);
 
@@ -547,25 +558,56 @@
         //funcion MOVE IMAGE para los matches
         //RECHAZO (EQUIS)
 
-        function moveMatches() {
+        function moveMatchesOutR() {
         const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
         centerMatches.classList.add("slide-out-right");
         }
 
-        function moveMatches2() {
+
+        function moveMatchesInR() {
         const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-in-right");
+        }
+
+
+        function moveMatchesOutLeft() {
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
         centerMatches.classList.add("slide-out-left");
+        }
+
+        function moveMatchesInLeft() {
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-in-left");
         }
 
         const btnEquis = document.getElementById("equis");
         btnEquis.addEventListener("click", () => {
-            moveMatches();
+            moveMatchesOutR();
+            setTimeout(function () {
+                moveMatchesInLeft();
+            }, 1000);
         });
 
         const btnLike = document.getElementById("like");
         btnLike.addEventListener("click", () => {
-            moveMatches2();
+            moveMatchesOutLeft();
+            setTimeout(function () {
+                moveMatchesInR();
+            }, 1000);
         });
+
 
     </script>
 </body>
