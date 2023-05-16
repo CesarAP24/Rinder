@@ -57,8 +57,11 @@ data['¿A qué te dedicas?']=data['¿A qué te dedicas?'].map({'Estudias':0, 'Tr
 data['Orientación Sexual']=data['Orientación Sexual'].map({'Heterosexual':0, 'Bisexual':1, 'Gay':2, 'otra':3}).astype(int)
 
 
-#imprimir el dato 11
-print(data.iloc[11])
 
-#imprimir las columnas
-print(data.columns)
+#limpiar columnas 
+
+data.drop("Marca temporal", axis=1, inplace=True)
+data.drop("Correo (opcional):", axis=1, inplace=True)
+data.drop("¿Te gustaría probar la beta de un nuevo aplicativo de citas? ", axis=1, inplace=True)
+
+print(data)
