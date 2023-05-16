@@ -21,6 +21,16 @@ function assingChatsActions(){
 	});
 }
 
+function renderContactBox(contact) {
+	const clone = document.getElementById('template-contact-box').cloneNode(true);
+	clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = contact.photo;
+	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.username + '</strong></p><p>' + contact.lastMessageContent + '</p>';
+	const img = clone.getElementsByClassName('contact-box-img')[0];
+	//set attribute data-id
+	clone.setAttribute('data-id', contact.id);
+	return clone;
+}  
+  
 
 function loadChats(){
 	fetch('/mensajes/list', {
@@ -32,6 +42,8 @@ function loadChats(){
 	})
 	.then(function(data){
 		if (data.success) {
+		renderContactBox(contact);
+					
 			//cargar chats
 			/*
 			{
