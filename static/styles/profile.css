@@ -82,6 +82,8 @@
 .profile-info-immage {
     display: flex;
     border-radius: 15px;
+    width: 150px;
+    height: 150px;
     overflow: hidden;
     margin: 25px;
     margin-top: -80px;
@@ -90,6 +92,9 @@
     justify-content: flex-end;
 }
 
+.profile-info-immage img {
+    height: 100%;
+}
 
 
 .profile-down {

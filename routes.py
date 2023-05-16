@@ -23,7 +23,7 @@ from datetime import datetime
 import json
 import pandas as pd
 from flask_bcrypt import Bcrypt
-
+import os
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
@@ -221,7 +221,11 @@ def perfil():
         perfil = Perfil.query.filter_by(username=user.username).first();
         if not(perfil): return error("404"); # no se encontró el perfil
 
-        return jsonify(perfil.serialize()), 200;
+
+        # obtener datos
+        data_out = perfil.serialize();
+        data_out["id_user"] = session.get('id_usuario');
+        return jsonify(data_out), 200;
 
     return error("405");
 
@@ -245,8 +249,10 @@ def submit_photo():
     image.save(os.path.join(folderName, image.filename))
 
     #guardar la imagen en la base de datos
-    perfil = Perfil.query.filter_by(username=session.get('id_usuario')).first();
-    perfil.foto = image.filename;
+    user = Usuario.query.filter_by(id_usuario=session.get('id_usuario')).first();
+    perfil = Perfil.query.filter_by(username=user.username).first();
+    print(perfil)
+    perfil.ruta_photo = image.filename;
     db.session.commit();
 
 

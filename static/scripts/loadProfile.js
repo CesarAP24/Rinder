@@ -33,8 +33,10 @@ function loadProfile(event) {
 
 
 		//imagen
-		if (data.photo != null) {
-			photo.setAttribute("src", "static/profilePhotos/" + data.photo);
+		if (data.ruta_photo != null) {
+			console.log(data.id_user)
+			console.log(data.ruta_photo)
+			photo.setAttribute("src", "static/profilePhotos/" + data.id_user + "/" + data.ruta_photo);
 		} else {
 			photo.setAttribute("src", "static/profilePhotos/default/defaultProfile.png");
 		}
