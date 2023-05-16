@@ -26,7 +26,7 @@ function loadProfile(event) {
 		//cambiar contenido de parrafos
 		nombre.innerHTML = data.nombre + " " + data.apellido;
 		username.innerHTML = data.username;
-		description.innerHTML = "<strong>Description: </strong>" + data.description;
+		description.innerHTML = "<strong>Description: </strong>" + data.descripcion;
 		nacimiento.innerHTML = "<strong>Fecha de Nacimiento: </strong>" + nacimientoShow.toLocaleDateString();
 		edad.innerHTML = "<strong>Edad: </strong>" + data.edad;
 		genero.innerHTML = "<strong>Genero: </strong>" + data.genero;

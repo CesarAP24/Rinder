@@ -490,8 +490,8 @@
         btnSend.addEventListener('click', () => {
             d = document.getElementById('form-upload')
             data = new FormData(d);
-            console.log(data);
             data = Object.fromEntries(data);
+
             const json = {};
 
             //fetch edit profile FUNCIONAA
@@ -500,7 +500,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(json)
+                body: JSON.stringify(data)
             })
                 .then(function (response) {
                     return response.json();

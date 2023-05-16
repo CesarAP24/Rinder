@@ -260,9 +260,34 @@ def submit_photo():
 
 
 @app.route('/submit-profile', methods=['POST'])
-    #guardar la imagen
 def submit_profile():
-    pass
+    #checkear cookies
+    if not(session.get('id_usuario')):
+        return error("401");
+
+    #obtener datos del perfil de tipo json
+    #username, name, description
+    try:
+        data = request.get_json();
+        user = Usuario.query.filter_by(id_usuario=session.get('id_usuario')).first();
+        perfil = Perfil.query.filter_by(username=user.username).first();
+
+        perfil.descripcion = data["description"];
+        perfil.nombre = data["name"];
+
+
+        user.username = None;
+        db.session.commit();
+        perfil.username = data["username"];
+        db.session.commit();
+
+        user.username = data["username"];
+        db.session.commit();
+    except Exception as e:
+        print(e)
+        return jsonify({'success': False}), 500;
+    
+    return jsonify({'success': False}), 200;
 
 
 
