@@ -93,6 +93,15 @@ p {
     margin-left: 27px;
 }
 
+#login_fallido{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    margin-left: 27px;
+}
+
 #mensaje-mail{
     color: red;
     font-size: 12px;
