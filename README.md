@@ -10,14 +10,14 @@
 - César Perales
 - Isabella Romero
 
-## Descripcion del proyecto:
+## Descripción del proyecto:
 
 <p align="justify">
 Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías, entre las cuales destaca TensorFlow. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, utilizando redes neuronales para el aprendizaje automático. Rinder ayuda a los usuarios a establecer conexiones e interacciones con otras personas. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles, aprovechando las capacidades de procesamiento y análisis de datos de la librería TensorFlow.
 </p>
 
 
-## Objetivos/Misión/Visión
+## Objetivos/Misión/Visión:
 
 
 Misión:
