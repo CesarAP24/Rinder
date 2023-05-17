@@ -548,6 +548,10 @@ input[type="file"]::-webkit-file-upload-button {
   height: 130px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  /* background-image: url("static/images/fondoPlanes1.JPG"); */
+  background-size: cover; /* Ajusta el tamaño de la imagen al contenedor */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  background-position: center; /* Posiciona la imagen en el centro del contenedor */
 }
 
 .Planes-abajo {
