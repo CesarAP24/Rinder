@@ -270,6 +270,17 @@ class Chat(db.Model):
     id_mensaje = db.Column(db.String(160), ForeignKey('mensaje.id_mensaje'))
     fecha = db.Column(db.Date, default=datetime.utcnow())
 
+    def __init__(self, id_chat, id_usuario, id_usuario2, id_mensaje, fecha):
+        self.id_chat = id_chat
+        self.id_usuario = id_usuario
+        self.id_usuario2 = id_usuario2
+        self.id_mensaje = id_mensaje
+        self.fecha = fecha
+    
+    def __repr__(self):
+        return f"<Chat {self.id_chat}>"
+    
+
 
 
 
