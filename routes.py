@@ -293,29 +293,6 @@ def submit_profile():
 
 
 
-# @app.route("vpreferencias", method="POST")
-# def vpreferencias():
-#     idusuario = request.form["id_usuario"];
-#     a1= request.form["a1"];
-#     a2= request.form["a2"];
-#     a3= request.form["a3"];
-#     a4= request.form["a4"];
-#     a5= request.form["a5"];
-#     a6= request.form["a6"];
-#     a7= request.form["a7"];
-#     a8= request.form["a8"];
-#     a9= request.form["a9"];
-#     a10= request.form["a10"];
-#     a11= request.form["a11"];
-
-
-#     vector = np.array([a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11])
-
-#     #crear un diccionario con el id y el vector del usuario para json
-#     diccionario = {
-#         "id_usuario": idusuario,
-#         "vector": vector
-#     }return jsonify(diccionario)
 
 
 @app.route("/Users/match", methods=["GET"])
@@ -345,11 +322,10 @@ def get_Match():
 @app.route("/Mensajes", methods=["GET", "POST"])
 def Mensajes():
     if request.method == "POST":
-        pass
+        return "{}", 200;
     elif request.method == "GET":
         data = request.args;
         user_id = data["id_usuario"];
-
         pass
 
     return render_template("Mensajes.html")

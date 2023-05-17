@@ -186,7 +186,7 @@
             </div>
 
             <div class="right-Messages-container">
-                <div class="main-Messages-container">
+                <div id="main-Messages-container" class="main-Messages-container">
                     <div class="user-Message-info">
                         <img src="static/profilePhotos/default/defaultProfile.png" alt="Foto de perfil">
                         <h4>César Perales</h4>
@@ -452,6 +452,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#Matches").click();
+            $("#equis_image").click();
         });
     </script>
 
@@ -564,7 +565,7 @@
         //remover todas las clases
         centerMatches.classList = "";
         centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-out-right");
+        centerMatches.classList.add("slide-out-bottom");
         }
 
 
@@ -573,7 +574,7 @@
         //remover todas las clases
         centerMatches.classList = "";
         centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-in-right");
+        centerMatches.classList.add("slide-in-top");
         }
 
 
@@ -582,7 +583,7 @@
         //remover todas las clases
         centerMatches.classList = "";
         centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-out-left");
+        centerMatches.classList.add("slide-out-bottom");
         }
 
         function moveMatchesInLeft() {
@@ -590,7 +591,7 @@
         //remover todas las clases
         centerMatches.classList = "";
         centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-in-left");
+        centerMatches.classList.add("slide-in-top");
         }
 
         const btnEquis = document.getElementById("equis");
@@ -647,7 +648,16 @@
 
         //ENVIAR MENSAJES
         const btnEnviarMensajes = document.getElementById("send-btn");
+        const inputMensajes = document.getElementById("mensaje_value");
         btnEnviarMensajes.addEventListener("click", enviar_mensaje);
+        inputMensajes.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                enviar_mensaje();
+            }
+        })
+
+
 
         function enviar_mensaje(event) {
             const enterMensaje = document.getElementById("mensaje_value");
@@ -655,35 +665,47 @@
                 mensaje: enterMensaje.value
             }
 
-            fetch('\Mensajes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(function (mensaje) {
-                    if (mensaje.success = true) {
-                        //enviar mensaje
-                        const mensaje = document.createElement("div");
-                        mensaje.classList.add("user-Message");
-                        mensaje.innerHTML = enterMensaje.value;
-                        const userMessageBox = document.querySelector(".user-Message-box");
-                        userMessageBox.appendChild(mensaje);
-                    }
-                    else {
-                        console.log('error');
-                    }
+            if(inputMensajes.value){
+
+                fetch('\Mensajes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                    .then(response => response.json())
+                    .then(function (mensaje) {
+                        if (mensaje.success = true) {
+                            //enviar mensaje
+                            const mensaje = document.createElement("div");
+                            mensaje.classList.add("user-Message");
+                            mensaje.classList.add("this-Message")
+                            mensaje.innerHTML = "<p>" + enterMensaje.value + "</p>";
+                            const userMessageBox = document.querySelector(".user-Message-box");
+                            userMessageBox.appendChild(mensaje);
+
+                            const container = document.getElementById("main-Messages-container");
+                            container.scrollTop = container.scrollHeight;
+                            inputMensajes.value = "";
+                        }
+                        else {
+                            console.log('error');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
         };
 
-        enterMensaje.addEventListener("keypress", function (event) {
-            enviar_mensaje(event);
+        const emojiBtn = document.getElementById("emoji-btn");
+
+        //abrir la ventana de emojis del sistema operativo
+        emojiBtn.addEventListener("click", () => {
+            
         });
+
 
     </script>
 </body>
