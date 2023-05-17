@@ -10,14 +10,14 @@
 - César Perales
 - Isabella Romero
 
-## Descripcion del proyecto:
+## Descripción del proyecto:
 
 <p align="justify">
 Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías, entre las cuales destaca TensorFlow. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, utilizando redes neuronales para el aprendizaje automático. Rinder ayuda a los usuarios a establecer conexiones e interacciones con otras personas. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles, aprovechando las capacidades de procesamiento y análisis de datos de la librería TensorFlow.
 </p>
 
 
-## Objetivos/Misión/Visión
+## Objetivos/Misión/Visión:
 
 
 Misión:
@@ -66,3 +66,19 @@ AdvanceBE -> Cesar y Gianpier<br>
 		Los premium tieneen hasta 50 likes por día y a diferencia de los gratuitos estos no poseen anuncios.
 	- Vip
 		Los usuarios VIP pueden observar a los usuarios que le dieron like, tienen likes ilimitados y no poseen anuncios.
+
+## Host:
+localhost
+
+## Puerto:
+5432
+
+# Manejo de errores HTTP
+
+### Errores del servidor:
+
+500 : Generalmente se refiere a un "Error interno del servidor"	<br> 
+400 : Errores del cliente <br>
+404 : Ruta no existente <br>
+405 : Ruta, con un metodo no permitido <br>
+200 : Respuesta exitosa <br>
