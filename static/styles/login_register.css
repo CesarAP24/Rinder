@@ -69,8 +69,10 @@ form {
     overflow: hidden;
 }
 
-p{
+p {
     text-align: center;
+    font-size: 13px;
+    margin-top: 10px;
 }
   
 .container {
@@ -83,6 +85,15 @@ p{
   }
 
 #contraseñas_distintas{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    margin-left: 27px;
+}
+
+#login_fallido{
     color: red;
     font-size: 12px;
     font-weight: bold;
@@ -141,4 +152,9 @@ body {
     box-sizing: border-box;
     color: #333333;
     font-family: 'Montserrat', sans-serif;
+}
+
+#show-register {
+    font-size: 13px;
+    margin-top: 10px;
 }

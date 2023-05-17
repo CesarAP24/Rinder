@@ -21,7 +21,10 @@ from sqlalchemy import ForeignKey
 import uuid
 from datetime import datetime
 import json
+import pandas as pd
 from flask_bcrypt import Bcrypt
+import os
+import random
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
@@ -186,17 +189,39 @@ def logout():
 
 
 
-@app.route('/mensajes/list', methods=['GET'])
+@app.route('/mensajes/list', methods=['POST'])
 def mensajes():
-    # id_usuario = request.get['id_usuario']
-    # mensajes = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-    #     .filter((Mensaje.id_usuarioremitente == id_usuario) | (Mensaje.id_usuariodestinatario == id_usuario)) \
-    #     .group_by(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario) \
-    #     .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-    #     .all()
+    # selecciona los chats donde aparece el usuario actual
+    id_usuario = session.get('id_usuario'); 
+    user_chats = Chat.query.filter_by(id_usuario=id_usuario).all();
+    user_chats2 = Chat.query.filter_by(id_usuario2=id_usuario).all();
+    chats = [];
 
-    # resultado = []
-    pass
+    #guarda los chats en una lista
+    for chat in user_chats:
+        chats.append(chat.serialize());
+
+    for chat in user_chats2:
+        chats.append(chat.serialize());
+
+
+    #serializa
+    for chat in chats:
+        id_other = chat["id_usuario2"] if chat["id_usuario2"] != id_usuario else chat["id_usuario"];
+        otherUser = Usuario.query.filter_by(id_usuario=id_other).first();
+        otherPerfil = Perfil.query.filter_by(username=otherUser.username).first();
+        
+        chat["otherUser"] = otherPerfil.serialize();
+        chat["otherUser"]["other_id"] = otherUser.id_usuario;
+
+        ultimo_mensajito = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
+        chat["lastMessage"] = ultimo_mensajito.serialize();
+
+
+
+
+
+    return jsonify({'success': True, 'data': chats}), 200;
 
 
 @app.route('/perfil', methods=['POST'])
@@ -212,57 +237,99 @@ def perfil():
         perfil = Perfil.query.filter_by(username=user.username).first();
         if not(perfil): return error("404"); # no se encontró el perfil
 
-        return jsonify(perfil.serialize()), 200;
+
+        # obtener datos
+        data_out = perfil.serialize();
+        data_out["id_user"] = session.get('id_usuario');
+        return jsonify(data_out), 200;
 
     return error("405");
 
 
 
+@app.route('/submit-photo', methods=['POST'])
+def submit_photo():
+    #checkear cookies
+    if not(session.get('id_usuario')):
+        return error("401");
+
+    #obtener los datos de la imagen
+    image = request.files['file-upload']
+    folderName = os.getcwd()
+    folderName = os.path.join(folderName, 'static', 'profilePhotos', session.get('id_usuario'))
+
+    #crea el directorio para guardar la foto
+    os.makedirs(folderName, exist_ok=True)
+
+
+    image.save(os.path.join(folderName, image.filename))
+
+    #guardar la imagen en la base de datos
+    user = Usuario.query.filter_by(id_usuario=session.get('id_usuario')).first();
+    perfil = Perfil.query.filter_by(username=user.username).first();
+    print(perfil)
+    perfil.ruta_photo = image.filename;
+    db.session.commit();
+
+
+    return jsonify({'success': True}), 200;
+
+
+@app.route('/submit-profile', methods=['POST'])
+def submit_profile():
+    #checkear cookies
+    if not(session.get('id_usuario')):
+        return error("401");
+
+    #obtener datos del perfil de tipo json
+    #username, name, description
+    try:
+        data = request.get_json();
+        user = Usuario.query.filter_by(id_usuario=session.get('id_usuario')).first();
+        perfil = Perfil.query.filter_by(username=user.username).first();
+
+        perfil.descripcion = data["description"];
+        perfil.nombre = data["name"];
+
+
+        user.username = None;
+        db.session.commit();
+        perfil.username = data["username"];
+        db.session.commit();
+
+        user.username = data["username"];
+        db.session.commit();
+    except Exception as e:
+        print(e)
+        return jsonify({'success': False}), 500;
+    
+    return jsonify({'success': False}), 200;
 
 
 
 
 
 
+@app.route("/Users/match", methods=["GET"])
+def get_Match():
+    try:
+        #obtener un usuario aleatorio:
+        users = Usuario.query.all();
+        user = random.choice(users);
+        while user.id_usuario == session.get('id_usuario'):
+            user = random.choice(users);
+
+        perfil = Perfil.query.filter_by(username=user.username).first();
+
+        out = perfil.serialize(); #funcion de la clase
+        out["user_id"] = user.id_usuario;
 
 
+        return jsonify({"success": True, "data": out}), 200;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False}), 500;
 
 
 
@@ -271,14 +338,85 @@ def perfil():
 @app.route("/Mensajes", methods=["GET", "POST"])
 def Mensajes():
     if request.method == "POST":
-        pass
+        return "{}", 200;
     elif request.method == "GET":
         data = request.args;
-        user_id = data["id_usuario"];
+        id_mensajito = data["id_mensaje"];
+        mensajes = [];
+        for x in range(30):
+            if id_mensajito:
+                mensaje = Mensaje.query.filter_by(id_mensaje=id_mensajito).first();
+                if mensaje:
+                    mensajes.append(mensaje.serialize());
+                    id_mensajito = mensaje.id_mensajePadre;
+                else:
+                    break;
 
-        pass
+
+        for x in range(len(mensajes)):
+            if session.get('id_usuario') == mensajes[x]["id_usuarioremitente"]:
+                mensajes[x]["propietario"] = 1;
+
+            elif not(mensajes[x]["id_usuarioremitente"]):
+                mensajes[x]["propietario"] = 0;
+
+            else:
+                mensajes[x]["propietario"] = -1;
+
+
+        mensajes.reverse();
+        return jsonify({"success": True, "data": mensajes}), 200;
 
     return render_template("Mensajes.html")
+
+
+
+@app.route("/Users/match/check", methods=["POST"])
+def check_match():
+    #obtener payload
+    id_usuario_likeado = request.get_json()["user_id"];
+    id_usuario_likeador = session.get('id_usuario');
+
+    #crear like
+    like = Likea_Perfil(id_usuario_likeador, id_usuario_likeado, datetime.now());
+
+    #verificar si hizo match, si existe un like de ese usuario hacia el 
+    like_expected = Likea_Perfil.query.filter_by(id_usuario=id_usuario_likeado, id_usuario2=id_usuario_likeador).first();
+
+
+    if like_expected:
+        #si existe crear un chat con esa persona
+        id_chat = str(uuid.uuid4());
+        id_mensaje = str(uuid.uuid4());
+        chat = Chat(id_usuario=id_usuario_likeador, id_usuario2=id_usuario_likeado, fecha=datetime.now(), id_chat=id_chat);
+        server_message = Mensaje(fecha=datetime.now(), contenido="Has matcheado!", id_chat=id_chat, id_mensaje=id_mensaje);
+        try:
+            if Chat.query.filter_by(id_usuario=id_usuario_likeador, id_usuario2=id_usuario_likeado).first() or Chat.query.filter_by(id_usuario=id_usuario_likeado, id_usuario2=id_usuario_likeador).first():
+                return jsonify({"success": False, "match": True}), 200;
+            db.session.add(chat);
+            db.session.add(server_message);
+            db.session.commit();
+            
+            chat.id_mensaje = id_mensaje;
+            db.session.commit();
+            
+        except Exception as e:
+            print(e)
+            db.session.rollback(); #si falla, hacer rollback
+            return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 500;
+        
+        return jsonify({"success": True, "match": True}), 200;
+
+    else:
+        db.session.add(like);
+        db.session.commit();
+
+    return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 400;
+
+
+    return jsonify({"success": True, "match": False}), 200;
+
+
 
 
 #manejo de errores

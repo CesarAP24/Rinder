@@ -1,13 +1,13 @@
 .grid-container {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-    grid-template-rows: repeat(2, 1fr); /* 2 filas */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     justify-items: center;
     justify-content: center;
     align-items: center;
-    grid-row-gap: 15px;
-    grid-column-gap: 50px;
+    grid-row-gap: 22px;
+    grid-column-gap: 58px;
 }
 
 .grid-item {

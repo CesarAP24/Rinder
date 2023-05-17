@@ -25,16 +25,18 @@ function loadProfile(event) {
 		const nacimientoShow = new Date(data.nacimiento);
 		//cambiar contenido de parrafos
 		nombre.innerHTML = data.nombre + " " + data.apellido;
-		username.innerHTML = data.username;
-		description.innerHTML = "<strong>Description: </strong>" + data.description;
+		username.innerHTML = '@' + data.username;
+		description.innerHTML = "<strong>Description: </strong>" + data.descripcion;
 		nacimiento.innerHTML = "<strong>Fecha de Nacimiento: </strong>" + nacimientoShow.toLocaleDateString();
 		edad.innerHTML = "<strong>Edad: </strong>" + data.edad;
 		genero.innerHTML = "<strong>Genero: </strong>" + data.genero;
 
 
 		//imagen
-		if (data.photo != null) {
-			photo.setAttribute("src", "static/profilePhotos/" + data.photo);
+		if (data.ruta_photo != null) {
+			console.log(data.id_user)
+			console.log(data.ruta_photo)
+			photo.setAttribute("src", "static/profilePhotos/" + data.id_user + "/" + data.ruta_photo);
 		} else {
 			photo.setAttribute("src", "static/profilePhotos/default/defaultProfile.png");
 		}
