@@ -309,6 +309,7 @@ def get_Match():
         out = perfil.serialize(); #funcion de la clase
         out["user_id"] = user.id_usuario;
 
+
         return jsonify({"success": True, "data": out}), 200;
 
     except Exception as e:
@@ -329,6 +330,37 @@ def Mensajes():
         pass
 
     return render_template("Mensajes.html")
+
+
+
+@app.route("/Users/match/check", methods=["POST"])
+def check_match():
+    #obtener payload
+    id_usuario_likeado = request.get_json()["user_id"];
+    id_usuario_likeador = session.get('id_usuario');
+
+    #crear like
+    like = Likea_Perfil(id_usuario_likeador, id_usuario_likeado, datetime.now());
+
+    #verificar si hizo match, si existe un like de ese usuario hacia el 
+    like_expected = Likea_Perfil.query.filter_by(id_usuario=id_usuario_likeado, id_usuario2=id_usuario_likeador).first();
+    if like_expected:
+        return jsonify({"success": True, "match": True}), 200;
+    
+    #intentar añadirlo a la base
+    try:
+        db.session.add(like);
+        db.session.commit();
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 500;
+
+
+    
+
+    return jsonify({"success": True, "match": False}), 200;
+
+
 
 
 #manejo de errores

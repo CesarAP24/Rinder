@@ -23,14 +23,22 @@ function assingChatsActions(){
 
 function renderContactBox(contact) {
 	const clone = document.getElementById('template-contact-box').cloneNode(true);
-	clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = contact.photo;
+
+	if(contact.ruta_photo == null){
+		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/default/defaultProfile.png';
+	}else{
+		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/' + contact.id + '/' + contact.ruta_photo;
+	}
+
 	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.username + '</strong></p><p>' + contact.lastMessageContent + '</p>';
 	const img = clone.getElementsByClassName('contact-box-img')[0];
 	//set attribute data-id
+	const message_container = document.getElementById('messages-list-container');
 	clone.setAttribute('data-id', contact.id);
+	message_container.appendChild(clone);
 	return clone;
 }  
-  
+ 
 
 function loadChats(){
 	fetch('/mensajes/list', {
@@ -42,35 +50,22 @@ function loadChats(){
 	})
 	.then(function(data){
 		if (data.success) {
-		renderContactBox(contact);
-					
-			//cargar chats
-			/*
-			{
-				"success": true,
-				"chats": [
-				{
-				"id": 1,
-				"username": "test",
-				"lastMessageContent": "test",
-				"lastMessageDate": "2020-05-26T20:47:41.000Z"
-				},
-				{},
-				{},
-				...
-				];
-			}
-			*/
+		for(var i = 0; i < data.chats.length; i++){
+			renderContactBox(contact);
+			document.getElementById('show_chats').style.display = 'block';
+			document.getElementById('show_chats').innerHTML ='Aca se van a mostrar tus chats!';
+		}
+		assingChatsActions();
 		}else{
 			//error
-			console.log(data);
+			alert('error');
 		}
 	})
 	.catch(function(error){
-		console.log(error);
+		alert('error');
 	});
 
 }
 
-
-assingChatsActions();
+const boton_mensajes = document.getElementById('Mensajes');
+boton_mensajes.addEventListener('click', loadChats);
