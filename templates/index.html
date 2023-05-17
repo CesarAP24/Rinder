@@ -82,13 +82,13 @@
                     <!--placeholder-->
                     <img id="foto_perfil" src="https://via.placeholder.com/525x425" alt="Foto de perfil">
 
-                    <div class="profile-photo-footer">
+                    <div id="profile-photo-footer" class="profile-photo-footer">
                         <h4>Cesar Perales</h4>
                         <h4>17</h4>
                     </div>
 
                 </div>
-                <div class="profile-info-matches">
+                <div id="profile-info-matches" class="profile-info-matches">
                     <p><strong>Descripción:</strong></p>
                     <p>Guapo por naturaleza, con propietaria pero sin dueña :Stars:. Tuyo no por siempre puesto que
                         cesitar es libre, cesitar es amor.</p>
@@ -450,6 +450,7 @@
             $("#Matches").click();
         });
     </script>
+
     <script>
         // hacer que fullscreen solo aparezca al precionar el boton btn-add-photo
         const miBoton = document.getElementById('btn-add-photo');
@@ -527,7 +528,6 @@
         btnSubmit.addEventListener('click', () => {
             event.preventDefault();
             //fetch add photo
-            console.log('hola');
             const photo = document.getElementById('form-photo');
             foto = new FormData(photo);
 
@@ -549,12 +549,9 @@
                     console.log(error);
                 })
         })
-
     </script>
+
     <script>
-
-
-
         //funcion MOVE IMAGE para los matches
         //RECHAZO (EQUIS)
 
@@ -595,19 +592,54 @@
         const btnEquis = document.getElementById("equis");
         btnEquis.addEventListener("click", () => {
             moveMatchesOutR();
+            setTimeout(function() {
+                showNewUser()
+            }, 300)
             setTimeout(function () {
                 moveMatchesInLeft();
-            }, 1000);
+            }, 800);
         });
 
         const btnLike = document.getElementById("like");
         btnLike.addEventListener("click", () => {
             moveMatchesOutLeft();
+            setTimeout(function() {
+                showNewUser()
+            }, 300)
             setTimeout(function () {
                 moveMatchesInR();
-            }, 1000);
+            }, 800);
         });
 
+        function showNewUser() {
+            fetch('/Users/match', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                include: 'credentials'
+            })
+                .then(response => response.json())
+                .then(function (data) {
+                    console.log(data);
+                    const image = document.getElementById("foto_perfil");
+                    const name_age = document.getElementById("profile-photo-footer");
+                    const desc = document.getElementById("profile-info-matches");
+
+                    if (!data.data.ruta_photo) {
+                        image.src = "static/profilePhotos/default/defaultProfile.png";
+                    }
+                    else{
+                        image.src = "static/profilePhotos/" + data.data.user_id + "/" + data.data.ruta_photo;
+                    }
+
+                    name_age.innerHTML = "<h4>" + data.data.nombre + "</h4><h4>" + data.data.edad + "</h4>";
+                    desc.innerHTML = "<p><strong>Descripción</strong></p><p>" + data.data.descripcion + "</p>";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
 
     </script>
 </body>
