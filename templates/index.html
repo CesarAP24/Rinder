@@ -86,13 +86,13 @@
                     <!--placeholder-->
                     <img id="foto_perfil" src="https://via.placeholder.com/525x425" alt="Foto de perfil">
 
-                    <div class="profile-photo-footer">
+                    <div id="profile-photo-footer" class="profile-photo-footer">
                         <h4>Cesar Perales</h4>
                         <h4>17</h4>
                     </div>
 
                 </div>
-                <div class="profile-info-matches">
+                <div id="profile-info-matches" class="profile-info-matches">
                     <p><strong>Descripción:</strong></p>
                     <p>Guapo por naturaleza, con propietaria pero sin dueña :Stars:. Tuyo no por siempre puesto que
                         cesitar es libre, cesitar es amor.</p>
@@ -186,7 +186,7 @@
             </div>
 
             <div class="right-Messages-container">
-                <div class="main-Messages-container">
+                <div id="main-Messages-container" class="main-Messages-container">
                     <div class="user-Message-info">
                         <img src="static/profilePhotos/default/defaultProfile.png" alt="Foto de perfil">
                         <h4>César Perales</h4>
@@ -463,8 +463,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#Matches").click();
+            $("#equis_image").click();
         });
     </script>
+
     <script>
         // hacer que fullscreen solo aparezca al precionar el boton btn-add-photo
         const miBoton = document.getElementById('btn-add-photo');
@@ -542,7 +544,6 @@
         btnSubmit.addEventListener('click', () => {
             event.preventDefault();
             //fetch add photo
-            console.log('hola');
             const photo = document.getElementById('form-photo');
             foto = new FormData(photo);
 
@@ -564,34 +565,48 @@
                     console.log(error);
                 })
         })
-
     </script>
+
     <script>
-
-
-
         //funcion MOVE IMAGE para los matches
         //RECHAZO (EQUIS)
 
         function moveMatchesOutR() {
+<<<<<<< HEAD
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
             centerMatches.classList.add("slide-out-right");
+=======
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-out-bottom");
+>>>>>>> origin/AdvanceBE
         }
 
 
         function moveMatchesInR() {
+<<<<<<< HEAD
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
             centerMatches.classList.add("slide-in-right");
+=======
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-in-top");
+>>>>>>> origin/AdvanceBE
         }
 
 
         function moveMatchesOutLeft() {
+<<<<<<< HEAD
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
@@ -605,28 +620,87 @@
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
             centerMatches.classList.add("slide-in-left");
+=======
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-out-bottom");
+        }
+
+        function moveMatchesInLeft() {
+        const centerMatches = document.getElementById("center-matches");
+        //remover todas las clases
+        centerMatches.classList = "";
+        centerMatches.classList.add("center-matches");
+        centerMatches.classList.add("slide-in-top");
+>>>>>>> origin/AdvanceBE
         }
 
         const btnEquis = document.getElementById("equis");
         btnEquis.addEventListener("click", () => {
             moveMatchesOutR();
+            setTimeout(function() {
+                showNewUser()
+            }, 300)
             setTimeout(function () {
                 moveMatchesInLeft();
-            }, 1000);
+            }, 800);
         });
 
         const btnLike = document.getElementById("like");
         btnLike.addEventListener("click", () => {
             moveMatchesOutLeft();
+            setTimeout(function() {
+                showNewUser()
+            }, 300)
             setTimeout(function () {
                 moveMatchesInR();
-            }, 1000);
+            }, 800);
         });
 
+        function showNewUser() {
+            fetch('/Users/match', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                include: 'credentials'
+            })
+                .then(response => response.json())
+                .then(function (data) {
+                    console.log(data);
+                    const image = document.getElementById("foto_perfil");
+                    const name_age = document.getElementById("profile-photo-footer");
+                    const desc = document.getElementById("profile-info-matches");
+
+                    if (!data.data.ruta_photo) {
+                        image.src = "static/profilePhotos/default/defaultProfile.png";
+                    }
+                    else{
+                        image.src = "static/profilePhotos/" + data.data.user_id + "/" + data.data.ruta_photo;
+                    }
+
+                    name_age.innerHTML = "<h4>" + data.data.nombre + "</h4><h4>" + data.data.edad + "</h4>";
+                    desc.innerHTML = "<p><strong>Descripción</strong></p><p>" + data.data.descripcion + "</p>";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
 
         //ENVIAR MENSAJES
         const btnEnviarMensajes = document.getElementById("send-btn");
+        const inputMensajes = document.getElementById("mensaje_value");
         btnEnviarMensajes.addEventListener("click", enviar_mensaje);
+        inputMensajes.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                enviar_mensaje();
+            }
+        })
+
+
 
         function enviar_mensaje(event) {
             const enterMensaje = document.getElementById("mensaje_value");
@@ -634,6 +708,7 @@
                 mensaje: enterMensaje.value
             }
 
+<<<<<<< HEAD
             fetch('\Mensajes', {
                 method: 'POST',
                 headers: {
@@ -657,12 +732,49 @@
                 })
                 .catch(function (error) {
                     console.log(error);
+=======
+            if(inputMensajes.value){
+
+                fetch('\Mensajes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+>>>>>>> origin/AdvanceBE
                 })
+                    .then(response => response.json())
+                    .then(function (mensaje) {
+                        if (mensaje.success = true) {
+                            //enviar mensaje
+                            const mensaje = document.createElement("div");
+                            mensaje.classList.add("user-Message");
+                            mensaje.classList.add("this-Message")
+                            mensaje.innerHTML = "<p>" + enterMensaje.value + "</p>";
+                            const userMessageBox = document.querySelector(".user-Message-box");
+                            userMessageBox.appendChild(mensaje);
+
+                            const container = document.getElementById("main-Messages-container");
+                            container.scrollTop = container.scrollHeight;
+                            inputMensajes.value = "";
+                        }
+                        else {
+                            console.log('error');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
         };
 
-        enterMensaje.addEventListener("keypress", function (event) {
-            enviar_mensaje(event);
+        const emojiBtn = document.getElementById("emoji-btn");
+
+        //abrir la ventana de emojis del sistema operativo
+        emojiBtn.addEventListener("click", () => {
+            
         });
+
 
     </script>
 </body>

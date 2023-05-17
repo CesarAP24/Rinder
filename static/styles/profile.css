@@ -258,6 +258,7 @@ button.profile-post-like-btn {
   .mensaje-emergente {
     position: absolute;
     top: 50%;
+    display: none;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;

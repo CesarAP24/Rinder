@@ -24,6 +24,7 @@ import json
 import pandas as pd
 from flask_bcrypt import Bcrypt
 import os
+import random
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
@@ -292,31 +293,27 @@ def submit_profile():
 
 
 
-# @app.route("vpreferencias", method="POST")
-# def vpreferencias():
-#     idusuario = request.form["id_usuario"];
-#     a1= request.form["a1"];
-#     a2= request.form["a2"];
-#     a3= request.form["a3"];
-#     a4= request.form["a4"];
-#     a5= request.form["a5"];
-#     a6= request.form["a6"];
-#     a7= request.form["a7"];
-#     a8= request.form["a8"];
-#     a9= request.form["a9"];
-#     a10= request.form["a10"];
-#     a11= request.form["a11"];
 
 
-#     vector = np.array([a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11])
+@app.route("/Users/match", methods=["GET"])
+def get_Match():
+    try:
+        #obtener un usuario aleatorio:
+        users = Usuario.query.all();
+        user = random.choice(users);
+        while user.id_usuario == session.get('id_usuario'):
+            user = random.choice(users);
 
-#     #crear un diccionario con el id y el vector del usuario para json
-#     diccionario = {
-#         "id_usuario": idusuario,
-#         "vector": vector
-#     }return jsonify(diccionario)
+        perfil = Perfil.query.filter_by(username=user.username).first();
 
+        out = perfil.serialize(); #funcion de la clase
+        out["user_id"] = user.id_usuario;
 
+        return jsonify({"success": True, "data": out}), 200;
+
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False}), 500;
 
 
 
@@ -325,11 +322,10 @@ def submit_profile():
 @app.route("/Mensajes", methods=["GET", "POST"])
 def Mensajes():
     if request.method == "POST":
-        pass
+        return "{}", 200;
     elif request.method == "GET":
         data = request.args;
         user_id = data["id_usuario"];
-
         pass
 
     return render_template("Mensajes.html")
