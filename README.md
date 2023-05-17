@@ -51,7 +51,10 @@ AdvanceBE -> Cesar y Gianpier<br>
 - Matchear
 	La app debe ser capaz de matchear de forma "inteligente" a los usuarios, mostrandoles primero los que más podrían encajar con ellos
 
-- Posts
+- Interaccion
+	Los usuarios que matchean, pueden interatucar entre si.
+	
+- Posts(API Version)
 	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
 
 - Monetización
@@ -73,7 +76,7 @@ localhost
 ## Puerto:
 5432
 
-# Manejo de errores HTTP
+# Manejo de errores HTTP: 
 
 ### Errores del servidor:
 
@@ -82,3 +85,11 @@ localhost
 404 : Ruta no existente <br>
 405 : Ruta, con un metodo no permitido <br>
 200 : Respuesta exitosa <br>
+
+
+## Como ejecutar el sistema :
+
+1.- git clone https://github.com/CesarAP24/Rinder.git <br>
+2.- pip install -r requerimientos.txt <br>
+3.- correr el codigo app.py en la terminal <br> 
+
