@@ -1,7 +1,7 @@
 # Rinder
 
 <p align="center">
-  <img src="https://github.com/CesarAP24/Rinder/raw/AdvanceBE/static/images/logofucsia.PNG" alt="Logo" width="65%">
+  <img src="https://github.com/CesarAP24/Rinder/raw/AdvanceBE/static/images/logofucsia.PNG" alt="Logo" width="30%">
 </p>
 
 
