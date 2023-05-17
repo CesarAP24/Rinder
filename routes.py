@@ -24,6 +24,7 @@ import json
 import pandas as pd
 from flask_bcrypt import Bcrypt
 import os
+import random
 
 # CONFIGURATIONS -----------------------------------------------------------------------------------------
 
@@ -317,6 +318,25 @@ def submit_profile():
 #     }return jsonify(diccionario)
 
 
+@app.route("/Users/match", methods=["GET"])
+def get_Match():
+    try:
+        #obtener un usuario aleatorio:
+        users = Usuario.query.all();
+        user = random.choice(users);
+        while user.id_usuario == session.get('id_usuario'):
+            user = random.choice(users);
+
+        perfil = Perfil.query.filter_by(username=user.username).first();
+
+        out = perfil.serialize(); #funcion de la clase
+        out["user_id"] = user.id_usuario;
+
+        return jsonify({"success": True, "data": out}), 200;
+
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False}), 500;
 
 
 
