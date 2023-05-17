@@ -1,8 +1,7 @@
 # Rinder
 
-<div align="center">
-	<img src="./static/images/logo/logo.png" alt="Logo">
-</div>
+![Logo](./static/images/logo/logofucsia.PNG)
+
 
 
 ## Integrantes:
@@ -12,17 +11,24 @@
 
 ## Descripcion del proyecto:
 
+<p align="justify">
 Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías, entre las cuales destaca TensorFlow. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, utilizando redes neuronales para el aprendizaje automático. Rinder ayuda a los usuarios a establecer conexiones e interacciones con otras personas. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles, aprovechando las capacidades de procesamiento y análisis de datos de la librería TensorFlow.
+</p>
+
 
 ## Objetivos/Misión/Visión
 
-Misión:
 
+Misión:
+<p align="justify">
 La misión de Rinder como servicio es brindar una plataforma de citas en tiempo real que sea innovadora y eficiente, creando funcionalidades fuera de lo tradicional. El entorno de Rinder es seguro para los usuarios, permitiéndoles descubrir y conocer nuevas personas con las cuales son compatibles mediante el uso de redes neuronales. El objetivo de Rinder es facilitar a los usuarios a encontrar la felicidad a través de sus relaciones con otros usuarios en Rinder.
+</p>
 
 Visión
 
+<p align="justify">
 La visión de Rinder es convertirse en líderes dentro de la industria de citas en tiempo real, reconocidos por la seguridad que brindan a sus usuarios, la confiabilidad de su información personal y su capacidad para proporcionar conexiones auténticas. Rinder aspira a ser la plataforma de preferencia para aquellas personas que buscan establecer relaciones significativas.
+</p>
 
 
 # Librerias:
