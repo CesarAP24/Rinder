@@ -8,11 +8,12 @@
 }
 
 .profile-photo-matches {
-    width: 525px;
+    width: 425px;
     height: 425px;
+    border: 5px solid white;
     min-height: 425px;
     display: flex;
-    box-shadow: 0 0 102px rgba(0,0,0,.1);
+    box-shadow: 0 0 102px rgba(0,0,0,.2);
     border-radius: 20px;
     overflow: hidden;
     margin-bottom: 30px;

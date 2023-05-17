@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Rinder</title>
 
-    <!-- icons -->
-    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 
     <!--styles-->
     <link rel="stylesheet" type="text/css" href="static/styles/styles.css">
@@ -222,7 +220,7 @@
                     </div>
                 </div>
                 <div class="send-Messages-container">
-                    <button id="emoji-btn" class="emoji-btn">🧐</button>
+                    <button id="emoji-btn" class="emoji-btn" style="display:none;">🧐</button>
                     <!-- queremos usar un API para la segunda entrega y hacer que se abra el menu desplegable de emojis para cada sistema operativo -->
                     <input type="text" placeholder="Escribe un mensaje" id="mensaje_value">
                     <button id="send-btn" class="send-btn">Enviar</button>
@@ -464,282 +462,20 @@
     <script src="static/scripts/chatsLoad.js"></script>
     <script src="static/scripts/likes.js"></script>
     <script src="static/scripts/loadProfile.js"></script>
+    <script type="text/javascript" src="static/scripts/profile.js"></script>
+    <script type="text/javascript" src="static/scripts/matches.js"></script>
+    <script type="text/javascript" src="static/scripts/mensajes.js"></script>
 
+    
     <!-- inicio de la web -->
     <script type="text/javascript">
+
         $(document).ready(function () {
-            $("#Matches").click();
             $("#equis_image").click();
+            setTimeout(function(){
+                $("#Matches").click();
+            }, 400)
         });
-    </script>
-
-    <script>
-        // hacer que fullscreen solo aparezca al precionar el boton btn-add-photo
-        const miBoton = document.getElementById('btn-add-photo');
-        const fullDiv = document.getElementById('fullscreen');
-        const mEmergente = document.getElementById('mensaje-emergente');
-
-        mEmergente.style.display = 'none';
-        fullDiv.style.display = 'none';
-        miBoton.addEventListener('click', () => {
-            fullDiv.style.display = 'block';
-            mEmergente.style.display = 'block';
-        });
-
-        fullDiv.addEventListener('click', () => {
-            fullDiv.style.display = 'none';
-            mEmergente.style.display = 'none';
-        })
-
-        //lo mismo para editar perfil
-        const btnEditar = document.getElementById('btn-edit-profile');
-        const mEmergente2 = document.getElementById('mensaje-emergente2');
-
-        mEmergente2.style.display = 'none';
-
-        btnEditar.addEventListener('click', () => {
-            fullDiv.style.display = 'block';
-            mEmergente2.style.display = 'block';
-        });
-
-        fullDiv.addEventListener('click', () => {
-            fullDiv.style.display = 'none';
-            mEmergente2.style.display = 'none';
-        })
-
-        //ACTUALIZAR INFORMACION DEL PERFIL
-        const btnSend = document.getElementById('btn-send-upload');
-
-        btnSend.addEventListener('click', () => {
-            d = document.getElementById('form-upload')
-            data = new FormData(d);
-            data = Object.fromEntries(data);
-
-            const json = {};
-
-            //fetch edit profile FUNCIONAA
-            fetch('\submit-profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    if (data.success = true) {
-                        document.getElementById('fullscreen').click();
-                        document.getElementById('Perfil').click();
-                    }
-                    else {
-                        console.log('error');
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-        })
-
-
-        //ACTUALIZAR FOTO DE PERFIL
-
-        const btnSubmit = document.getElementById('btn-submit-profile-photo');
-        //el event listener de la foto de perfil
-        btnSubmit.addEventListener('click', () => {
-            event.preventDefault();
-            //fetch add photo
-            const photo = document.getElementById('form-photo');
-            foto = new FormData(photo);
-
-            fetch('\submit-photo', {
-                method: 'POST',
-                body: foto
-            })
-                .then(response => response.json())
-                .then(function (foto) {
-                    if (foto.success = true) {
-                        document.getElementById('fullscreen').click();
-                        document.getElementById('Perfil').click();
-                    }
-                    else {
-                        console.log('error');
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-        })
-    </script>
-
-    <script>
-        //funcion MOVE IMAGE para los matches
-        //RECHAZO (EQUIS)
-
-        function moveMatchesInTop() {
-            const centerMatches = document.getElementById("center-matches");
-            //remover todas las clases
-            centerMatches.classList = "";
-            centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-in-top");
-        }
-
-
-        function moveMatchesOutBottom() {
-            const centerMatches = document.getElementById("center-matches");
-            //remover todas las clases
-            centerMatches.classList = "";
-            centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-out-bottom");
-        }
-
-
-        function moveMatchesInBottom() {
-
-            const centerMatches = document.getElementById("center-matches");
-            //remover todas las clases
-            centerMatches.classList = "";
-            centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-in-bottom");
-        }
-
-        function moveMatchesOutTop() {
-            const centerMatches = document.getElementById("center-matches");
-            //remover todas las clases
-            centerMatches.classList = "";
-            centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-out-top");
-        }
-
-        const btnEquis = document.getElementById("equis");
-        btnEquis.addEventListener("click", () => {
-            moveMatchesOutBottom();
-            setTimeout(function () {
-                showNewUser()
-            }, 300)
-            setTimeout(function () {
-                moveMatchesInTop();
-            }, 800);
-        });
-
-        const btnLike = document.getElementById("like");
-        btnLike.addEventListener("click", () => {
-            moveMatchesOutTop();
-            setTimeout(function () {
-                showNewUser()
-            }, 300)
-            setTimeout(function () {
-                moveMatchesInBottom();
-            }, 800);
-
-            fetch('/Users/match/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'user_id': document.getElementById("foto_perfil").getAttribute("data-id")
-                })
-
-            })
-                .then(response => response.json())
-                .then(function (data) {
-                    if (data.success = true) {
-                        if (data.success && data.match) {
-                            //DIV ES UN MATCH reemplazar
-                            document.getElementById('its_a_match').style.display = 'block';
-                            document.getElementById('its_a_match').innerHTML = 'ITS A MATCH!';
-                        }
-                    }
-                    else {
-                        console.log('error');
-                    }
-                })
-        });
-
-        function showNewUser() {
-            fetch('/Users/match', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-
-            })
-                .then(response => response.json())
-                .then(function (data) {
-                    console.log(data);
-                    const image = document.getElementById("foto_perfil");
-                    const name_age = document.getElementById("profile-photo-footer");
-                    const desc = document.getElementById("profile-info-matches");
-                    image.setAttribute("data-id", data.data.user_id);
-
-                    if (!data.data.ruta_photo) {
-                        image.src = "static/profilePhotos/default/defaultProfile.png";
-                    }
-                    else {
-                        image.src = "static/profilePhotos/" + data.data.user_id + "/" + data.data.ruta_photo;
-                    }
-
-                    name_age.innerHTML = "<h4>" + data.data.nombre + "</h4><h4>" + data.data.edad + "</h4>";
-                    desc.innerHTML = "<p><strong>Descripción</strong></p><p>" + data.data.descripcion + "</p>";
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-        }
-
-        //ENVIAR MENSAJES
-        const btnEnviarMensajes = document.getElementById("send-btn");
-        const inputMensajes = document.getElementById("mensaje_value");
-        btnEnviarMensajes.addEventListener("click", enviar_mensaje);
-        inputMensajes.addEventListener("keydown", function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                enviar_mensaje();
-            }
-        })
-
-
-
-        function enviar_mensaje(event) {
-            const enterMensaje = document.getElementById("mensaje_value");
-            const data = {
-                mensaje: enterMensaje.value
-            }
-
-            if (inputMensajes.value) {
-                fetch('\Mensajes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => response.json())
-                    .then(function (mensaje) {
-                        if (mensaje.success = true) {
-                            //enviar mensaje
-                            const mensaje = document.createElement("div");
-                            mensaje.classList.add("user-Message");
-                            mensaje.classList.add("this-Message")
-                            mensaje.innerHTML = "<p>" + enterMensaje.value + "</p>";
-                            const userMessageBox = document.querySelector(".user-Message-box");
-                            userMessageBox.appendChild(mensaje);
-
-                            const container = document.getElementById("main-Messages-container");
-                            container.scrollTop = container.scrollHeight;
-                            inputMensajes.value = "";
-                        }
-                        else {
-                            console.log('error');
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            }
-        };
 
     </script>
 </body>
