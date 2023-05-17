@@ -172,7 +172,8 @@
         <div id="Mensajes-Content" class="container slide-in-top Messages-container" style="display:none;">
             <div class="left-Messages-container">
                 <h3>Mensajes</h3>
-                <div class="messages-list-container">
+                <div id="show_chats" style="display:none">Aca se van a mostrar tus chats!</div>
+                <div class="messages-list-container" id="messages-list-container">
                     <div class="contact-box" data-id="1" id="template-contact-box">
                         <div class="contact-box-immage">
                             <img src="https://via.placeholder.com/60" alt="Foto de perfil">
@@ -180,6 +181,7 @@
                         <div class="contact-box-message">
                             <p><strong>Cesar Perales</strong></p>
                             <p>Last message here!</p>
+                            <div id="its_a_match">IT'S A MATCH!</div>
                         </div>
                     </div>
                 </div>
@@ -427,16 +429,20 @@
             <div class="row">
                 <div class="col-12">
                     <h3>Soporte</h3>
-                    <p id="support">Si necesitas ayuda o tienes alguna pregunta, estamos aquí para asistirte. Nuestro equipo de
+                    <p id="support">Si necesitas ayuda o tienes alguna pregunta, estamos aquí para asistirte. Nuestro
+                        equipo de
                         soporte está disponible para brindarte la asistencia necesaria.</p>
                     <p id="support">Puedes contactarnos de las siguientes formas:</p>
                     <ul>
-                        <li id="support">Envíanos un correo electrónico a <a href="rinder.social@gmail.com">rinder.social@gmail.com</a></li>
+                        <li id="support">Envíanos un correo electrónico a <a
+                                href="rinder.social@gmail.com">rinder.social@gmail.com</a></li>
                         <li id="support">Llámanos al número +51 946 669 408</li>
-                        <li id="support">Visita nuestra página de Preguntas Frecuentes para obtener respuestas a las dudas comunes
+                        <li id="support">Visita nuestra página de Preguntas Frecuentes para obtener respuestas a las
+                            dudas comunes
                         </li>
                     </ul>
-                    <p id="support">Estamos comprometidos en proporcionar un excelente servicio de soporte para garantizar la mejor
+                    <p id="support">Estamos comprometidos en proporcionar un excelente servicio de soporte para
+                        garantizar la mejor
                         experiencia para nuestros usuarios.</p>
                 </div>
             </div>
@@ -571,92 +577,85 @@
         //funcion MOVE IMAGE para los matches
         //RECHAZO (EQUIS)
 
-        function moveMatchesOutR() {
-<<<<<<< HEAD
+        function moveMatchesInTop() {
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-out-right");
-=======
-        const centerMatches = document.getElementById("center-matches");
-        //remover todas las clases
-        centerMatches.classList = "";
-        centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-out-bottom");
->>>>>>> origin/AdvanceBE
+            centerMatches.classList.add("slide-in-top");
         }
 
 
-        function moveMatchesInR() {
-<<<<<<< HEAD
+        function moveMatchesOutBottom() {
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-in-right");
-=======
-        const centerMatches = document.getElementById("center-matches");
-        //remover todas las clases
-        centerMatches.classList = "";
-        centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-in-top");
->>>>>>> origin/AdvanceBE
+            centerMatches.classList.add("slide-out-bottom");
         }
 
 
-        function moveMatchesOutLeft() {
-<<<<<<< HEAD
+        function moveMatchesInBottom() {
+
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-out-left");
+            centerMatches.classList.add("slide-in-bottom");
         }
 
-        function moveMatchesInLeft() {
+        function moveMatchesOutTop() {
             const centerMatches = document.getElementById("center-matches");
             //remover todas las clases
             centerMatches.classList = "";
             centerMatches.classList.add("center-matches");
-            centerMatches.classList.add("slide-in-left");
-=======
-        const centerMatches = document.getElementById("center-matches");
-        //remover todas las clases
-        centerMatches.classList = "";
-        centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-out-bottom");
-        }
-
-        function moveMatchesInLeft() {
-        const centerMatches = document.getElementById("center-matches");
-        //remover todas las clases
-        centerMatches.classList = "";
-        centerMatches.classList.add("center-matches");
-        centerMatches.classList.add("slide-in-top");
->>>>>>> origin/AdvanceBE
+            centerMatches.classList.add("slide-out-top");
         }
 
         const btnEquis = document.getElementById("equis");
         btnEquis.addEventListener("click", () => {
-            moveMatchesOutR();
-            setTimeout(function() {
+            moveMatchesOutBottom();
+            setTimeout(function () {
                 showNewUser()
             }, 300)
             setTimeout(function () {
-                moveMatchesInLeft();
+                moveMatchesInTop();
             }, 800);
         });
 
         const btnLike = document.getElementById("like");
         btnLike.addEventListener("click", () => {
-            moveMatchesOutLeft();
-            setTimeout(function() {
+            moveMatchesOutTop();
+            setTimeout(function () {
                 showNewUser()
             }, 300)
             setTimeout(function () {
-                moveMatchesInR();
+                moveMatchesInBottom();
             }, 800);
+
+            fetch('/Users/match/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'user_id': document.getElementById("foto_perfil").getAttribute("data-id")
+                })
+
+            })
+                .then(response => response.json())
+                .then(function (data) {
+                    if (data.success = true) {
+                        if (data.success && data.match) {
+                            //DIV ES UN MATCH reemplazar
+                            document.getElementById('its_a_match').style.display = 'block';
+                            document.getElementById('its_a_match').innerHTML = 'ITS A MATCH!';
+                        }
+                    }
+                    else {
+                        console.log('error');
+                    }
+                })
         });
 
         function showNewUser() {
@@ -665,7 +664,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                include: 'credentials'
+
             })
                 .then(response => response.json())
                 .then(function (data) {
@@ -673,11 +672,12 @@
                     const image = document.getElementById("foto_perfil");
                     const name_age = document.getElementById("profile-photo-footer");
                     const desc = document.getElementById("profile-info-matches");
+                    image.setAttribute("data-id", data.data.user_id);
 
                     if (!data.data.ruta_photo) {
                         image.src = "static/profilePhotos/default/defaultProfile.png";
                     }
-                    else{
+                    else {
                         image.src = "static/profilePhotos/" + data.data.user_id + "/" + data.data.ruta_photo;
                     }
 
@@ -708,40 +708,13 @@
                 mensaje: enterMensaje.value
             }
 
-<<<<<<< HEAD
-            fetch('\Mensajes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(function (mensaje) {
-                    if (mensaje.success = true) {
-                        //enviar mensaje
-                        const mensaje = document.createElement("div");
-                        mensaje.classList.add(".user-Message-box");
-                        mensaje.innerHTML = enterMensaje.value;
-                        const userMessageBox = document.querySelector(".user-Message-box");
-                        userMessageBox.appendChild(mensaje);
-                    }
-                    else {
-                        console.log('error');
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-=======
-            if(inputMensajes.value){
-
+            if (inputMensajes.value) {
                 fetch('\Mensajes', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
->>>>>>> origin/AdvanceBE
                 })
                     .then(response => response.json())
                     .then(function (mensaje) {
@@ -767,14 +740,6 @@
                     })
             }
         };
-
-        const emojiBtn = document.getElementById("emoji-btn");
-
-        //abrir la ventana de emojis del sistema operativo
-        emojiBtn.addEventListener("click", () => {
-            
-        });
-
 
     </script>
 </body>

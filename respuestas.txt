@@ -261,8 +261,7 @@ Ir al cine, 22, 180, Masculino, Pop, Comedia, [Basket, Natación], No, 8, 6, Est
 Aire libre, 28, 165, Femenino, Rock, Thriller / suspense, [Fútbol, Atletismo], Si, 7, 5, Estudias, Heterosexual
 Viaje, 23, 172, Masculino, Electrónica, Aventuras, [Basket, Atletismo], No, 6, 8, Estudias, Bisexual
 Evento artístico, 29, 175, Femenino, Reguetón, Comedia, [Basket, Tenis], Si, 9, 8, Trabajas, Heterosexual
-Salir a Comer, 24, 178, Masculino, Clásica, Drama, [Basket, Natación
-], No, 7, 6, Estudias, Heterosexual
+Salir a Comer, 24, 178, Masculino, Clásica, Drama, [Basket, Natación], No, 7, 6, Estudias, Heterosexual
 Ir al cine, 30, 165, Femenino, Pop, Comedia, [Natación, Atletismo], No, 6, 5, Estudias, Bisexual
 Aire libre, 21, 172, Masculino, Rock, Thriller / suspense, [Basket, Atletismo], Si, 9, 9, Trabajas, Heterosexual
 Viaje, 25, 175, Femenino, Electrónica, Aventuras, [Fútbol, Natación], No, 7, 7, Trabajas, Heterosexual
