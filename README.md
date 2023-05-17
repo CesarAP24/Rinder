@@ -1,7 +1,8 @@
 # Rinder
 
-![Logo](./static/images/logo/logofucsia.PNG)
-
+<p align="center">
+  <img src="https://github.com/CesarAP24/Rinder/raw/AdvanceBE/static/images/logofucsia.PNG" alt="Logo">
+</p>
 
 
 ## Integrantes:
