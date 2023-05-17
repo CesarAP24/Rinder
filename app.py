@@ -262,6 +262,14 @@ class Compra(db.Model):
     def __repr__(self):
         return f"<Compra {self.id_compra}>"
 
+class Chat(db.Model):
+    __table__name= 'chat'
+    id_chat = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_usuario = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
+    id_usuario2 = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
+    id_mensaje = db.Column(db.String(160), ForeignKey('mensaje.id_mensaje'))
+    fecha = db.Column(db.Date, default=datetime.utcnow())
+
 
 
 
