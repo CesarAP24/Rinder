@@ -48,16 +48,16 @@ AdvanceBE -> Cesar y Gianpier<br>
 
 
 ## Funcionalidades de la app:
-- Matchear
+- Matchear <br>
 	La app debe ser capaz de matchear de forma "inteligente" a los usuarios, mostrandoles primero los que más podrían encajar con ellos
 
-- Interaccion
+- Interaccion <br>
 	Los usuarios que matchean, pueden interatucar entre si.
-	
-- Posts(API Version)
+
+- Posts(API Version)<br>
 	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
 
-- Monetización
+- Monetización<br>
 	El usuario puede pagar por una cuenta premium que le permita acceder a más funcionalidades, como por ejemplo, ver a los usuarios que le dieron like. Ver los usuarios que observan su perfil o tener likes ilimitados
 
 	Es justo en este punto en el que recalcamos que los likes para una cuenta gratuita son limitados. Es decir, una cuenta gratuita podrá dar hasta 15 likes diarios.
