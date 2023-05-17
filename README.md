@@ -93,7 +93,7 @@ urllib3==1.26.15
 Werkzeug==2.3.3 <br>
 
 
-## commits:
+## Commits:
 
 El avance del proyecto se encuetra en las siguientes ramas:
 
