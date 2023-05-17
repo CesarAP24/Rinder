@@ -191,30 +191,31 @@ def logout():
 
 @app.route('/mensajes/list', methods=['POST'])
 def mensajes():
+    # selecciona los chats donde aparece el usuario actual
     id_usuario = session.get('id_usuario'); 
     user_chats = Chat.query.filter_by(id_usuario=id_usuario).all();
     user_chats2 = Chat.query.filter_by(id_usuario2=id_usuario).all();
     chats = [];
+
+    #guarda los chats en una lista
     for chat in user_chats:
         chats.append(chat.serialize());
 
     for chat in user_chats2:
         chats.append(chat.serialize());
 
+
+    #serializa
     for chat in chats:
         id_other = chat["id_usuario2"] if chat["id_usuario2"] != id_usuario else chat["id_usuario"];
         otherUser = Usuario.query.filter_by(id_usuario=id_other).first();
         otherPerfil = Perfil.query.filter_by(username=otherUser.username).first();
+        
         chat["otherUser"] = otherPerfil.serialize();
-
         chat["otherUser"]["other_id"] = otherUser.id_usuario;
-        print(chat["id_mensaje"]);
-        chat["last_message"] = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
-        print(chat["last_message"]);
-        #ultimo mensaje
-        mensaje = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
-        if mensaje:
-            chat["lastMessage"] = mensaje.serialize();
+
+        ultimo_mensajito = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
+        chat["lastMessage"] = ultimo_mensajito.serialize();
 
 
 
@@ -340,8 +341,31 @@ def Mensajes():
         return "{}", 200;
     elif request.method == "GET":
         data = request.args;
-        user_id = data["id_usuario"];
-        pass
+        id_mensajito = data["id_mensaje"];
+        mensajes = [];
+        for x in range(30):
+            if id_mensajito:
+                mensaje = Mensaje.query.filter_by(id_mensaje=id_mensajito).first();
+                if mensaje:
+                    mensajes.append(mensaje.serialize());
+                    id_mensajito = mensaje.id_mensajePadre;
+                else:
+                    break;
+
+
+        for x in range(len(mensajes)):
+            if session.get('id_usuario') == mensajes[x]["id_usuarioremitente"]:
+                mensajes[x]["propietario"] = 1;
+
+            elif not(mensajes[x]["id_usuarioremitente"]):
+                mensajes[x]["propietario"] = 0;
+
+            else:
+                mensajes[x]["propietario"] = -1;
+
+
+        mensajes.reverse();
+        return jsonify({"success": True, "data": mensajes}), 200;
 
     return render_template("Mensajes.html")
 

@@ -3,7 +3,38 @@
 //active para cada chat
 function showChat(id){
 	//cargar chat
-	console.log(id + " loading")
+	const messages_container = document.getElementById('user-Message-box');
+	id_last_message = id;
+	//get a la uta /Mensaje mandando el id
+	fetch('/Mensajes?id_mensaje=' + id, {
+		method: 'GET',
+		credentials: 'include'
+	})
+	.then(function(response){
+		return response.json();
+	})
+	.then(function(data){
+		console.log(data);
+		if (data.success) {
+			for (var i = 0; i < data.data.length; i++) {
+				var mensaje = document.createElement('div');
+				mensaje.classList.add("user-Message")
+				if (data.data[i].propietario == 0){
+					mensaje.classList.add('server-Message');
+				} else if (data.data[i].propietario == 1){
+					mensaje.classList.add('this-Message');
+				} else {
+					mensaje.classList.add('other-Message');
+				}
+				mensaje.innerHTML = "<p>" + data.data[i].contenido + "</p>";
+				messages_container.appendChild(mensaje);
+			}
+		}
+	})
+	.catch(function(error){
+		alert(error);
+	});
+
 }
 
 
@@ -33,11 +64,11 @@ function renderContactBox(contact) {
 		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/' + contact.otherUser.other_id + '/' + contact.otherUser.ruta_photo;
 	}
 
-	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.otherUser.username + '</strong></p><p>' + contact.lastMessageContent + '</p>';
+	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.otherUser.username + '</strong></p><p>' + contact.lastMessage.contenido + '</p>';
 	const img = clone.getElementsByClassName('contact-box-img')[0];
 	//set attribute data-id
 	const message_container = document.getElementById('messages-list-container');
-	clone.setAttribute('data-id', contact.id);
+	clone.setAttribute('data-id', contact.lastMessage.id_mensaje);
 	message_container.appendChild(clone);
 	return clone;
 }  
