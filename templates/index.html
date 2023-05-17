@@ -43,6 +43,10 @@
                 <input type="text" id="name" name="name">
             </div>
             <div>
+                <label for="lastname">Nuevo apellido:</label>
+                <input type="text" id="lastname" name="lastname">
+            </div>
+            <div>
                 <label for="description" id="labelDescrip">Nueva Descripción:</label>
                 <textarea id="description" name="description"></textarea>
             </div>
@@ -218,7 +222,7 @@
                 <div class="send-Messages-container">
                     <button id="emoji-btn" class="emoji-btn">🧐</button>
                     <!-- queremos usar un API para la segunda entrega y hacer que se abra el menu desplegable de emojis para cada sistema operativo -->
-                    <input type="text" placeholder="Escribe un mensaje">
+                    <input type="text" placeholder="Escribe un mensaje" id="mensaje_value">
                     <button id="send-btn" class="send-btn">Enviar</button>
                 </div>
             </div>
@@ -608,6 +612,46 @@
             }, 1000);
         });
 
+
+        //ENVIAR MENSAJES
+        const btnEnviarMensajes = document.getElementById("send-btn");
+        btnEnviarMensajes.addEventListener("click", enviar_mensaje);
+
+        function enviar_mensaje(event) {
+            const enterMensaje = document.getElementById("mensaje_value");
+            const data = {
+                mensaje: enterMensaje.value
+            }
+
+            fetch('\Mensajes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(function (mensaje) {
+                    if (mensaje.success = true) {
+                        //enviar mensaje
+                        const mensaje = document.createElement("div");
+                        mensaje.classList.add("user-Message");
+                        mensaje.innerHTML = enterMensaje.value;
+                        const userMessageBox = document.querySelector(".user-Message-box");
+                        userMessageBox.appendChild(mensaje);
+                    }
+                    else {
+                        console.log('error');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        };
+
+        enterMensaje.addEventListener("keypress", function (event) {
+            enviar_mensaje(event);
+        });
 
     </script>
 </body>

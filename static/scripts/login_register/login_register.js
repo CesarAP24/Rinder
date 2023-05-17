@@ -150,11 +150,8 @@ loginBtn.addEventListener('click', function(event) {
         if (data.success == true) {
             window.location.reload();
         } else {
-            /*IMPLEMENTAR MENSAJES DE ERROR SEGÚN EL ERROR QUE MANDO (
-            (
-            {"success": True, "message": "MENSAJE DE ERROR"}
-            )*/
-            alert(data.message); //pone la alerta que sale en toda la pantalla :v
+            document.getElementById('login_fallido').style.display = 'block';
+            document.getElementById('login_fallido').innerHTML = "Ingrese un usuario válido";
         }
     }).catch(function(error) {
         alert(error);

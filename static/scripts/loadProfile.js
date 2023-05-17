@@ -25,7 +25,7 @@ function loadProfile(event) {
 		const nacimientoShow = new Date(data.nacimiento);
 		//cambiar contenido de parrafos
 		nombre.innerHTML = data.nombre + " " + data.apellido;
-		username.innerHTML = data.username;
+		username.innerHTML = '@' + data.username;
 		description.innerHTML = "<strong>Description: </strong>" + data.descripcion;
 		nacimiento.innerHTML = "<strong>Fecha de Nacimiento: </strong>" + nacimientoShow.toLocaleDateString();
 		edad.innerHTML = "<strong>Edad: </strong>" + data.edad;
