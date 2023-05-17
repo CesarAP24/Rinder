@@ -189,24 +189,38 @@ def logout():
 
 
 
-@app.route('/mensajes/list', methods=['GET'])
+@app.route('/mensajes/list', methods=['POST'])
 def mensajes():
-    id_usuario = request.get['id_usuario']
-    #obtener los mensajes con id_destinatario = id_usuario, agruparlos por id_remitente y eescoger la fecha máxima.
-    mensajes_destinatario = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-        .filter(Mensaje.id_usuariodestinatario == id_usuario) \
-        .group_by(Mensaje.id_usuarioremitente) \
-        .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-        .all()
-    #obtener los mensajes con id_remitente = id_usuario, agruparlos por id_destinatario y eescoger la fecha máxima.
-    mensajes_remitente = db.session.query(Mensaje.id_usuarioremitente, Mensaje.id_usuariodestinatario, Mensaje.id_mensaje) \
-        .filter(Mensaje.id_usuarioremitente == id_usuario) \
-        .group_by(Mensaje.id_usuariodestinatario) \
-        .order_by(db.func.MAX(Mensaje.fecha).desc()) \
-        .all()
-    #de ambos grupos de mensajes, cuando un mensaje haga conflicto con otro (es decir que )
-    resultado = []
-    return jsonify({'success': True, 'data': resultado}), 200;
+    id_usuario = session.get('id_usuario'); 
+    user_chats = Chat.query.filter_by(id_usuario=id_usuario).all();
+    user_chats2 = Chat.query.filter_by(id_usuario2=id_usuario).all();
+    chats = [];
+    for chat in user_chats:
+        chats.append(chat.serialize());
+
+    for chat in user_chats2:
+        chats.append(chat.serialize());
+
+    for chat in chats:
+        id_other = chat["id_usuario2"] if chat["id_usuario2"] != id_usuario else chat["id_usuario"];
+        otherUser = Usuario.query.filter_by(id_usuario=id_other).first();
+        otherPerfil = Perfil.query.filter_by(username=otherUser.username).first();
+        chat["otherUser"] = otherPerfil.serialize();
+
+        chat["otherUser"]["other_id"] = otherUser.id_usuario;
+        print(chat["id_mensaje"]);
+        chat["last_message"] = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
+        print(chat["last_message"]);
+        #ultimo mensaje
+        mensaje = Mensaje.query.filter_by(id_mensaje = chat["id_mensaje"]).first();
+        if mensaje:
+            chat["lastMessage"] = mensaje.serialize();
+
+
+
+
+
+    return jsonify({'success': True, 'data': chats}), 200;
 
 
 @app.route('/perfil', methods=['POST'])
@@ -344,19 +358,37 @@ def check_match():
 
     #verificar si hizo match, si existe un like de ese usuario hacia el 
     like_expected = Likea_Perfil.query.filter_by(id_usuario=id_usuario_likeado, id_usuario2=id_usuario_likeador).first();
+
+
     if like_expected:
+        #si existe crear un chat con esa persona
+        id_chat = str(uuid.uuid4());
+        id_mensaje = str(uuid.uuid4());
+        chat = Chat(id_usuario=id_usuario_likeador, id_usuario2=id_usuario_likeado, fecha=datetime.now(), id_chat=id_chat);
+        server_message = Mensaje(fecha=datetime.now(), contenido="Has matcheado!", id_chat=id_chat, id_mensaje=id_mensaje);
+        try:
+            if Chat.query.filter_by(id_usuario=id_usuario_likeador, id_usuario2=id_usuario_likeado).first() or Chat.query.filter_by(id_usuario=id_usuario_likeado, id_usuario2=id_usuario_likeador).first():
+                return jsonify({"success": False, "match": True}), 200;
+            db.session.add(chat);
+            db.session.add(server_message);
+            db.session.commit();
+            
+            chat.id_mensaje = id_mensaje;
+            db.session.commit();
+            
+        except Exception as e:
+            print(e)
+            db.session.rollback(); #si falla, hacer rollback
+            return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 500;
+        
         return jsonify({"success": True, "match": True}), 200;
-    
-    #intentar añadirlo a la base
-    try:
+
+    else:
         db.session.add(like);
         db.session.commit();
-    except Exception as e:
-        print(e)
-        return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 500;
 
+    return jsonify({"success": False, "message": "Ya se le dió like a este perfil"}), 400;
 
-    
 
     return jsonify({"success": True, "match": False}), 200;
 

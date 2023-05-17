@@ -24,13 +24,16 @@ function assingChatsActions(){
 function renderContactBox(contact) {
 	const clone = document.getElementById('template-contact-box').cloneNode(true);
 
-	if(contact.ruta_photo == null){
+	//eliminar atributo id
+	clone.removeAttribute('id');
+
+	if(contact.otherUser.ruta_photo == null){
 		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/default/defaultProfile.png';
 	}else{
-		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/' + contact.id + '/' + contact.ruta_photo;
+		clone.getElementsByClassName('contact-box-immage')[0].getElementsByTagName('img')[0].src = 'static/profilePhotos/' + contact.otherUser.other_id + '/' + contact.otherUser.ruta_photo;
 	}
 
-	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.username + '</strong></p><p>' + contact.lastMessageContent + '</p>';
+	clone.getElementsByClassName('contact-box-message')[0].innerHTML = '<p><strong>' + contact.otherUser.username + '</strong></p><p>' + contact.lastMessageContent + '</p>';
 	const img = clone.getElementsByClassName('contact-box-img')[0];
 	//set attribute data-id
 	const message_container = document.getElementById('messages-list-container');
@@ -41,6 +44,18 @@ function renderContactBox(contact) {
  
 
 function loadChats(){
+	const contacts_Container = document.querySelector('#messages-list-container');
+
+	//hoijos del container
+	var contactor = contacts_Container.children;
+	var max = contactor.length;
+	for (var i = 1; i < max; i++) {
+		contactor[i].remove();
+		i--;
+		max--;
+	}
+
+
 	fetch('/mensajes/list', {
 		method: 'POST',
 		credentials: 'include'
@@ -49,20 +64,19 @@ function loadChats(){
 		return response.json();
 	})
 	.then(function(data){
+		console.log(data);
 		if (data.success) {
-		for(var i = 0; i < data.chats.length; i++){
-			renderContactBox(contact);
-			document.getElementById('show_chats').style.display = 'block';
-			document.getElementById('show_chats').innerHTML ='Aca se van a mostrar tus chats!';
-		}
-		assingChatsActions();
+			for(var i = 0; i < data.data.length; i++){
+				renderContactBox(data.data[i]);
+			}
+			assingChatsActions();
 		}else{
 			//error
 			alert('error');
 		}
 	})
 	.catch(function(error){
-		alert('error');
+		alert(error);
 	});
 
 }

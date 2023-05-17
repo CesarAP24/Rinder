@@ -57,6 +57,15 @@ class Usuario(db.Model):
 
     def __repr__(self):
         return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
+    def serialize(self):
+        return {
+            "id_usuario": self.id_usuario,
+            "username": self.username,
+            "correo": self.correo,
+            "contraseña": self.contraseña,
+            "active": self.active,
+            "likes_restantes": self.likes_restantes
+        }
 
 
      
@@ -154,33 +163,30 @@ class Comentario(db.Model):
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
     id_mensaje = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    id_usuariodestinatario = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
     id_usuarioremitente = db.Column(db.String(50), ForeignKey ('usuario.id_usuario'))
-    
-    id_mensaje2 = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
+    id_chat = db.Column(db.String(36), ForeignKey ('chat.id_chat'))
+    id_mensajePadre = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
 
-    
 
     fecha = db.Column(db.Date, default=datetime.utcnow())
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
     formato = db.Column(db.String(50))
 
-    def __init__(self, id_mensaje, id_mensaje2, id_usuariodestinatario, id_usuariodestinatario2, id_usuarioremitente, id_usuarioremitente2, fecha, contenido, state, formato ):
-        self.id_mensaje = id_mensaje
-        self.id_mensaje2 = id_mensaje2
-        self.id_usuariodestinatario = id_usuariodestinatario
-        self.id_usuariodestinatario2 = id_usuariodestinatario2
-        self.id_usuarioremitente = id_usuarioremitente
-        self.id_usuarioremitente2 = id_usuarioremitente2
-        self.fecha = fecha
-        self.contenido = contenido
-        self.state = state
-        self.formato = formato
-
-
     def __repr__(self):
         return f"<Mensaje {self.id_mensaje}>"
+
+    def serialize(self):
+        return {
+            "id_mensaje": self.id_mensaje,
+            "id_usuarioremitente": self.id_usuarioremitente,
+            "id_chat": self.id_chat,
+            "id_mensajePadre": self.id_mensajePadre,
+            "fecha": self.fecha,
+            "contenido": self.contenido,
+            "state": self.state,
+            "formato": self.formato
+        }
     
 
 
@@ -264,21 +270,23 @@ class Compra(db.Model):
 
 class Chat(db.Model):
     __table__name= 'chat'
-    id_chat = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id_chat = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     id_usuario = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
     id_usuario2 = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
     id_mensaje = db.Column(db.String(160), ForeignKey('mensaje.id_mensaje'))
-    fecha = db.Column(db.Date, default=datetime.utcnow())
+    fecha = db.Column(db.Date, default=datetime.utcnow(), nullable = False)
 
-    def __init__(self, id_chat, id_usuario, id_usuario2, id_mensaje, fecha):
-        self.id_chat = id_chat
-        self.id_usuario = id_usuario
-        self.id_usuario2 = id_usuario2
-        self.id_mensaje = id_mensaje
-        self.fecha = fecha
-    
     def __repr__(self):
         return f"<Chat {self.id_chat}>"
+
+    def serialize(self):
+        return {
+            "id_chat": self.id_chat,
+            "id_usuario": self.id_usuario,
+            "id_usuario2": self.id_usuario2,
+            "id_mensaje": self.id_mensaje,
+            "fecha": self.fecha
+        }
     
 
 
