@@ -334,10 +334,27 @@ def get_Match():
 
 
 
-
 @app.route("/Mensajes", methods=["GET", "POST"])
 def Mensajes():
     if request.method == "POST":
+        #obtener los datos
+        id_usuario = session.get('id_usuario'); 
+        data = request.get_json();
+        chat = Chat.query.filter_by(id_chat = data["chat_id"]).first();
+        
+        if not(chat): return jsonify({"success": False}), 404;
+
+        #crear el mensaje
+        new_id_message = str(uuid.uuid4());
+        new_message = Mensaje(id_mensaje=new_id_message, id_usuarioremitente=id_usuario, id_chat=data["chat_id"], id_mensajePadre=chat.id_mensaje, contenido=data["mensaje"]);
+        
+        db.session.add(new_message);
+        db.session.commit();
+
+        #actualizar el chat
+        chat.id_mensaje = new_id_message;
+        db.session.commit();
+        
         return "{}", 200;
     elif request.method == "GET":
         data = request.args;

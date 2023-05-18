@@ -168,7 +168,7 @@ class Mensaje(db.Model):
     id_mensajePadre = db.Column(db.String(36), ForeignKey ('mensaje.id_mensaje'))
 
 
-    fecha = db.Column(db.Date, default=datetime.utcnow())
+    fecha = db.Column(db.Date, default=lambda: datetime.utcnow())
     contenido = db.Column(db.String(500))
     state = db.Column(db.String(50))
     formato = db.Column(db.String(50))
