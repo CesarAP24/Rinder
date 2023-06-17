@@ -1,4 +1,4 @@
-# Rinder
+# Rinder 2.0.0
 
 <p align="center">
   <img src="https://github.com/CesarAP24/Rinder/raw/AdvanceBE/static/images/logofucsia.PNG" alt="Logo" width="30%">
@@ -32,64 +32,61 @@ La visión de Rinder es convertirse en líderes dentro de la industria de citas 
 </p>
 
 
-# Librerias:
+## Composición:
 
-[Enlace al archivo de requerimientos](https://github.com/CesarAP24/Rinder/blob/AdvanceBE/requerimientos.txt)
+Rinder se compone de 2 partes principales: Restful API y Frontend.
 
+### Restful API:
 
-## Commits:
-
-El avance del proyecto se encuetra en las siguientes ramas:
-
-main<br>
-AdvanceFE -> Cesar e Isabella<br>
-AdvanceBE -> Cesar y Gianpier<br>
-  
+La API de Rinder está desarrollada en Flask, un framework de desarrollo web en Python. La API está compuesta por 3 partes principales: el servidor, el modelo y la base de datos.
 
 
-## Funcionalidades de la app:
-- Matchear <br>
-	La app debe ser capaz de matchear de forma "inteligente" a los usuarios, mostrandoles primero los que más podrían encajar con ellos
+#### Modelos:
 
-- Interaccion <br>
-	Los usuarios que matchean, pueden interatucar entre si.
+- `Perfil(id_usuario : PK FK, nombre, apellido, nacimiento, edad, genero, descripcion, ruta_photo)`
+	
+	Guarda todo lo referente a la información del usuario, como su nombre, edad, género, preferencias, etc.
 
-- Posts(API Version)<br>
-	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
+- `Usuario(id_usuario : PK, correo, contraseña)`. 
 
-- Monetización<br>
-	El usuario puede pagar por una cuenta premium que le permita acceder a más funcionalidades, como por ejemplo, ver a los usuarios que le dieron like. Ver los usuarios que observan su perfil o tener likes ilimitados
+	Guarda la información de la cuenta del usuario, como su correo electrónico, contraseña y el perfil asociado. El objetivo de tener dos modelos separados es para mantener la información de la cuenta del usuario separada de su información personal.
 
-	Es justo en este punto en el que recalcamos que los likes para una cuenta gratuita son limitados. Es decir, una cuenta gratuita podrá dar hasta 15 likes diarios.
+- `Publicación(id_publicacion : PK, id_usuario : FK, ruta_html)`. 
 
-- Tipos de planes
-	- Gratuito
-		Las cuentas gratuitas pueden dar de 10 a 20 likes diarios y tienen acceso a los posts de los usuarios que le dieron like. Sin embargo tienen anuncios presentes en la app.
-	- Premium
-		Los premium tieneen hasta 50 likes por día y a diferencia de los gratuitos estos no poseen anuncios.
-	- Vip
-		Los usuarios VIP pueden observar a los usuarios que le dieron like, tienen likes ilimitados y no poseen anuncios.
+	Guarda la información de las publicaciones de los usuarios, como su contenido, fecha de publicación, etc. Una publicación puede ser un comentario o una foto.
 
-## Host:
-localhost
+	- `Comentario(id_publicacion : PK FK, id_publicacion2 : FK)`. 
 
-## Puerto:
-5432
+		Un comentario es una publicación que tiene ascociada otra publicación, por lo que un usuario puede comentar una publicación y tambien responder a comentarios.
 
-# Manejo de errores HTTP: 
+	- `Post(id_publicacion: PK FK)`. 
 
-### Errores del servidor:
-
-500 : Generalmente se refiere a un "Error interno del servidor"	<br> 
-400 : Errores del cliente <br>
-404 : Ruta no existente <br>
-405 : Ruta, con un metodo no permitido <br>
-200 : Respuesta exitosa <br>
+		Una Post es una publicación que no tiene asociada otra publicación, por lo que un usuario puede publicar una foto o un comentario.
 
 
-## Como ejecutar el sistema :
+- `Mensaje(id_mensaje : PK, id_usuario : FK, id_chat : FK, id_mensajePadre : FK)`. 
 
-1.- git clone https://github.com/CesarAP24/Rinder.git <br>
-2.- pip install -r requerimientos.txt <br>
-3.- correr el codigo app.py en la terminal <br> 
+	Guarda la información de los mensajes enviados entre dos usuarios, como su contenido, fecha de envío, etc. Los mensajes tienen guardado el mensaje que va arriba de ellos, por lo que un mensaje puede ser una respuesta a otro mensaje y por tanto se puede cargar una conversación completa de forma recursiva.
 
+
+- `Chat(id_chat : PK, fecha, nombre)`. 
+
+	Guarda la información de los chats entre dos usuarios, como la fecha de creación, los usuarios que participan en el chat, etc.
+
+- `EstaEnChat(id_usuario : PK FK, id_chat : PK FK)`. 
+
+	Relaciona los usuarios con los chats en los que participan. Por tanto un chat puede tener varios usuarios. Sin embargo, si un chat no tiene nombre tomará el nombre de los usuarios dentro del chat sin incluir al usuario que está haciendo la consulta.
+
+
+- `LikeaPerfil(id_usuario : PK FK, id_usuarioLikeado : PK FK)`. 
+
+	Guarda la información de los likes que un usuario le da a un perfil, como la fecha en la que se dio el like.
+
+- `LikeaPublicacion(id_usuario : PK FK, id_Publicacion : PK FK)`. 
+
+	Guarda la información de los likes que un usuario le da a una publicación, como la fecha en la que se dio el like.
+
+
+
+
+### Frontend:
