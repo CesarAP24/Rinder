@@ -1,5 +1,6 @@
 #ignorar carpeta virtual
 virtual/
 static/
+venv/
 
 __pycache__/
