@@ -1,43 +1,15 @@
-# IMPORTS ------------------------------------------------------------------------------------------------
-# ========================================================================================================
-
-# flask --------------------------------------------------------------------------------------------------
-
-from flask import(
-    Flask,
-    render_template,
-    jsonify,
-    request,
-    redirect,
-)
-
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from sqlalchemy import ForeignKey
-
-# libraries ----------------------------------------------------------------------------------------------
-
+from config.local import config
 import uuid
-import json
 from datetime import datetime
-from flask_bcrypt import Bcrypt
 
+db = SQLAlchemy()
 
-# CONFIGURATIONS -----------------------------------------------------------------------------------------
-# ========================================================================================================
-
-app = Flask(__name__)
-app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis';
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:3028222024@localhost:5432/postgres'
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-#hash key
-bcrypt = Bcrypt(app);
-
-
-# MODEL --------------------------------------------------------------------------------------------------
-# ========================================================================================================
+def setup_db(app, database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = config['DATABASE_URI'] if database_path is None else database_path
+    db.app = app
+    db.init_app(app)
+    db.create_all()
 
 
 # Usuario ------------------------------------------------------------------------------------------------
@@ -66,7 +38,6 @@ class Usuario(db.Model):
             "active": self.active,
             "likes_restantes": self.likes_restantes
         }
-
 
      
 # Perfil ------------------------------------------------------------------------------------------------
@@ -105,59 +76,6 @@ class Perfil(db.Model):
         }
 
 
-
-# Publicacion -------------------------------------------------------------------------------------------
-
-class Publicacion(db.Model):
-    __tablename__ = 'publicacion'
-    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-    id_usuario = db.Column(db.String(50), ForeignKey('usuario.id_usuario'))
-    contenido = db.Column(db.String(500))
-    modified_at = db.Column(db.Date, default=datetime.utcnow(), onupdate=datetime.utcnow())
-    created_at = db.Column(db.Date, default=datetime.utcnow())
-    cantidad_likes = db.Column(db.Integer(), nullable =False, default=0)
-
-    def __init__(self, id_usuario, contenido, modified_at, created_at, cantidad_likes):
-        self.id_usuario = id_usuario
-        self.contenido = contenido
-        self.modified_at = modified_at
-        self.created_at = created_at
-        self.cantidad_likes = cantidad_likes
-
-    def __repr__(self):
-        return f"<Publicacion {self.id_publicacion}>"
-    
-
-
-# Pub/Post
-
-class Post(db.Model):
-    __tablename__ = 'post'
-    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-    def __init__(self, id_publicacion):
-        self.id_publicacion = id_publicacion
-    def __repr__(self):
-        return f"<Post {self.id_publicacion}>"
-    
-    
-
-# Pub/Comentario 
-
-class Comentario(db.Model):
-    __tablename__ = 'comentario'
-    id_publicacion = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4())) 
-    id_publicacion2 = db.Column(db.String(36), ForeignKey ('publicacion.id_publicacion'))
-
-   
-    def __init__(self, id_publicacion, id_publicacion2):
-        self.id_publicacion = id_publicacion
-        self.id_publicacion2 = id_publicacion2
-       
-    def __repr__(self):
-        return f"<Comentario {self.id_publicacion}>"
-    
-
-
 # Mensaje ------------------------------------------------------------------------------------------------
 
 class Mensaje(db.Model):
@@ -186,8 +104,30 @@ class Mensaje(db.Model):
             "contenido": self.contenido,
             "state": self.state,
             "formato": self.formato
+        }    
+
+# CHAT ---------------------------------------------------------------------------------------------------
+
+class Chat(db.Model):
+    __table__name= 'chat'
+    id_chat = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id_usuario = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
+    id_usuario2 = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
+    id_mensaje = db.Column(db.String(160), ForeignKey('mensaje.id_mensaje'))
+    fecha = db.Column(db.Date, default=datetime.utcnow(), nullable = False)
+
+    def __repr__(self):
+        return f"<Chat {self.id_chat}>"
+
+    def serialize(self):
+        return {
+            "id_chat": self.id_chat,
+            "id_usuario": self.id_usuario,
+            "id_usuario2": self.id_usuario2,
+            "id_mensaje": self.id_mensaje,
+            "fecha": self.fecha
         }
-    
+
 
 
 # Suscripcion --------------------------------------------------------------------------------------------
@@ -209,13 +149,12 @@ class Suscripcion(db.Model):
 
     def __repr__(self):
         return f"<Suscripcion {self.nombre}>"
-    
 
 
-# Likea --------------------------------------------------------------------------------------------------
+# Like --------------------------------------------------------------------------------------------------
 
-class Likea_Perfil(db.Model):
-    __tablename__ = 'likea_perfil'
+class Like(db.Model):
+    __tablename__ = 'like'
     id_usuario = db.Column(db.String(50),primary_key=True)
     id_usuario2 = db.Column(db.String(50), primary_key=True)
     fecha = db.Column(db.Date, default=datetime.utcnow())
@@ -228,23 +167,6 @@ class Likea_Perfil(db.Model):
     def __repr__(self):
         return f"<LikeaPerfil {self.id_usuario}>"
     
-
-class Likea_Publicacion(db.Model):
-    __tablename__ = 'likea_publicacion'
-    id_usuario = db.Column(db.String(50), primary_key=True)
-    id_usuario2 =  db.Column(db.String(50), primary_key=True)
-    id_publicacion = db.Column(db.String(36), primary_key=True)
-    fecha = db.Column(db.Date, default=datetime.utcnow())
-
-    def __init__(self, id_usuario, id_usuario2, id_publicacion, fecha):
-        self.id_usuario = id_usuario
-        self.id_usuario2 = id_usuario2
-        self.id_publicacion = id_publicacion
-        self.fecha = fecha
-    
-
-    def __repr__(self):
-        return f"<LikeaPublicacion {self.id_usuario}>"
 
 
 
@@ -267,39 +189,3 @@ class Compra(db.Model):
 
     def __repr__(self):
         return f"<Compra {self.id_compra}>"
-
-class Chat(db.Model):
-    __table__name= 'chat'
-    id_chat = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    id_usuario = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
-    id_usuario2 = db.Column(db.String(160), ForeignKey('usuario.id_usuario'))
-    id_mensaje = db.Column(db.String(160), ForeignKey('mensaje.id_mensaje'))
-    fecha = db.Column(db.Date, default=datetime.utcnow(), nullable = False)
-
-    def __repr__(self):
-        return f"<Chat {self.id_chat}>"
-
-    def serialize(self):
-        return {
-            "id_chat": self.id_chat,
-            "id_usuario": self.id_usuario,
-            "id_usuario2": self.id_usuario2,
-            "id_mensaje": self.id_mensaje,
-            "fecha": self.fecha
-        }
-    
-
-
-
-
-
-
-
-# routes -------------------------------------------------------------------------------------------------
-
-from routes import *
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
