@@ -23,11 +23,9 @@ from datetime import datetime
 from flask_bcrypt import Bcrypt
 
 
-
 # App
 
 def create_app(test_config=None):
-    app = Flask(__name__)
     app = Flask(__name__)
     app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis';
     bcrypt = Bcrypt(app);
