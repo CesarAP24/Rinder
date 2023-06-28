@@ -4,3 +4,8 @@ static/
 venv/
 
 __pycache__/
+
+#ignorar vue
+node_modules/
+dist/
+package-lock.json
