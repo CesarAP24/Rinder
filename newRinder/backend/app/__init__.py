@@ -45,8 +45,15 @@ def create_app(test_config=None):
 
     # Routes API
 
+    # GET ------------------------------------------------------------------
+    @app.route('/users', methods=['GET'])
+    def get_users():
+        pass
 
-    # Handle Error
+
+    @app.route('/profile', methods=['GET'])
+    def get_profile():
+        pass
 
     return app
 
