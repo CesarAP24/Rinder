@@ -26,7 +26,6 @@ class Usuario(db.Model):
     def __repr__(self):
         return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
 
-
      
 # Perfil ------------------------------------------------------------------------------------------------
 
@@ -79,7 +78,6 @@ class Chat(db.Model):
 
     def __repr__(self):
         return f"<Chat {self.id_chat}>"
-
 
 
 class Pertenece(db.Model):
