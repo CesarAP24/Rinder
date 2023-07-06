@@ -13,6 +13,7 @@ from flask import(
     abort,
 )
 
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey
@@ -28,10 +29,11 @@ from flask_bcrypt import Bcrypt
 def create_app(test_config=None):
     app = Flask(__name__)
     app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis';
+    app.config['JWT_SECRET_KEY'] = 'pneumonoultramicroscopicsilicovolcanoconiosis'
     bcrypt = Bcrypt(app);
+    jwt = JWTManager(app);
     
     with app.app_context():
-        app.config['UPLOAD_FOLDER'] = 'static/employees'
         setup_db(app, test_config['database_path'] if test_config else None)
         CORS(app, origins='*')
 
@@ -116,7 +118,7 @@ def create_app(test_config=None):
     def patch_profile(id):
         abort(501)
 
-    @app.route('chats/<id>', methods=['PATCH'])
+    @app.route('/chats/<id>', methods=['PATCH'])
     def patch_chat(id):
         abort(501)
 
@@ -124,6 +126,13 @@ def create_app(test_config=None):
     def patch_suscriptions(id):
         abort(501)
 
+
+
+
+
+    @app.route('/api/login', methods=['POST'])
+    def login():
+        abort(501)
     
 
 
