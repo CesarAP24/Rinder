@@ -222,16 +222,6 @@ def create_app(test_config=None):
             return jsonify({"success": False, "message": 'Error creating Mensaje', 'errors': list_errors}), returned_code
         else:
             return jsonify({"success": True, 'message': 'Mensaje created successfully'}), returned_code
-        
-
-    class Suscripcion(db.Model):
-    __tablename__ = 'suscripcion'
-    nombre = db.Column(db.String(50), primary_key=True)
-    precio = db.Column(db.Float, nullable = False)
-    day_duration = db.Column(db.Integer, default=30)
-
-    created = db.Column(db.DateTime, default=datetime.utcnow())
-    modified = db.Column(db.DateTime, default=datetime.utcnow(), onupdate=datetime.utcnow()) 
 
     @app.route('/suscripciones', methods=['POST'])
     @jwt_required
@@ -242,13 +232,13 @@ def create_app(test_config=None):
         list_errors = []
         try:
             body = request.json
-            
-            if id_usuario in creadores:  
+
+            if id_usuario in creadores:
                 if 'nombre' not in body:
                     list_errors.append('nombre is required')
                 else:
                     nombre = body['nombre']
-                
+
                 if 'precio' not in body:
                     list_errors.append('precio is required')
                 else:
@@ -268,19 +258,18 @@ def create_app(test_config=None):
                     }), returned_code
             else:
                 return jsonify({"success": False, "message": 'No tienes permiso para crear suscripciones'}), 401
-            
+
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
         finally:
             db.session.close()
-        
+
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Suscripcion', 'errors': list_errors}), returned_code
         else:
             return jsonify({"success": True, 'message': 'Suscripcion created successfully'}), returned_code
-
 
     @app.route('/chats', methods=['POST'])
     def post_compras():
