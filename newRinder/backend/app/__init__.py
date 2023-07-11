@@ -48,95 +48,88 @@ def create_app(test_config=None):
     # Routes API
 
     # GET ------------------------------------------------------------------
-    @app.route('/users', methods=['GET'])
-    def get_users():
+    @app.route('/mensajes', methods=['GET'])
+    def get_mensajes():
         abort(501)
 
-    @app.route('/profiles', methods=['GET'])
-    def get_profiles():
+    @app.route('/chats', methods=['GET'])
+    def get_chats():
         abort(501)
 
-    @app.route('/messages', methods=['GET'])
-    def get_mensaje():
+    @app.route('/perfiles', methods=['GET'])
+    def get_perfil():
         abort(501)
 
-    @app.route('/chat', methods=['GET'])
-    def get_chat():
-        abort(501)
-
-    @app.route('/suscriptions', methods=['GET'])
+    @app.route('/suscripciones', methods=['GET'])
     def get_suscriptions():
         abort(501)
 
-    @app.route('/likes', methods=['GET'])
-    def get_likes():
-        abort(501)
-
-    @app.route('/purchases', methods=['GET'])
-    def get_purchases():
+    @app.route('/compras', methods=['GET'])
+    def get_compras():
         abort(501)
 
     # POST -----------------------------------------------------------------
 
-    @app.route('/users', methods=['POST'])
+    @app.route('/usuarios', methods=['POST'])
     def post_users():
         abort(501)
 
-    @app.route('/profiles', methods=['POST'])
-    def post_profile():
+    @app.route('/mensajes', methods=['POST'])
+    def post_mensajes():
         abort(501)
 
-    @app.route('/messages', methods=['POST'])
-    def post_mensaje():
+
+    @app.route('/suscripciones', methods=['POST'])
+    def post_suscriptions():
         abort(501)
 
     @app.route('/chats', methods=['POST'])
-    def post_chat():
+    def post_compras():
         abort(501)
 
-    @app.route('/suscriptions', methods=['POST'])
-    def post_suscriptions():
+    @app.route('/compras', methods=['POST'])
+    def post_compras():
         abort(501)
 
     @app.route('/likes', methods=['POST'])
     def post_likes():
         abort(501)
 
-    @app.route('/purchases', methods=['POST'])
-    def post_purchases():
-        abort(501)
-
     
 
     # PATCH ----------------------------------------------------------------
 
-    @app.route('/users/<id>', methods=['PATCH'])
-    def patch_users(id):
+    @app.route('/perfiles', methods=['PATCH'])
+    def patch_perfil():
         abort(501)
 
-    @app.route('/profiles/<id>', methods=['PATCH'])
-    def patch_profile(id):
+    @app.route('/usuarios', methods=['PATCH'])
+    def patch_users():
         abort(501)
 
-    @app.route('/chats/<id>', methods=['PATCH'])
-    def patch_chat(id):
-        abort(501)
-
-    @app.route('/suscriptions/<id>', methods=['PATCH'])
-    def patch_suscriptions(id):
+    @app.route('/compras', methods=['PATCH'])
+    def patch_compras():
         abort(501)
 
 
+    # DELETE ---------------------------------------------------------------
+
+    @app.route('/usuarios', methods=['DELETE'])
+    def delete_users():
+        abort(501)
+
+    @app.route('/suscripciones', methods=['DELETE'])
+    def delete_suscriptions():
+        abort(501)
 
 
+
+    # LOGIN ----------------------------------------------------------------
 
     @app.route('/api/login', methods=['POST'])
     def login():
         abort(501)
     
-
-
-
 
     # HANDLE ERROR ---------------------------------------------------------
 
