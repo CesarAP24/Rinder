@@ -127,18 +127,140 @@ def create_app(test_config=None):
         }), 200
 
     # PATCH ----------------------------------------------------------------
-
     @app.route('/perfiles', methods=['PATCH'])
+    @jwt_required
     def patch_perfil():
-        abort(501)
+        returned_code = 200
+        list_errors = []
+        try:
+            id_usuario = get_jwt_identity()
+            body = request.json
+            Perfil = Perfil.query.filter_by(id_usuario=id_usuario).first()
+            if Perfil:
+                if 'nombre' in body:
+                    nombre = body['nombre']
+                    Perfil.nombre = nombre
+                if 'apellido' in body:
+                    apellido = body['apellido']
+                    Perfil.apellido = apellido
+                if 'descripcion' in body:
+                    descripcion = body['descripcion']
+                    Perfil.descripcion = descripcion
+                if 'ruta_photo' in body:
+                    ruta_photo = body['ruta_photo']
+                    Perfil.ruta_photo = ruta_photo
+                if 'ruta_network' in body:
+                    ruta_network = body['ruta_network']
+                    Perfil.ruta_network = ruta_network
+
+                Perfil.modified_at = datetime.utcnow()
+                db.session.commit()
+            else:
+                returned_code = 404
+                list_errors.append('Perfil not found')
+
+        except Exception as e:
+            returned_code = 500
+            list_errors.append(str(e))
+        finally:
+            if returned_code == 200:
+                return jsonify({
+                    'success': True,
+                    'perfil': Perfil.serialize()
+                }), returned_code
+            else:
+                return jsonify({
+                    'success': False,
+                    'errors': list_errors
+                }), returned_code
 
     @app.route('/usuarios', methods=['PATCH'])
+    @jwt_required
     def patch_users():
-        abort(501)
+        returned_code = 200
+        list_errors = []
+        try:
+            id_usuario = get_jwt_identity()
+            body = request.json
+            usuario = Usuario.query.filter_by(id_usuario=id_usuario).first()
+
+            if usuario:
+                if 'correo' in body:
+                    correo = body['correo']
+                    usuario.correo = correo
+                if 'contraseña' in body:
+                    hashed_password = bcrypt.generate_password_hash(
+                        body['contraseña']).decode('utf-8')
+                    if not bcrypt.check_password_hash(usuario.contraseña, body['contraseña_actual']):
+                        return jsonify({
+                            'success': False,
+                            'error': 'Contraseña actual incorrecta'
+                        }), 401
+                    else:
+                        usuario.contraseña = hashed_password
+
+                db.session.commit()
+            else:
+                returned_code = 404
+                list_errors.append('Usuario no encontrado')
+
+        except Exception as e:
+            returned_code = 500
+            list_errors.append(str(e))
+
+        if returned_code == 200:
+            return jsonify({
+                'success': True,
+                'usuario': usuario.serialize()
+            }), returned_code
+        else:
+            return jsonify({
+                'success': False,
+                'errors': list_errors
+            }), returned_code
 
     @app.route('/compras', methods=['PATCH'])
+    @jwt_required
     def patch_compras():
-        abort(501)
+        returned_code = 200
+        list_errors = []
+        try:
+            id_usuario = get_jwt_identity()
+            body = request.json
+            compra = Compra.query.filter_by(id_usuario=id_usuario).first()
+
+            if compra:
+                if 'suscripcion' in body:
+                    suscripcion = body['suscripcion']
+                    compra.suscripcion = suscripcion
+                if 'precio_compra' in body:
+                    precio_compra = body['precio_compra']
+                    compra.precio_compra = precio_compra
+
+                db.session.commit()
+            else:
+                returned_code = 404
+                list_errors.append(
+                    'Compra no encontrada para el usuario actual')
+                return jsonify({
+                    'success': False,
+                    'errors': list_errors
+                }), returned_code
+
+        except Exception as e:
+            returned_code = 500
+            list_errors.append(str(e))
+
+        if returned_code == 200:
+            return jsonify({
+                'success': True,
+                'compra': compra.serialize()
+            }), returned_code
+        else:
+            return jsonify({
+                'success': False,
+                'errors': list_errors
+            }), returned_code
 
     # POST -----------------------------------------------------------------
 
