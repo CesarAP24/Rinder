@@ -1,33 +1,33 @@
-<!-- <template>
-  <div class="about">// cabecera (componente) // contenido (componente)</div>
-</template> -->
 <template>
-  <div id="app">
-    <div class="profile-container">
-      <ProfileHeader></ProfileHeader>
-      <ProfileContent></ProfileContent>
+  <div class="profile-top">
+    <div class="profile-info-fast">
+      <div class="profile-info-immage">
+        <img
+          id="profile-section-photo-img"
+          src="https://via.placeholder.com/150"
+          alt="Foto de perfil"
+        />
+        <button id="btn-add-photo" class="btn-add-photo">
+          <span class="icon">+</span>
+        </button>
+      </div>
+      <!--Información rapida, num likes recibidos, seguidores, -->
+      <div class="profile-info-fast-box">
+        <div class="fast-info-box">
+          <h3 id="profile-name">Cesar Perales</h3>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import ProfileHeader from "@/components/ProfileHeader.vue";
-import ProfileContent from "@/components/ProfileContent.vue";
-
 export default {
-  components: {
-    ProfileHeader,
-    ProfileContent,
-  },
-  methods: {
-    handleLoginSuccess() {
-      this.$router.push({ name: "Login" });
-    },
-  },
+  name: "ProfileHeader",
 };
 </script>
 
-<style>
+<style scoped>
 .Perfil-container {
   max-width: none;
   display: flex;

@@ -1,33 +1,56 @@
-<!-- <template>
-  <div class="about">// cabecera (componente) // contenido (componente)</div>
-</template> -->
 <template>
-  <div id="app">
-    <div class="profile-container">
-      <ProfileHeader></ProfileHeader>
-      <ProfileContent></ProfileContent>
+  <div class="profile-down">
+    <div class="profile-info-main rounded-pink-border" style="width: 100%">
+      <h5 id="profile-username" style="font-size: 18px">Username</h5>
+      <br />
+      <h6 id="profile-description" style="font-size: 15px; line-height: 25px">
+        <h7>Descripción:</h7> Lorem ipsum dolor sit amet, consectetur
+        adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+        qui officia deserunt mollit anim id est laborum.
+      </h6>
+      <h6 id="profile-nacimiento" style="font-size: 15px; line-height: 35px">
+        <h7>Fecha nacimiento:</h7> 20/05/2005
+      </h6>
+      <h6 id="profile-edad" style="font-size: 15px; line-height: 35px">
+        <h7>Edad:</h7> 23
+      </h6>
+      <h6 id="profile-genero" style="font-size: 15px; line-height: 35px">
+        <h7>Género:</h7> M
+      </h6>
+
+      <button class="btn-edit-profile" id="btn-edit-profile">
+        <i class="fas fa-user-edit"></i> Editar perfil
+      </button>
+    </div>
+
+    <div class="profile-posts" style="display: none">
+      <!-- Contenido de los posts -->
     </div>
   </div>
 </template>
 
 <script>
-import ProfileHeader from "@/components/ProfileHeader.vue";
-import ProfileContent from "@/components/ProfileContent.vue";
-
 export default {
-  components: {
-    ProfileHeader,
-    ProfileContent,
-  },
-  methods: {
-    handleLoginSuccess() {
-      this.$router.push({ name: "Login" });
-    },
-  },
+  name: "ProfileContent",
 };
 </script>
 
-<style>
+<style scoped>
+/*estilos para lo de arriba*/
+
+.profile-nacimiento {
+  font-size: 15px;
+  font-weight: bolder;
+}
+
+.h6 {
+  font-size: 15px;
+}
+
 .Perfil-container {
   max-width: none;
   display: flex;

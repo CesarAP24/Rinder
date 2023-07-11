@@ -123,7 +123,6 @@ form {
 }
 
 p {
-  text-align: center;
   font-size: 13px;
   margin-top: 10px;
 }

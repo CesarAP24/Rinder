@@ -4,10 +4,10 @@
       <div class="title">
         <img src="static/images/logoTitle.png" />
       </div>
-      <a @click="changeTab('matches')">Rind your love!</a>
+      <a href="\">Rind your love!</a>
       <a @click="changeTab('posts')" style="display: none">Posts</a>
       <a @click="changeTab('messages')">Mensajes</a>
-      <a @click="changeTab('profile')">Mi Perfil</a>
+      <a href="\profile">Mi Perfil</a>
       <a @click="changeTab('plans')">Planes</a>
       <a @click="changeTab('support')">Soporte</a>
     </div>

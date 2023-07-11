@@ -25,6 +25,13 @@ const routes = [
       default: import("../views/RegisterView.vue"),
     },
   },
+  {
+    path: "/profile",
+    name: "Profile",
+    components: {
+      default: import("../views/ProfileView.vue"),
+    },
+  },
 ];
 
 const router = createRouter({
