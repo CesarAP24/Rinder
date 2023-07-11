@@ -11,6 +11,13 @@ const routes = [
       sidebar: SideBar,
     },
   },
+  {
+    path: "/login",
+    name: "LoginForm",
+    components: {
+      default: import("../views/LoginView.vue"),
+    },
+  },
 ];
 
 const router = createRouter({

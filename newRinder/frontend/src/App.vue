@@ -1,6 +1,7 @@
 <template>
   <div id="main">
     <SideBar />
+    <div id="content"></div>
     <router-view />
   </div>
 </template>
@@ -32,5 +33,9 @@ export default {
   align-items: center;
   height: 100vh;
   width: 100vw;
+}
+
+#content {
+  flex-grow: 1;
 }
 </style>

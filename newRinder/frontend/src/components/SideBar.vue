@@ -36,7 +36,7 @@ export default {
 <style>
 /* Estilo para la barra lateral */
 .sidebar {
-  width: 30%;
+  width: 100%; /* Asegura que ocupe todo el ancho del contenedor principal */
   max-width: 300px;
   height: 100vh;
   z-index: 1;
@@ -46,6 +46,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.sidebar > div:first-child {
+  flex-grow: 1; /* Hace que ocupe todo el espacio vertical disponible */
 }
 
 /* Estilo para el título del sidebar */

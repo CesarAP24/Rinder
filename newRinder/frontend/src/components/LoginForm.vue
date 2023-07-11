@@ -1,49 +1,54 @@
 <template>
-  <div id="total_percent">
-    <div class="login-page">
-      <h2>Iniciar sesión</h2>
-      <LoginForm />
-    </div>
+  <div class="main_container">
+    <section id="login-section">
+      <form id="login-form" @submit="submitForm">
+        <div class="container_register">
+          <label for="email_login">Correo electrónico:</label>
+          <input type="email" v-model="email" required autocomplete="on" />
+
+          <label for="password_login">Contraseña:</label>
+          <input
+            type="password"
+            v-model="password"
+            required
+            autocomplete="on"
+          />
+          <div v-if="loginFailed" id="login_fallido" style="display: none">
+            Error
+          </div>
+
+          <button type="submit" id="login-btn">Iniciar sesión</button>
+        </div>
+      </form>
+      <p href="#" id="show-register">
+        ¿No tienes una cuenta?
+        <a href="#" @click="showRegisterForm">Regístrate aquí</a>
+      </p>
+    </section>
   </div>
 </template>
 
 <script>
-import LoginForm from "@/components/LoginForm.vue";
-
 export default {
-  components: {
-    LoginForm,
+  data() {
+    return {
+      email: "",
+      password: "",
+      loginFailed: false,
+    };
   },
   methods: {
-    handleLoginSuccess() {
-      this.$router.push({ name: "Login" });
+    submitForm(event) {
+      event.preventDefault();
+    },
+    showRegisterForm() {
+      // Aquí puedes agregar la lógica para mostrar el formulario de registro
     },
   },
 };
 </script>
 
-<style>
-.login-page {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-}
-
-#total_percent {
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  background-color: #f7f3f7;
-  top: 0;
-  left: 0;
-  display: flex;
-  z-index: 100;
-}
-
+<style scoped>
 .container_register {
   display: flex;
   flex-direction: column;

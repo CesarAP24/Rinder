@@ -1,4 +1,3 @@
 <template>
-  <div></div>
+  <div class="about">// titulo y logo //formulario (componente)</div>
 </template>
-import { SideBar } from '../components/SideBar.vue'
