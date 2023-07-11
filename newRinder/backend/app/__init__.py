@@ -45,6 +45,20 @@ def create_app(test_config=None):
         return response
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # Routes API
 
     # GET ------------------------------------------------------------------
@@ -67,6 +81,50 @@ def create_app(test_config=None):
     @app.route('/compras', methods=['GET'])
     def get_compras():
         abort(501)
+
+    # PATCH ----------------------------------------------------------------
+
+    @app.route('/perfiles', methods=['PATCH'])
+    def patch_perfil():
+        abort(501)
+
+    @app.route('/usuarios', methods=['PATCH'])
+    def patch_users():
+        abort(501)
+
+    @app.route('/compras', methods=['PATCH'])
+    def patch_compras():
+        abort(501)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # POST -----------------------------------------------------------------
 
@@ -97,21 +155,6 @@ def create_app(test_config=None):
 
     
 
-    # PATCH ----------------------------------------------------------------
-
-    @app.route('/perfiles', methods=['PATCH'])
-    def patch_perfil():
-        abort(501)
-
-    @app.route('/usuarios', methods=['PATCH'])
-    def patch_users():
-        abort(501)
-
-    @app.route('/compras', methods=['PATCH'])
-    def patch_compras():
-        abort(501)
-
-
     # DELETE ---------------------------------------------------------------
 
     @app.route('/usuarios', methods=['DELETE'])
@@ -130,6 +173,21 @@ def create_app(test_config=None):
     def login():
         abort(501)
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # HANDLE ERROR ---------------------------------------------------------
 
