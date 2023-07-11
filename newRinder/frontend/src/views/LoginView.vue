@@ -128,10 +128,6 @@ p {
   height: 500px;
 }
 
-#register-section {
-  display: none;
-}
-
 #contraseñas_distintas {
   color: red;
   font-size: 12px;

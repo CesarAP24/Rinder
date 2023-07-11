@@ -18,6 +18,13 @@ const routes = [
       default: import("../views/LoginView.vue"),
     },
   },
+  {
+    path: "/register",
+    name: "RegisterForm",
+    components: {
+      default: import("../views/RegisterView.vue"),
+    },
+  },
 ];
 
 const router = createRouter({

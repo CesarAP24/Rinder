@@ -1,29 +1,84 @@
 <template>
-  <div class="main_container">
-    <section id="login-section">
-      <form id="login-form" @submit="submitForm">
+  <div>
+    <section id="register-section">
+      <form @submit="submitForm">
         <div class="container_register">
-          <label for="email_login">Correo electrónico:</label>
-          <input type="email" v-model="email" required autocomplete="on" />
+          <h3 id="datos">Regístrate aquí</h3>
+          <div id="encap">
+            <input
+              type="text"
+              v-model="nombre"
+              required
+              placeholder="Ingrese su nombre"
+              autocomplete="off"
+            />
+            <input
+              type="text"
+              v-model="apellido"
+              required
+              placeholder="Ingrese su apellido"
+              autocomplete="off"
+            />
+          </div>
 
-          <label for="password_login">Contraseña:</label>
+          <input
+            type="email"
+            v-model="email"
+            required
+            placeholder="Ingrese su correo electrónico"
+            autocomplete="on"
+          />
+          <div id="mensaje-mail" style="display: none">
+            Ingrese un email válido.
+          </div>
+
+          <label for="fecha_nacimiento">Fecha de nacimiento</label>
+          <input
+            type="date"
+            v-model="fechaNacimiento"
+            required
+            placeholder="Ingrese su fecha de nacimiento"
+            autocomplete="off"
+          />
+          <div id="mensaje-menor-edad" style="display: none">
+            Lo sentimos, debes ser mayor de edad para acceder a este sitio.
+          </div>
+
+          <label for="username">Username</label>
+          <input
+            type="text"
+            v-model="username"
+            required
+            placeholder="Ingrese su usuario"
+            autocomplete="off"
+          />
+
+          <label for="password">Contraseña</label>
           <input
             type="password"
             v-model="password"
             required
+            placeholder="Ingrese su contraseña"
             autocomplete="on"
           />
-          <div v-if="loginFailed" id="login_fallido" style="display: none">
-            Error
-          </div>
 
-          <button type="submit" id="login-btn">Iniciar sesión</button>
+          <input
+            type="password"
+            v-model="confirmPassword"
+            required
+            placeholder="Confirme su contraseña"
+            autocomplete="off"
+          />
+          <div id="contraseñas_distintas" style="display: none"></div>
+
+          <button type="submit" id="register-btn">Registrarse</button>
+
+          <p>
+            ¿Ya tienes una cuenta?
+            <a href="/login" id="show-login">Inicia sesión</a>
+          </p>
         </div>
       </form>
-      <p href="#" id="show-register">
-        ¿No tienes una cuenta?
-        <a href="/register" @click="showRegisterForm">Regístrate aquí</a>
-      </p>
     </section>
   </div>
 </template>
@@ -32,14 +87,20 @@
 export default {
   data() {
     return {
+      nombre: "",
+      apellido: "",
       email: "",
+      fechaNacimiento: "",
+      username: "",
       password: "",
-      loginFailed: false,
+      confirmPassword: "",
     };
   },
   methods: {
     submitForm(event) {
       event.preventDefault();
+      // Aquí puedes agregar la lógica para enviar los datos del formulario al servidor y realizar el registro
+      // Puedes acceder a los valores de los campos usando this.nombre, this.apellido, this.email, etc.
     },
     showRegisterForm() {
       // Aquí puedes agregar la lógica para mostrar el formulario de registro
@@ -49,16 +110,28 @@ export default {
 </script>
 
 <style scoped>
-.container_register {
+#register-section {
   display: flex;
   flex-direction: column;
-  /* flex-wrap: wrap; */
-  align-content: space-around;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background: #f7f3f7;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.container_register[data-v-6626deb7][data-v-6626deb7] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background: white;
   width: 100%;
+  height: 100%;
   padding: 15px;
+  border-radius: 20px;
 }
 
 .container_register button {
@@ -71,11 +144,6 @@ export default {
   color: white;
   border-radius: 6px;
   font-family: "Montserrat";
-}
-
-.main_container {
-  width: 35%;
-  max-width: 375px;
 }
 
 button:hover {
@@ -131,10 +199,6 @@ p {
 .container {
   overflow-y: scroll;
   height: 500px;
-}
-
-#register-section {
-  display: none;
 }
 
 #contraseñas_distintas {
