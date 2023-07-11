@@ -1,16 +1,21 @@
 <template>
   <div id="main">
-    <SideBar />
-    <router-view />
+    <MatchCard
+      :photo="photo"
+      :name="name"
+      :age="age"
+      :description="description"
+    />
   </div>
 </template>
 
 <script>
-import SideBar from "@/components/SideBar.vue";
+import MatchCard from "@/components/MatchCard.vue";
+
 export default {
-  name: "App",
+  name: "RindYourLove",
   components: {
-    SideBar,
+    MatchCard,
   },
   data() {
     return {
