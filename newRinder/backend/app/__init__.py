@@ -1,6 +1,6 @@
 # Libraries
 
-from .models import *
+from .models import db, Usuario, Perfil, Chat, Mensaje, Suscripcion, Compra, Like
 from flask_cors import CORS
 from .utilities import *
 
@@ -62,21 +62,74 @@ def create_app(test_config=None):
     # Routes API
 
     # GET ------------------------------------------------------------------
-    @app.route('/mensajes', methods=['GET'])
-    def get_mensajes():
-        abort(501)
+    @app.route('/chats/<id>/mensajes', methods=['GET'])
+    @jwt_required
+    def get_mensajes(id):
+        chat = Chat.query.filter_by(id_chat=id).first()
+        user_id = get_jwt_identity()
+
+        #checkear si el usuario participa en el chat
+        chats = Pertenece.query.filter_by(id_usuario=user_id).all()
+        id_chats = [chat.id_chat for chat in chats]
+
+        if chat.id_chat in id_chats:
+            mensajes = Mensaje.query.filter_by(id_chat=id).all()
+            return jsonify({
+                'success': True,
+                'mensajes': [mensaje.serialize() for mensaje in mensajes]
+            }), 200
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'El usuario no participa en el chat'
+            }), 401
+
+
 
     @app.route('/chats', methods=['GET'])
+    @jwt_required
     def get_chats():
-        abort(501)
+        user_id = get_jwt_identity()
+        chats = Pertenece.query.filter_by(id_usuario=user_id).all()
+
+        if chats:
+            id_chats = [chat.id_chat for chat in chats]
+            chats = Chat.query.filter(Chat.id_chat.in_(id_chats)).all()
+            return jsonify({
+                'success': True,
+                'chats': [chat.serialize() for chat in chats]
+            }), 200
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'El usuario no tiene chats'
+            }), 404
+
 
     @app.route('/perfiles', methods=['GET'])
     def get_perfil():
-        abort(501)
+        perfiles = Perfil.query.all()
+        return jsonify({
+            'success': True,
+            'perfiles': [perfil.serialize() for perfil in perfiles]
+        }), 200
+
+    
 
     @app.route('/suscripciones', methods=['GET'])
     def get_suscriptions():
-        abort(501)
+        suscripciones = Suscripcion.query.all()
+        if not suscripciones:
+            return jsonify({
+                'success': False,
+                'error': 'No se encontraron suscripciones'
+            }), 404
+
+        return jsonify({
+            'success': True,
+            'suscripciones': [suscripcion.serialize() for suscripcion in suscripciones]
+        }), 200
+
 
     @app.route('/compras', methods=['GET'])
     def get_compras():

@@ -48,6 +48,16 @@ class Perfil(db.Model):
     def __repr__(self):
         return f"<Perfil {self.username}>"
 
+    def serialize(self):
+        return {
+            'nombre': self.nombre,
+            'apellido': self.apellido,
+            'nacimiento': self.nacimiento,
+            'genero': self.genero,
+            'descripcion': self.descripcion,
+            'ruta_photo': self.ruta_photo
+        }
+
 
 # Mensaje ------------------------------------------------------------------------------------------------
 
@@ -65,6 +75,17 @@ class Mensaje(db.Model):
 
     def __repr__(self):
         return f"<Mensaje {self.id_mensaje}>"
+
+    def serialize(self):
+        return {
+            'id_mensaje': self.id_mensaje,
+            'id_usuario': self.id_usuario,
+            'id_chat': self.id_chat,
+            'id_mensajePadre': self.id_mensajePadre,
+            'fecha': self.fecha,
+            'contenido': self.contenido,
+            'state': self.state
+        }
  
 
 # CHAT ---------------------------------------------------------------------------------------------------
@@ -79,6 +100,13 @@ class Chat(db.Model):
     def __repr__(self):
         return f"<Chat {self.id_chat}>"
 
+    def serialize(self):
+        return {
+            'id_chat': self.id_chat,
+            'id_mensaje': self.id_mensaje,
+            'cantidad_mensajes': self.cantidad_mensajes,
+            'fecha': self.fecha
+        }
 
 class Pertenece(db.Model):
     __tablename__ = 'pertenece'
@@ -89,6 +117,12 @@ class Pertenece(db.Model):
     def __repr__(self):
         return f"<Pertenece {self.id_chat}>"
 
+    def serialize(self):
+        return {
+            'id_usuario': self.id_usuario,
+            'id_chat': self.id_chat,
+            'fecha': self.fecha
+        }
 
 # Suscripcion --------------------------------------------------------------------------------------------
 
