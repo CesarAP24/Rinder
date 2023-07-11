@@ -13,7 +13,7 @@ from flask import (
     abort,
 )
 
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey
@@ -115,7 +115,16 @@ def create_app(test_config=None):
 
     @app.route('/compras', methods=['GET'])
     def get_compras():
-        abort(501)
+        compras = Compra.query.all()
+        if not compras:
+            return jsonify({
+                'success': False,
+                'error': 'No se encontraron compras'
+            }), 404
+        return jsonify({
+            'success': True,
+            'compras': [compra.serialize() for compra in compras]
+        }), 200
 
     # PATCH ----------------------------------------------------------------
 
@@ -238,7 +247,6 @@ def create_app(test_config=None):
                     list_errors.append('nombre is required')
                 else:
                     nombre = body['nombre']
-
                 if 'precio' not in body:
                     list_errors.append('precio is required')
                 else:
@@ -273,15 +281,110 @@ def create_app(test_config=None):
 
     @app.route('/chats', methods=['POST'])
     def post_compras():
-        abort(501)
+        returned_code = 201
+        list_errors = []
+        try:
+            body = request.json
+            if 'id_mensaje' not in body:
+                list_errors.append('The chat is empty')
+            else:
+                id_mensaje = body['id_mensaje']
+            if len(list_errors) > 0:
+                returned_code = 400
+            else:
+                chat = Chat(id_mensaje=id_mensaje)
+                db.session.add(chat)
+                db.session.commit()
+
+                return jsonify({
+                    "success": True,
+                    "message": "Chat creado exitosamente",
+                    "chat": chat.serialize()
+                }), returned_code
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error creating Chat', 'errors': list_errors}), returned_code
+        else:
+            return jsonify({"success": True, 'message': 'Chat created successfully'}), returned_code
 
     @app.route('/compras', methods=['POST'])
     def post_compras():
-        abort(501)
+        returned_code = 201
+        list_errors = []
+        try:
+            body = request.json
+            id_usuario = get_jwt_identity()
+            if 'suscripcion' not in body:
+                list_errors.append('suscripcion is required')
+            else:
+                suscripcion = body['suscripcion']
+            if 'precio_compra' not in body:
+                list_errors.append('precio_compra is required')
+            else:
+                precio_compra = body['precio_compra']
+            if len(list_errors) > 0:
+                returned_code = 400
+            else:
+                compra = Compra(
+                    id_usuario=id_usuario, suscripcion=suscripcion, precio_compra=precio_compra)
+                db.session.add(compra)
+                db.session.commit()
+
+                return jsonify({
+                    "success": True,
+                    "message": "Compra creada exitosamente",
+                    "compra": compra.serialize()
+                }), returned_code
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error creating Compra', 'errors': list_errors}), returned_code
+        else:
+            return jsonify({"success": True, 'message': 'Compra created successfully'}), returned_code
 
     @app.route('/likes', methods=['POST'])
     def post_likes():
-        abort(501)
+        returned_code = 201
+        list_errors = []
+        try:
+            body = request.json
+            id_usuario = get_jwt_identity()
+            if 'id_usuario_likeado' not in body:
+                list_errors.append('id_usuario_likeado is required')
+            else:
+                id_usuario_likeado = body['id_usuario_likeado']
+            if len(list_errors) > 0:
+                returned_code = 400
+            else:
+                like = Like(id_usuario=id_usuario,
+                            id_usuario_likeado=id_usuario_likeado)
+                db.session.add(like)
+                db.session.commit()
+
+                return jsonify({
+                    "success": True,
+                    "message": "Like creado exitosamente",
+                    "like": like.serialize()
+                }), returned_code
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error creating Like', 'errors': list_errors}), returned_code
+        else:
+            return jsonify({"success": True, 'message': 'Like created successfully'}), returned_code
 
     # DELETE ---------------------------------------------------------------
 
