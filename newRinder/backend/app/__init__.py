@@ -390,11 +390,69 @@ def create_app(test_config=None):
 
     @app.route('/usuarios', methods=['DELETE'])
     def delete_users():
-        abort(501)
+        list_errors = []
+        returned_code = 200
+        try:
+            id_usuario = get_jwt_identity()
+            usuario = Usuario.query.get(id_usuario)
+            if usuario:
+                db.session.delete(usuario)
+                db.session.commit()
+                return jsonify({
+                    "success": True,
+                    "message": "Usuario eliminado exitosamente"
+                }), returned_code
+            else:
+                return jsonify({"success": False, "message": 'Usuario no encontrado'}), 404
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error deleting Usuario', 'errors': list_errors}), returned_code
+        else:
+            return jsonify({"success": True, 'message': 'Usuario deleted successfully'}), returned_code
 
     @app.route('/suscripciones', methods=['DELETE'])
     def delete_suscriptions():
-        abort(501)
+        creadores = ['casurpiemelisante', 'giansegg', 'isabellaromero']
+        id_usuario = get_jwt_identity()
+        returned_code = 201
+        list_errors = []
+        try:
+            body = request.json
+            if id_usuario not in creadores:
+                list_errors.append('permiso denegado')
+            else:
+                if 'nombre' not in body:
+                    list_errors.append('nombre is required')
+                else:
+                    nombre = body['nombre']
+                if len(list_errors) > 0:
+                    returned_code = 400
+                else:
+                    suscripcion = Suscripcion.query.get(nombre)
+                    if suscripcion:
+                        db.session.delete(suscripcion)
+                        db.session.commit()
+                        return jsonify({
+                            "success": True,
+                            "message": "Suscripcion eliminada exitosamente"
+                        }), returned_code
+                    else:
+                        return jsonify({"success": False, "message": 'Suscripcion no encontrada'}), 404
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error deleting Suscripcion', 'errors': list_errors}), returned_code
+        else:
+            return jsonify({"success": True, 'message': 'Suscripcion deleted successfully'}), returned_code
 
     # LOGIN ----------------------------------------------------------------
 
