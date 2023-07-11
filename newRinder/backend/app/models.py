@@ -138,6 +138,13 @@ class Suscripcion(db.Model):
     def __repr__(self):
         return f"<Suscripcion {self.nombre}>"
 
+    def serialize(self):
+        return {
+            'nombre': self.nombre,
+            'precio': self.precio,
+            'day_duration': self.day_duration
+        }
+
 # Like --------------------------------------------------------------------------------------------------
 
 class Like(db.Model):

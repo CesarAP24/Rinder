@@ -1,6 +1,6 @@
 # Libraries
 
-from .models import db, Usuario, Perfil, Chat, Mensaje, Suscripcion, Compra, Like
+from .models import db, Usuario, Perfil, Chat, Mensaje, Suscripcion, Compra, Like, setup_db, Pertenece
 from flask_cors import CORS
 from .utilities import *
 
@@ -44,14 +44,13 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
         response.headers.add('Access-Control-Allow-Methods',
                              'GET,PATCH,POST,DELETE,OPTIONS')
-        response.headers.add(' Access-Control-Max-Age', '10')
         return response
 
     # Routes API
 
     # GET ------------------------------------------------------------------
     @app.route('/chats/<id>/mensajes', methods=['GET'])
-    @jwt_required
+    @jwt_required()
     def get_mensajes(id):
         chat = Chat.query.filter_by(id_chat=id).first()
         user_id = get_jwt_identity()
@@ -72,32 +71,76 @@ def create_app(test_config=None):
                 'error': 'El usuario no participa en el chat'
             }), 401
 
-    @app.route('/chats', methods=['GET'])
-    @jwt_required
-    def get_chats():
+    @app.route('/usuarios/<correo>/chats', methods=['GET'])
+    @jwt_required()
+    def get_usuarios_chats(correo):
         user_id = get_jwt_identity()
-        chats = Pertenece.query.filter_by(id_usuario=user_id).all()
+        code = 200
+        error_message = ""
 
-        if chats:
-            id_chats = [chat.id_chat for chat in chats]
-            chats = Chat.query.filter(Chat.id_chat.in_(id_chats)).all()
+        usuario = Usuario.query.filter_by(id_usuario=user_id).first()
+        if not usuario:
+            abort(404)
+
+        if usuario.correo != correo:
+            abort(401)
+
+        id = usuario.id_usuario
+
+        try:
+            chats = Pertenece.query.filter_by(id_usuario=id).all()
+            if not chats:
+                code = 404
+                error_message = "No se encontraron chats"
+        except Exception as e:
+            print(e)
+            code = 500
+
+        if code == 404:
+            return jsonify({
+                'success': False,
+                'error': error_message
+            }), code
+        elif code != 200:
+            abort(code)
+        else:
             return jsonify({
                 'success': True,
                 'chats': [chat.serialize() for chat in chats]
-            }), 200
-        else:
-            return jsonify({
-                'success': False,
-                'error': 'El usuario no tiene chats'
-            }), 404
+            }), code
 
     @app.route('/perfiles', methods=['GET'])
     def get_perfil():
-        perfiles = Perfil.query.all()
-        return jsonify({
-            'success': True,
-            'perfiles': [perfil.serialize() for perfil in perfiles]
-        }), 200
+        code = 200
+        try:
+            id = get_jwt_identity()
+
+            if id:
+                ids_likeados = (db.session.query(LikeaPerfil.id_usuario).filter(LikeaPerfil.id_usuario == "mi id").subquery())
+                perfiles = Perfil.query.filter(Perfil.id_usuario.in_(ids_likeados)).all()
+            else:
+                perfiles = Perfil.query.all()
+
+            if not perfiles:
+                code = 404
+
+        except Exception as e:
+            print(e)
+            code = 500
+
+        if code == 404:
+            return jsonify({
+                'success': False,
+                'error': 'No se encontraron perfiles'
+            }), code
+        elif code != 200:
+            abort(code)
+        else:
+            return jsonify({
+                'success': True,
+                'perfiles': [perfil.serialize() for perfil in perfiles]
+            }), code
+
 
     @app.route('/suscripciones', methods=['GET'])
     def get_suscriptions():
@@ -114,7 +157,15 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/compras', methods=['GET'])
+    @jwt_required()
     def get_compras():
+        creadores = ['casurpiemelisante', 'giansegg', 'isabellaromero']
+        if get_jwt_identity() not in creadores:
+            return jsonify({
+                'success': False,
+                'error': 'No tiene permisos para ver las compras'
+            }), 401
+
         compras = Compra.query.all()
         if not compras:
             return jsonify({
@@ -126,9 +177,42 @@ def create_app(test_config=None):
             'compras': [compra.serialize() for compra in compras]
         }), 200
 
+
+    @app.route('/usuarios/<id>/compras', methods=['GET'])
+    @jwt_required()
+    def get_compras_usuario(id):
+        if get_jwt_identity() != id:
+            abort(401)
+
+        code = 200
+        error_message = "";
+
+        try:
+            compras = Compra.query.filter_by(id_usuario=id).all()
+            if not compras:
+                code = 404
+                error_message = "No se encontraron compras"
+        except Exception as e:
+            print(e)
+            code = 500
+
+        if code == 404:
+            return jsonify({
+                'success': False,
+                'error': error_message
+            }), code
+        elif code != 200:
+            abort(code)
+        else:
+            return jsonify({
+                'success': True,
+                'compras': [compra.serialize() for compra in compras]
+            }), code
+
+
     # PATCH ----------------------------------------------------------------
     @app.route('/perfiles', methods=['PATCH'])
-    @jwt_required
+    @jwt_required()
     def patch_perfil():
         returned_code = 200
         list_errors = []
@@ -175,7 +259,7 @@ def create_app(test_config=None):
                 }), returned_code
 
     @app.route('/usuarios', methods=['PATCH'])
-    @jwt_required
+    @jwt_required()
     def patch_users():
         returned_code = 200
         list_errors = []
@@ -220,7 +304,7 @@ def create_app(test_config=None):
             }), returned_code
 
     @app.route('/compras', methods=['PATCH'])
-    @jwt_required
+    @jwt_required()
     def patch_compras():
         returned_code = 200
         list_errors = []
@@ -309,7 +393,7 @@ def create_app(test_config=None):
             return jsonify({"success": True, 'message': 'User created successfully'}), returned_code
 
     @app.route('/chats/<id>/mensajes', methods=['POST'])
-    @jwt_required
+    @jwt_required()
     def post_mensajes(id):
         id_usuario = get_jwt_identity()
         id_chat = id
@@ -355,7 +439,7 @@ def create_app(test_config=None):
             return jsonify({"success": True, 'message': 'Mensaje created successfully'}), returned_code
 
     @app.route('/suscripciones', methods=['POST'])
-    @jwt_required
+    @jwt_required()
     def post_suscriptions():
         creadores = ['casurpiemelisante', 'giansegg', 'isabellaromero']
         id_usuario = get_jwt_identity()
@@ -402,7 +486,7 @@ def create_app(test_config=None):
             return jsonify({"success": True, 'message': 'Suscripcion created successfully'}), returned_code
 
     @app.route('/chats', methods=['POST'])
-    def post_compras():
+    def post_chats():
         returned_code = 201
         list_errors = []
         try:
