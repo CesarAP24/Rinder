@@ -530,7 +530,7 @@ input[type="file"]:focus::-ms-browse {
 .profile-info-immage img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Ajuste de la imagen para cubrir el contenedor sin distorsión */
 }
 
 .profile-down {
