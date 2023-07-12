@@ -1,11 +1,13 @@
 <template>
-  <div class="contact-box" data-id="1">
+  <div class="contact-box" :data-id="id">
     <div class="contact-box-immage">
-      <img src="https://via.placeholder.com/60" alt="Foto de perfil" />
+      <img :src="image" alt="Foto de perfil" />
     </div>
     <div class="contact-box-message">
-      <p><strong>Cesar Perales</strong></p>
-      <p>Last message here!</p>
+      <p>
+        <strong>{{ name }}</strong>
+      </p>
+      <p>{{ lastMessage }}</p>
     </div>
   </div>
 </template>
@@ -17,11 +19,6 @@ export default {
     image: String,
     lastMessage: String,
     id: String,
-  },
-  methods: {
-    openChat() {
-      // Lógica para abrir el chat
-    },
   },
 };
 </script>

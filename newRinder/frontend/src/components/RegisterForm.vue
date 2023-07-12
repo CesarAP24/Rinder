@@ -134,8 +134,8 @@ export default {
         .then((res) => res.json())
         .then((data) => {
           window.location.href = "/";
-          const access_token = data.access_token;
-          document.cookie = `access_token=${access_token}; path=/;`;
+          const access_token_cookie = data.access_token;
+          document.cookie = `access_token_cookie=${access_token_cookie}; path=/;`;
           console.log(data);
         })
         .catch((err) => {

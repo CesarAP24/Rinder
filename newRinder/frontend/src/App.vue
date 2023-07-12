@@ -18,8 +18,8 @@ export default {
     let accessToken = null;
 
     for (const cookie of cookies) {
-      if (cookie.startsWith("access_token=")) {
-        accessToken = cookie.substring("access_token=".length);
+      if (cookie.startsWith("access_token_cookie=")) {
+        accessToken = cookie.substring("access_token_cookie=".length);
         break;
       }
     }

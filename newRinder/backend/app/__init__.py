@@ -42,7 +42,7 @@ def create_app(test_config=None):
 
     with app.app_context():
         setup_db(app, test_config['database_path'] if test_config else None)
-        CORS(app, origins=['http://localhost:8081'])
+        CORS(app, origins=['http://localhost:8081'], supports_credentials=True)
         create_default_data(app, db)
 
     @app.after_request
@@ -67,9 +67,31 @@ def create_app(test_config=None):
 
         if chat.id_chat in id_chats:
             mensajes = Mensaje.query.filter_by(id_chat=id).all()
+            mensajes = [mensaje.serialize() for mensaje in mensajes]
+
+            # {
+            #   id: 1,
+            #   contenido: "Hola, ¿qué tal?",
+            #   class: "user-Message",
+            # },
+            # {
+            #   id: 2,
+            #   contenido: "this-Message",
+            #   class: "other-Message",
+            # },
+            # {
+            #   id: 3,
+            #   contenido: "this-Message",
+            #   class: "this-Message",
+            # },
+            for index in range(len(mensajes)):
+                clase = "other-Message"
+                if mensajes[index]['id_usuario'] == user_id:
+                    clase = "this-Message"
+                mensajes[index]['class'] = clase
             return jsonify({
                 'success': True,
-                'mensajes': [mensaje.serialize() for mensaje in mensajes]
+                'mensajes': mensajes
             }), 200
         else:
             return jsonify({
@@ -77,19 +99,17 @@ def create_app(test_config=None):
                 'error': 'El usuario no participa en el chat'
             }), 401
 
-    @app.route('/usuarios/<correo>/chats', methods=['GET'])
+    @app.route('/usuarios/chats', methods=['GET'])
     @jwt_required()
-    def get_usuarios_chats(correo):
+    def get_usuarios_chat_aasds():
         user_id = get_jwt_identity()
         code = 200
         error_message = ""
 
         usuario = Usuario.query.filter_by(id_usuario=user_id).first()
+
         if not usuario:
             abort(404)
-
-        if usuario.correo != correo:
-            abort(401)
 
         id = usuario.id_usuario
 
@@ -109,12 +129,13 @@ def create_app(test_config=None):
                     id_usuarios = [usuario.id_usuario for usuario in usuarios]
                     perfiles = Perfil.query.filter(Perfil.id_usuario.in_(id_usuarios)).all()
 
+                    chats[chat]['id_mensaje'] = Mensaje.query.filter_by(id_chat=chats[chat]['id_chat']).order_by(Mensaje.id_mensaje.desc()).first().contenido
                     if len(usuarios) == 1:
-                        chats[chat]['photo'] = perfiles[0].ruta_photo
+                        chats[chat]['photo'] = "http://localhost:5000/static/images/" + str(id) + "/" + str(perfiles[0].ruta_photo)
                     else:
                         for perfil in perfiles:
                             if perfil.id_usuario != id:
-                                chats[chat]['photo'] = perfil.ruta_photo
+                                chats[chat]['photo'] = "http://localhost:5000/static/images/" + str(id) + "/" + perfil.ruta_photo
         except Exception as e:
             print(e)
             code = 500
@@ -127,6 +148,7 @@ def create_app(test_config=None):
         elif code != 200:
             abort(code)
         else:
+            print(chats)
             return jsonify({
                 'success': True,
                 'chats': chats
@@ -203,47 +225,6 @@ def create_app(test_config=None):
             'success': True,
             'compras': [compra.serialize() for compra in compras]
         }), 200
-
-
-    @app.route('/usuarios/<correo>/compras', methods=['GET'])
-    @jwt_required()
-    def get_compras_usuario(correo):
-        user = Usuario.query.filter_by(correo=correo).first()
-        if not user:
-            return jsonify({
-                'success': False,
-                'error': 'No se encontró el usuario'
-            }), 404
-        else:
-            id = user.id_usuario
-        if get_jwt_identity() != id:
-            abort(401)
-
-        code = 200
-        error_message = "";
-
-        try:
-            compras = Compra.query.filter_by(id_usuario=id).all()
-            if not compras:
-                code = 404
-                error_message = "No se encontraron compras"
-        except Exception as e:
-            print(e)
-            code = 500
-
-        if code == 404:
-            return jsonify({
-                'success': False,
-                'error': error_message
-            }), code
-        elif code != 200:
-            abort(code)
-        else:
-            return jsonify({
-                'success': True,
-                'compras': [compra.serialize() for compra in compras]
-            }), code
-
 
     # PATCH ----------------------------------------------------------------
     @app.route('/perfiles/<correo>', methods=['PATCH'])

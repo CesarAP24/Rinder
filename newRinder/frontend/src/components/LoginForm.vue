@@ -71,10 +71,10 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-    setAccessTokenCookie(access_token) {
-      if (access_token) {
+    setAccessTokenCookie(access_token_cookie) {
+      if (access_token_cookie) {
         // Establecer la cookie con el token de acceso
-        document.cookie = `access_token=${access_token}; path=/;`;
+        document.cookie = `access_token_cookie=${access_token_cookie}; path=/;`;
       }
     },
   },
