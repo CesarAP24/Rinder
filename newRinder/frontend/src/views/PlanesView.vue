@@ -21,13 +21,18 @@
             </div>
           </div>
         </div>
+        <PayPalButton />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import PayPalButton from "@/components/paypalbutton.vue";
 export default {
+  components: {
+    PayPalButton,
+  },
   name: "PlanesView",
   data() {
     return {
