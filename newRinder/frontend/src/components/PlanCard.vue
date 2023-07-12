@@ -1,55 +1,17 @@
-<!-- <template>
-  <div class="about">
-    // titulo y logo //for plan in planes //planCard(component)
-  </div>
-</template> -->
-
 <template>
-  <div class="container slide-in-top">
-    <div class="row">
-      <div class="col-12">
-        <h3>Planes</h3>
-        <div v-for="plan in planes" :key="plan.id">
-          <div class="Planes">
-            <div id="placeholder-plan"></div>
-            <p class="Planes-abajo">{{ plan.description }}</p>
-            <p class="Planes-abajo">
-              ____________________________________________
-            </p>
-            <div class="Button-Plan">
-              <p class="Planess">{{ plan.name }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="Planes" id="basicPlan">
+    <div id="placeholder-plan"></div>
+    <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
+    <p class="Planes-abajo">____________________________________________</p>
+    <div class="Button-Plan">
+      <p class="Planess">Plan Básico (Actual)</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "PlanesView",
-  data() {
-    return {
-      planes: [
-        {
-          id: 1,
-          name: "Plan Básico",
-          description: "Consta en likes limitados, máximo 20 por día",
-        },
-        {
-          id: 2,
-          name: "Plan VIP",
-          description: "Consta en likes limitados, máximo 50 por día",
-        },
-        {
-          id: 3,
-          name: "Plan Súper-VIP",
-          description: "Consta en likes ilimitados",
-        },
-      ],
-    };
-  },
+  name: "BasicPlan",
 };
 </script>
 
@@ -183,7 +145,6 @@ body {
 .container {
   padding: 20px;
   height: 100vh;
-  width: 100vw;
 }
 
 /* Estilo para los títulos */
@@ -238,6 +199,7 @@ h4 {
   height: 130px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
+  /* background-image: url("static/images/fondoPlanes1.JPG"); */
   background-size: cover;
   background-repeat: no-repeat;
   margin-bottom: 21px;
@@ -248,23 +210,8 @@ h4 {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
   margin-right: 14px;
-}
-
-p[data-v-43943ed4] {
-  display: block;
-  -webkit-margin-before: 1em;
-  margin-block-start: 1em;
-  -webkit-margin-after: 1em;
-  margin-block-end: 1em;
-  -webkit-margin-start: 0px;
-  margin-inline-start: 0px;
-  -webkit-margin-end: 0px;
-  margin-inline-end: 0px;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  margin-top: 9px;
+  font-family: "Montserrat", sans-serif;
 }
 
 *[data-v-43943ed4][data-v-43943ed4] {

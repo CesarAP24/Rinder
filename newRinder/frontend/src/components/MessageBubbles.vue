@@ -1,73 +1,21 @@
-<!-- <template>
-  <div class="about">
-    // listaChats(component) // mensajes (componente) // enviarmensaje form
-  </div>
-</template> -->
-
 <template>
-  <!-- Sección de mensajes -->
-  <div class="main">
-    <div
-      id="Mensajes-Content"
-      class="container slide-in-top Messages-container"
-    >
-      <div>
-        <MessageList :messages="messages"></MessageList>
-      </div>
-
-      <div>
-        <MessageBubbles :messages="messages"></MessageBubbles>
-      </div>
-
-      <div>
-        <MessageInput @submit="sendMessage"></MessageInput>
-      </div>
+  <div class="message-bubbles">
+    <div v-for="message in messages" :key="message.id" class="message-bubble">
+      <!-- Nombre del remitente -->
+      <h4>{{ message.sender }}</h4>
+      <!-- Contenido del mensaje -->
+      <p>{{ message.content }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import MessageList from "@/components/MessageList.vue";
-import MessageBubbles from "@/components/MessageBubbles.vue";
-import MessageInput from "@/components/MessageInput.vue";
-
 export default {
-  components: {
-    MessageList,
-    MessageBubbles,
-    MessageInput,
-  },
-  data() {
-    return {
-      messages: [
-        {
-          id: 1,
-          sender: "John",
-          content: "Hola, ¿cómo estás?",
-        },
-        {
-          id: 2,
-          sender: "Jane",
-          content: "Muy bien, ¿y tú?",
-        },
-        {
-          id: 3,
-          sender: "John",
-          content: "Bien, gracias",
-        },
-      ],
-    };
-  },
-  methods: {
-    sendMessage(message) {
-      // Lógica para enviar el mensaje
-      this.messages.push(message);
-    },
-  },
+  props: ["messages"],
 };
 </script>
 
-<style>
+<style scoped>
 .Messages-container {
   display: flex;
   flex-direction: row;

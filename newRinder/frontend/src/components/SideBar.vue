@@ -6,9 +6,9 @@
       </div>
       <a href="\">Rind your love!</a>
       <a @click="changeTab('posts')" style="display: none">Posts</a>
-      <a @click="changeTab('messages')">Mensajes</a>
+      <a href="\messages">Mensajes</a>
       <a href="\profile">Mi Perfil</a>
-      <a @click="changeTab('plans')">Planes</a>
+      <a href="\plans">Planes</a>
       <a @click="changeTab('support')">Soporte</a>
     </div>
     <div>

@@ -32,6 +32,27 @@ const routes = [
       default: import("../views/ProfileView.vue"),
     },
   },
+  {
+    path: "/messages",
+    name: "Messages",
+    components: {
+      default: import("../views/MensajesView.vue"),
+    },
+  },
+  {
+    path: "/plans",
+    name: "Plans",
+    components: {
+      default: import("../views/PlanesView.vue"),
+    },
+  },
+  {
+    path: "/soporte",
+    name: "Soporte",
+    components: {
+      default: import("../views/SoporteView.vue"),
+    },
+  },
 ];
 
 const router = createRouter({

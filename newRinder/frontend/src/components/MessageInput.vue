@@ -1,73 +1,33 @@
-<!-- <template>
-  <div class="about">
-    // listaChats(component) // mensajes (componente) // enviarmensaje form
-  </div>
-</template> -->
-
 <template>
-  <!-- Sección de mensajes -->
-  <div class="main">
-    <div
-      id="Mensajes-Content"
-      class="container slide-in-top Messages-container"
-    >
-      <div>
-        <MessageList :messages="messages"></MessageList>
-      </div>
-
-      <div>
-        <MessageBubbles :messages="messages"></MessageBubbles>
-      </div>
-
-      <div>
-        <MessageInput @submit="sendMessage"></MessageInput>
-      </div>
-    </div>
+  <div class="message-input">
+    <input type="text" v-model="messageText" placeholder="Escribe un mensaje" />
+    <button @click="sendMessage">Enviar</button>
   </div>
 </template>
 
 <script>
-import MessageList from "@/components/MessageList.vue";
-import MessageBubbles from "@/components/MessageBubbles.vue";
-import MessageInput from "@/components/MessageInput.vue";
-
 export default {
-  components: {
-    MessageList,
-    MessageBubbles,
-    MessageInput,
-  },
   data() {
     return {
-      messages: [
-        {
-          id: 1,
-          sender: "John",
-          content: "Hola, ¿cómo estás?",
-        },
-        {
-          id: 2,
-          sender: "Jane",
-          content: "Muy bien, ¿y tú?",
-        },
-        {
-          id: 3,
-          sender: "John",
-          content: "Bien, gracias",
-        },
-      ],
+      messageText: "",
     };
   },
   methods: {
-    sendMessage(message) {
-      // Lógica para enviar el mensaje
-      this.messages.push(message);
+    sendMessage() {
+      if (this.messageText.trim() !== "") {
+        const message = {
+          sender: "John", // Remitente del mensaje
+          content: this.messageText.trim(),
+        };
+        this.$emit("submit", message);
+        this.messageText = "";
+      }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .Messages-container {
   display: flex;
   flex-direction: row;

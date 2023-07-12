@@ -1,7 +1,6 @@
 <template>
   <div id="main">
     <SideBar />
-    <div id="content"></div>
     <router-view />
   </div>
 </template>
