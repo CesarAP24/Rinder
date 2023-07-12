@@ -39,6 +39,7 @@ def create_app(test_config=None):
     with app.app_context():
         setup_db(app, test_config['database_path'] if test_config else None)
         CORS(app, origins='*')
+        create_default_data(app, db)
 
     @app.after_request
     def after_request(response):
@@ -354,7 +355,7 @@ def create_app(test_config=None):
         returned_code = 201
         list_errors = []
         try:
-            body = request.json
+            body = request.get_json()
             if 'correo' not in body:
                 list_errors.append('correo is required')
             else:
@@ -363,6 +364,22 @@ def create_app(test_config=None):
                 list_errors.append('contraseña is required')
             else:
                 contraseña = body['contraseña']
+            if 'nombre' not in body:
+                list_errors.append('nombre is required')
+            else:
+                nombre = body['nombre']
+            if 'apellido' not in body:
+                list_errors.append('apellido is required')
+            else:
+                apellido = body['apellido']
+            if 'nacimiento' not in body:
+                list_errors.append('nacimiento is required')
+            else:
+                nacimiento = body['nacimiento']
+            if 'genero' not in body:
+                list_errors.append('genero is required')
+            else:
+                genero = body['genero']
 
             if len(list_errors) > 0:
                 returned_code = 400
@@ -374,6 +391,11 @@ def create_app(test_config=None):
                 else:
                     usuario = Usuario(correo, contraseña)
                     id_usuario = usuario.insert()
+
+                    perfil = Perfil(id_usuario=id_usuario, nombre=nombre, apellido=apellido, nacimiento=nacimiento, genero=genero)
+                    db.session.add(perfil)
+                    db.session.commit()
+
 
         except Exception as e:
             print(sys.exc_info())
@@ -492,7 +514,6 @@ def create_app(test_config=None):
                 'suscripcion': suscripcion.serialize()
             }), returned_code
 
-
     @app.route('/chats', methods=['POST'])
     @jwt_required()
     def post_chats():
@@ -540,35 +561,41 @@ def create_app(test_config=None):
                 'id_chat': id_chat
             }), returned_code
 
-
     @app.route('/compras', methods=['POST'])
+    @jwt_required()
     def post_compras():
         returned_code = 201
         list_errors = []
         try:
             body = request.json
             id_usuario = get_jwt_identity()
-            if 'suscripcion' not in body:
-                list_errors.append('suscripcion is required')
+            #CHECKEAR que el usuario exista
+            user = Usuario.query.filter_by(id_usuario=id_usuario).first()
+            if not user:
+                returned_code = 404
+                list_errors.append('User does not exist')
             else:
-                suscripcion = body['suscripcion']
-            if 'precio_compra' not in body:
-                list_errors.append('precio_compra is required')
-            else:
-                precio_compra = body['precio_compra']
-            if len(list_errors) > 0:
-                returned_code = 400
-            else:
-                compra = Compra(
-                    id_usuario=id_usuario, suscripcion=suscripcion, precio_compra=precio_compra)
-                db.session.add(compra)
-                db.session.commit()
+                if 'suscripcion' not in body:
+                    list_errors.append('suscripcion is required')
+                else:
+                    suscripcion = body['suscripcion']
+                if 'precio_compra' not in body:
+                    list_errors.append('precio_compra is required')
+                else:
+                    precio_compra = body['precio_compra']
+                if len(list_errors) > 0:
+                    returned_code = 400
+                else:
+                    compra = Compra(
+                        id_usuario=id_usuario, suscripcion=suscripcion, precio_compra=precio_compra)
+                    db.session.add(compra)
+                    db.session.commit()
 
-                return jsonify({
-                    "success": True,
-                    "message": "Compra creada exitosamente",
-                    "compra": compra.serialize()
-                }), returned_code
+                    return jsonify({
+                        "success": True,
+                        "message": "Compra creada exitosamente",
+                        "compra": compra.serialize()
+                    }), returned_code
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
@@ -577,6 +604,8 @@ def create_app(test_config=None):
 
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Compra', 'errors': list_errors}), returned_code
+        elif returned_code == 404:
+            return jsonify({"success": False, "message": 'Error creating Compra0', 'errors': list_errors}), returned_code
         else:
             return jsonify({"success": True, 'message': 'Compra created successfully'}), returned_code
 
@@ -588,22 +617,24 @@ def create_app(test_config=None):
         try:
             body = request.get_json()
             id_usuario = get_jwt_identity()
-            if 'id_usuario_likeado' not in body:
-                list_errors.append('id_usuario_likeado is required')
+            if 'correo_likeado' not in body:
+                list_errors.append('correo_likeado is required')
             else:
-                id_usuario_likeado = body['id_usuario_likeado']
+                correo_likeado = body['correo_likeado']
             if len(list_errors) > 0:
                 returned_code = 400
             else:
-                like = Like(id_usuario=id_usuario,
-                            id_usuario_likeado=id_usuario_likeado)
-                db.session.add(like)
-                db.session.commit()
+                usuario_likeado = Usuario.query.filter_by(correo=correo_likeado).first()
+                if usuario_likeado:
+                    id_usuario_likeado = usuario_likeado.id_usuario
+                    like = Like(id_usuario=id_usuario,
+                                id_usuario_likeado=id_usuario_likeado)
+                    db.session.add(like)
+                    db.session.commit()
+                else:
+                    returned_code = 404
+                    list_errors.append('Users that you are trying to like does not exist')
 
-                return jsonify({
-                    "success": True,
-                    "message": "Like creado exitosamente"
-                }), returned_code
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
@@ -611,6 +642,8 @@ def create_app(test_config=None):
         finally:
             db.session.close()
         if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error creating Like', 'errors': list_errors}), returned_code
+        elif returned_code == 404:
             return jsonify({"success": False, "message": 'Error creating Like', 'errors': list_errors}), returned_code
         elif returned_code != 201:
             abort(returned_code)

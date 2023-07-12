@@ -34,18 +34,27 @@ class Usuario(db.Model):
     def delete(self):
         returned_code = 200
         try:
+            its_pertenencias = Pertenece.query.filter_by(id_usuario=self.id_usuario).all()
+
+            for pertenencia in its_pertenencias:
+                chat = Chat.query.filter_by(id_chat=pertenencia.id_chat).first()
+                if chat:
+                    chat.id_mensaje = "default"
+                    db.session.commit()
+                db.session.delete(pertenencia)
+
             its_mensajes = Mensaje.query.filter_by(id_usuario=self.id_usuario).all()
             for mensaje in its_mensajes:
                 db.session.delete(mensaje)
-            its_chats = Chat.query.filter_by(id_usuario=self.id_usuario).all()
-            
-            its_pertenencias = Pertenencia.query.filter_by(id_usuario=self.id_usuario).all()
 
-            for pertenencia in its_pertenencias:
-                db.session.delete(pertenencia)
 
             its_perfil = Perfil.query.filter_by(id_usuario=self.id_usuario).first()
-            db.session.delete(its_perfil)
+            if its_perfil:
+                db.session.delete(its_perfil)
+
+            its_likes = Like.query.filter_by(id_usuario=self.id_usuario).all()
+            for like in its_likes:
+                db.session.delete(like)
 
             #deletear con cascada
             db.session.delete(self)
@@ -71,9 +80,13 @@ class Usuario(db.Model):
         return user_id
 
 
-    def __init__(self, correo, contraseña):
+    def __init__(self, correo, contraseña, id_usuario=None):
         self.correo = correo
         self.contraseña = generate_password_hash(contraseña)
+        if id_usuario:
+            self.id_usuario = id_usuario
+        else:
+            self.id_usuario = str(uuid.uuid4())
 
     def __repr__(self):
         return f"<Usuario {self.correo}, {self.id_usuario}>"
@@ -223,4 +236,12 @@ class Compra(db.Model):
 
     def __repr__(self):
         return f"<Compra {self.id_compra}>"
+
+    def serialize(self):
+        return {
+            'id_compra': self.id_compra,
+            'suscripcion': self.suscripcion,
+            'fecha': self.fecha,
+            'precio_compra': self.precio_compra
+        }
 

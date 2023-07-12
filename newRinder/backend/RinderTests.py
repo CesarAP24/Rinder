@@ -1,10 +1,10 @@
 import unittest  # libreria de python para realizar test
-from config.qa import config
-from app.models import *
+from app.models import db, Usuario, Mensaje, Chat, Perfil, Pertenece
 from app import create_app
 from flask_sqlalchemy import SQLAlchemy
 import json
 import random
+from config.qa import config
 
 def random_mail():
 	random_number = random.randint(0, 100000)
@@ -12,6 +12,7 @@ def random_mail():
 
 class RinderTests(unittest.TestCase):
 	def setUp(self):
+		print(self)
 		database_path = config["DATABASE_URI"]
 		self.app = create_app({'database_path': database_path})
 		self.client = self.app.test_client()
