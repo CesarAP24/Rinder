@@ -1,4 +1,5 @@
 <template>
+  <div id="app"></div>
   <div class="Planes" id="basicPlan">
     <div id="placeholder-plan"></div>
     <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
@@ -27,8 +28,7 @@ export default {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-
-h1,
+a h1,
 h2,
 h3,
 h4,

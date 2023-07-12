@@ -41,6 +41,24 @@ export default {
 </script>
 
 <style>
+.sidebar .title {
+  display: flex;
+  /* padding: 10px; */
+  width: 86%;
+  height: 15%;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  margin-top: -22px;
+}
+
+.sidebar .title img {
+  height: 104px;
+  margin-left: -13px;
+  width: 80%;
+  margin-top: 16px;
+}
+
 /* Estilo para la barra lateral */
 .sidebar {
   width: 100%; /* Asegura que ocupe todo el ancho del contenedor principal */
@@ -95,11 +113,6 @@ export default {
   flex-direction: row;
   justify-content: left;
   align-items: center;
-}
-
-.sidebar .title img {
-  height: 62px;
-  margin-left: -13px;
 }
 
 /* Estilo para los elementos activos de la barra lateral */

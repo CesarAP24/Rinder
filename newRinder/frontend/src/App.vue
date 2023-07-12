@@ -12,10 +12,6 @@ export default {
   components: {
     SideBar,
   },
-  created() {
-    const accessToken = this.$cookies.get("access_token");
-    console.log(accessToken);
-  },
 };
 </script>
 
