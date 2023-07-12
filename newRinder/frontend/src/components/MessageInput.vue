@@ -1,6 +1,11 @@
 <template>
   <div class="message-input">
-    <input type="text" v-model="messageText" placeholder="Escribe un mensaje" />
+    <input
+      type="text"
+      placeholder="Escribe un mensaje"
+      v-model="message"
+      @keydown.enter="sendMessage"
+    />
     <button @click="sendMessage">Enviar</button>
   </div>
 </template>
@@ -9,18 +14,18 @@
 export default {
   data() {
     return {
-      messageText: "",
+      message: "",
     };
   },
   methods: {
     sendMessage() {
-      if (this.messageText.trim() !== "") {
-        const message = {
-          sender: "John", // Remitente del mensaje
-          content: this.messageText.trim(),
-        };
-        this.$emit("submit", message);
-        this.messageText = "";
+      // Lógica para enviar el mensaje
+      if (this.message.trim() !== "") {
+        // Enviar el mensaje
+        console.log("Mensaje enviado:", this.message);
+
+        // Limpiar el campo de entrada
+        this.message = "";
       }
     },
   },

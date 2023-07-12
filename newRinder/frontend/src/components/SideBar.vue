@@ -2,7 +2,11 @@
   <div class="sidebar">
     <div>
       <div class="title">
-        <img src="../assets/rinderText.PNG" class="logo2" />
+        <img
+          src="../assets/rinderText.PNG"
+          class="logo2"
+          @click="redirectToHome"
+        />
       </div>
       <a href="\">Rind your love!</a>
       <a @click="changeTab('posts')" style="display: none">Posts</a>
@@ -28,6 +32,10 @@ export default {
   methods: {
     changeTab(tab) {
       this.currentTab = tab;
+    },
+    redirectToHome() {
+      // Realizar la redirección a la página de inicio
+      this.$router.push("/");
     },
   },
 };

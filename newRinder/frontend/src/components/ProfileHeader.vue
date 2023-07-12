@@ -8,15 +8,33 @@
           alt="Foto de perfil"
         />
         <button id="btn-add-photo" class="btn-add-photo">
-          <span class="icon">+</span>
+          <span class="icon" @click="openEditProfilePhoto">+</span>
         </button>
       </div>
-      <!--Información rapida, num likes recibidos, seguidores, -->
+      <!-- Información rápida, número de likes recibidos, seguidores, etc. -->
       <div class="profile-info-fast-box">
         <div class="fast-info-box">
           <h3 id="profile-name">Cesar Perales</h3>
         </div>
       </div>
+      <form id="form-photo">
+        <div
+          id="fullscreen2"
+          class="vista-superior"
+          @click="closeEditProfilePhoto"
+        ></div>
+        <div
+          id="mensaje-emergente"
+          class="mensaje-emergente"
+          v-show="showEmergente"
+        >
+          <label for="file-upload">Subir una foto de perfil</label>
+          <input type="file" id="file-upload" name="file-upload" />
+          <button type="submit" class="btn-send" id="btn-submit-profile-photo">
+            Enviar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -24,6 +42,27 @@
 <script>
 export default {
   name: "ProfileHeader",
+  data() {
+    return {
+      isEditProfilePhotoOpen: false,
+    };
+  },
+  methods: {
+    openEditProfilePhoto() {
+      const fullscreen = document.getElementById("fullscreen2");
+      const mensajeEmergente = document.getElementById("mensaje-emergente");
+      this.isEditProfilePhotoOpen = true;
+      fullscreen.style.display = "block";
+      mensajeEmergente.style.display = "block";
+    },
+    closeEditProfilePhoto() {
+      const fullscreen = document.getElementById("fullscreen2");
+      const mensajeEmergente = document.getElementById("mensaje-emergente");
+      this.isEditProfilePhotoOpen = false;
+      fullscreen.style.display = "none";
+      mensajeEmergente.style.display = "none";
+    },
+  },
 };
 </script>
 
@@ -91,7 +130,7 @@ export default {
 .profile-info-fast-box {
   display: flex;
   flex-direction: row;
-  justify-content: right;
+  justify-content: flex-end; /* Cambia "right" por "flex-end" para alinear el texto a la derecha */
   align-items: center;
   padding-left: 15px;
 }
@@ -114,12 +153,24 @@ export default {
   margin: 25px;
   margin-top: -80px;
   border: 4px solid white;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-end;
+  text-align: right; /* Alineación del texto */
+}
+
+.profile-top {
+  margin-top: 100px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .profile-info-immage img {
+  width: 100%;
   height: 100%;
+  object-fit: cover; /* Ajuste de la imagen para cubrir el contenedor sin distorsión */
 }
 
 .profile-down {
@@ -279,7 +330,6 @@ button.profile-post-like-btn {
 .mensaje-emergente {
   position: absolute;
   top: 50%;
-  display: none;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
@@ -371,6 +421,12 @@ input[type="file"]:focus::-ms-browse {
   position: relative;
   transition: all 1s ease;
   left: 0;
+}
+
+#profile-name {
+  font-size: 18px;
+  color: #333;
+  text-align: right; /* Agrega esta línea para alinear el texto a la derecha */
 }
 
 .move-right {
@@ -549,10 +605,6 @@ input[type="file"]:focus::-ms-browse {
   animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-#template-contact-box {
-  display: none;
-}
-
 /* PLANES */
 .Planes {
   float: left;
@@ -602,5 +654,20 @@ input[type="file"]:focus::-ms-browse {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bolder;
   text-align: center;
+}
+
+.vista-superior {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.vista-superior.active {
+  display: block;
 }
 </style>

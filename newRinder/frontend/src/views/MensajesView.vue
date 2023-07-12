@@ -1,67 +1,77 @@
-<!-- <template>
-  <div class="about">
-    // listaChats(component) // mensajes (componente) // enviarmensaje form
-  </div>
-</template> -->
-
 <template>
-  <!-- Sección de mensajes -->
-  <div class="main">
-    <div
-      id="Mensajes-Content"
-      class="container slide-in-top Messages-container"
-    >
-      <div>
-        <MessageList :messages="messages"></MessageList>
+  <div class="messages-view">
+    <div class="left-messages-container">
+      <h3>Mensajes</h3>
+      <div id="show_chats" style="display: none">
+        Aquí se van a mostrar tus chats!
       </div>
+      <div class="messages-list-container" id="messages-list-container">
+        <message-list :chats="chats" @selectChat="openChat" />
+      </div>
+    </div>
 
-      <div>
-        <MessageBubbles :messages="messages"></MessageBubbles>
+    <div class="right-messages-container">
+      <div id="main-messages-container" class="main-messages-container">
+        <div class="user-message-info" v-if="selectedChat">
+          <img :src="selectedChat.profileImage" alt="Foto de perfil" />
+          <h4>{{ selectedChat.name }}</h4>
+          <p><strong>Descripción: </strong>{{ selectedChat.description }}</p>
+        </div>
+        <div class="user-message-box" id="user-message-box">
+          <message-bubble
+            v-for="message in selectedChat ? selectedChat.messages : []"
+            :key="message.id"
+            :message="message"
+          />
+        </div>
       </div>
-
-      <div>
-        <MessageInput @submit="sendMessage"></MessageInput>
-      </div>
+      <message-input v-if="selectedChat" />
     </div>
   </div>
 </template>
 
 <script>
-import MessageList from "@/components/MessageList.vue";
-import MessageBubbles from "@/components/MessageBubbles.vue";
 import MessageInput from "@/components/MessageInput.vue";
+import MessageBubble from "@/components/MessageBubbles.vue";
+import MessageList from "@/components/MessageList.vue";
 
 export default {
   components: {
-    MessageList,
-    MessageBubbles,
     MessageInput,
+    MessageBubble,
+    MessageList,
   },
   data() {
     return {
-      messages: [
+      chats: [
+        // Datos de ejemplo de los chats
         {
           id: 1,
-          sender: "John",
-          content: "Hola, ¿cómo estás?",
+          name: "Cesar Perales",
+          profileImage: "https://via.placeholder.com/60",
+          lastMessage: "Último mensaje aquí",
+          isMatch: true,
+          description: "Con propietaria pero sin dueña siuuu",
+          messages: [
+            { id: 1, content: "Hola", time: "10:00", isMe: false },
+            { id: 2, content: "Hola, ¿cómo estás?", time: "10:05", isMe: true },
+            {
+              id: 3,
+              content: "Bien, gracias. ¿Y tú?",
+              time: "10:10",
+              isMe: false,
+            },
+            // ...
+          ],
         },
-        {
-          id: 2,
-          sender: "Jane",
-          content: "Muy bien, ¿y tú?",
-        },
-        {
-          id: 3,
-          sender: "John",
-          content: "Bien, gracias",
-        },
+        // Otros chats...
       ],
+      selectedChat: null,
     };
   },
   methods: {
-    sendMessage(message) {
-      // Lógica para enviar el mensaje
-      this.messages.push(message);
+    openChat(chat) {
+      this.selectedChat = chat;
     },
   },
 };

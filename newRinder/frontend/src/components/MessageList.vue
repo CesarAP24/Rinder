@@ -1,23 +1,32 @@
 <template>
-  <div
-    id="Mensajes-Content"
-    class="container slide-in-top Messages-container"
-    style="display: none"
-  >
-    <div class="left-Messages-container">
-      <div v-for="message in messages" :key="message.id" class="message-item">
-        <!-- Contenido del mensaje -->
-        <p>{{ message.content }}</p>
-      </div>
+  <div class="contact-box" :data-id="chat.id" @click="openChat">
+    <div class="contact-box-immage">
+      <img :src="chat.profileImage" alt="Foto de perfil" />
+    </div>
+    <div class="contact-box-message">
+      <p>
+        <strong>{{ chat.name }}</strong>
+      </p>
+      <p>{{ chat.lastMessage }}</p>
+      <div v-if="chat.isMatch" id="its_a_match">IT'S A MATCH!</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["Messages"],
+  props: ["chat"],
+  methods: {
+    openChat() {
+      // Lógica para abrir el chat
+    },
+  },
 };
 </script>
+
+<style scoped>
+/* Estilos específicos del componente ChatPreview */
+</style>
 
 <style scoped>
 .Messages-container {

@@ -1,17 +1,13 @@
 <template>
-  <div class="message-bubbles">
-    <div v-for="message in messages" :key="message.id" class="message-bubble">
-      <!-- Nombre del remitente -->
-      <h4>{{ message.sender }}</h4>
-      <!-- Contenido del mensaje -->
-      <p>{{ message.content }}</p>
-    </div>
+  <div class="message-bubble" :class="{ 'my-message': message.isMe }">
+    <p>{{ message.content }}</p>
+    <span>{{ message.time }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["messages"],
+  props: ["message"],
 };
 </script>
 
