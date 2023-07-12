@@ -15,7 +15,7 @@
       <a href="\support">Soporte</a>
     </div>
     <div>
-      <a href="/logout">Cerrar sesión</a>
+      <button id="log-out-btn">Log out</button>
     </div>
   </div>
 </template>
@@ -28,19 +28,23 @@ export default {
       currentTab: "matches",
     };
   },
+  mounted() {
+    document.getElementById("log-out-btn").addEventListener("click", () => {
+      this.logout();
+    });
+  },
   methods: {
-    changeTab(tab) {
-      this.currentTab = tab;
-    },
-    redirectToHome() {
-      // Realizar la redirección a la página de inicio
-      this.$router.push("/");
+    logout() {
+      // Eliminar la cookie de acceso
+      document.cookie =
+        "access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      window.location.href = "/";
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 /* Estilo para la barra lateral */
 .sidebar {
   width: 100%; /* Asegura que ocupe todo el ancho del contenedor principal */
@@ -80,7 +84,22 @@ export default {
   transition: all 0.5s ease;
 }
 
-.sidebar a:hover {
+.sidebar #log-out-btn {
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.5s ease;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.sidebar a:hover,
+.sidebar #log-out-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
 }
@@ -107,18 +126,6 @@ export default {
   background-color: rgba(255, 255, 255, 0.3);
   color: white;
   border-radius: 10px;
-}
-
-button {
-  margin: 11px;
-  width: 95%;
-  padding: 10px;
-  border: none;
-  font-size: 15px;
-  background: #ee628e;
-  color: white;
-  border-radius: 6px;
-  font-family: "Montserrat";
 }
 
 .logo2 {

@@ -12,9 +12,24 @@ export default {
   components: {
     SideBar,
   },
-  created() {
-    const accessToken = this.$cookies.get("access_token");
-    console.log(accessToken);
+  mounted() {
+    // Acceder al token JWT almacenado en la cookie
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    let accessToken = null;
+
+    for (const cookie of cookies) {
+      if (cookie.startsWith("access_token=")) {
+        accessToken = cookie.substring("access_token=".length);
+        break;
+      }
+    }
+
+    if (
+      !accessToken &&
+      !["/login", "/register"].includes(window.location.pathname)
+    ) {
+      window.location.href = "/login";
+    }
   },
 };
 </script>

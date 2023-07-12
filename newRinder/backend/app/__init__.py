@@ -18,6 +18,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey
 from flask_bcrypt import Bcrypt
+from flask import make_response
+
 
 import sys
 import uuid
@@ -40,7 +42,7 @@ def create_app(test_config=None):
 
     with app.app_context():
         setup_db(app, test_config['database_path'] if test_config else None)
-        CORS(app, origins='*')
+        CORS(app, origins=['http://localhost:8081'])
         create_default_data(app, db)
 
     @app.after_request
@@ -799,10 +801,10 @@ def create_app(test_config=None):
         elif returned_code != 200:
             abort(returned_code)
         else:
-            #settear cookies
-            set_access_cookies(response, access_token)
-            return jsonify({"success": True, 'message': 'Login successfully', 'access_token': access_token}), returned_code
-
+            response = make_response(jsonify({"success": True, 'message': 'Login successfully', 'access_token': access_token}), returned_code)
+            response.set_cookie('access_token', value=access_token, httponly=True)
+            print(response)
+            return response
     # HANDLE ERROR ---------------------------------------------------------
 
     @app.errorhandler(404)

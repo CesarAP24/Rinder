@@ -4,11 +4,18 @@
       <form id="login-form" @submit="submitForm">
         <div class="container_register">
           <label for="email_login">Correo electrónico:</label>
-          <input type="email" v-model="email" required autocomplete="on" />
+          <input
+            type="email"
+            v-model="email"
+            required
+            autocomplete="on"
+            name="correo"
+          />
 
           <label for="password_login">Contraseña:</label>
           <input
             type="password"
+            name="contraseña"
             v-model="password"
             required
             autocomplete="on"
@@ -40,9 +47,35 @@ export default {
   methods: {
     submitForm(event) {
       event.preventDefault();
+
+      let formulario = document.getElementById("login-form");
+      // Obtener datos del formulario
+      formulario = new FormData(formulario);
+      formulario = JSON.stringify(Object.fromEntries(formulario));
+
+      // Fetch a la ruta http://localhost:5000/api/login
+      fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        body: formulario,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.access_token);
+          this.setAccessTokenCookie(res.access_token);
+
+          // Redirigir a la página de inicio o a otra ruta deseada
+          window.location.href = "/";
+        })
+        .catch((err) => console.log(err));
     },
-    showRegisterForm() {
-      // Aquí puedes agregar la lógica para mostrar el formulario de registro
+    setAccessTokenCookie(access_token) {
+      if (access_token) {
+        // Establecer la cookie con el token de acceso
+        document.cookie = `access_token=${access_token}; path=/;`;
+      }
     },
   },
 };
