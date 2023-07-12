@@ -13,7 +13,7 @@ from flask import (
     abort,
 )
 
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey
@@ -34,6 +34,7 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis'
     app.config['JWT_SECRET_KEY'] = 'pneumonoultramicroscopicsilicovolcanoconiosis'
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     bcrypt = Bcrypt(app)
     jwt = JWTManager(app)
 
@@ -798,6 +799,8 @@ def create_app(test_config=None):
         elif returned_code != 200:
             abort(returned_code)
         else:
+            #settear cookies
+            set_access_cookies(response, access_token)
             return jsonify({"success": True, 'message': 'Login successfully', 'access_token': access_token}), returned_code
 
     # HANDLE ERROR ---------------------------------------------------------
