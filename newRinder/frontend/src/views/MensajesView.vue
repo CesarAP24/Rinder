@@ -56,7 +56,12 @@ export default {
           profileImage: "https://via.placeholder.com/60",
           lastMessage: "Último mensaje aquí",
         },
-        // Otros chats...
+        {
+          id: 23456,
+          name: "Cesar Perales",
+          profileImage: "https://via.placeholder.com/60",
+          lastMessage: "Último mensaje aquí",
+        },
       ],
       selectedChat: null,
     };
