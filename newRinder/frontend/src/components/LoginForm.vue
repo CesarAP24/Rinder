@@ -129,7 +129,7 @@ p {
 
 .container {
   overflow-y: scroll;
-  height: 500px;
+  height: 100vh;
 }
 
 #register-section {

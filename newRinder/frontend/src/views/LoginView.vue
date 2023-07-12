@@ -1,7 +1,7 @@
 <template>
   <div id="total_percent">
     <div class="login-page">
-      <h2>Iniciar sesión</h2>
+      <img src="../assets/logoRinder.PNG" class="logo" />
       <LoginForm />
     </div>
   </div>
@@ -73,6 +73,11 @@ export default {
   max-width: 375px;
 }
 
+.logo {
+  width: 200px; /* Ajusta el ancho deseado */
+  height: auto; /* Mantén la proporción de la imagen */
+}
+
 button:hover {
   cursor: pointer;
   background: #ff0089;
@@ -125,7 +130,7 @@ p {
 
 .container {
   overflow-y: scroll;
-  height: 500px;
+  height: 100vh;
 }
 
 #contraseñas_distintas {

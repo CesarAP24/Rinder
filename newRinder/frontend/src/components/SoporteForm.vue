@@ -88,19 +88,18 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  border-radius: 8px;
-  width: 400px;
+  max-width: 400px;
   padding: 40px;
   background-color: #f5f5f5;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  margin: auto;
 }
 
 h3 {

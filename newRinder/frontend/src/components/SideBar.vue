@@ -2,14 +2,14 @@
   <div class="sidebar">
     <div>
       <div class="title">
-        <img src="static/images/logoTitle.png" />
+        <img src="../assets/rinderText.PNG" class="logo2" />
       </div>
       <a href="\">Rind your love!</a>
       <a @click="changeTab('posts')" style="display: none">Posts</a>
       <a href="\messages">Mensajes</a>
       <a href="\profile">Mi Perfil</a>
       <a href="\plans">Planes</a>
-      <a @click="changeTab('support')">Soporte</a>
+      <a href="\support">Soporte</a>
     </div>
     <div>
       <a href="/logout">Cerrar sesión</a>
@@ -112,5 +112,9 @@ button {
   color: white;
   border-radius: 6px;
   font-family: "Montserrat";
+}
+
+.logo2 {
+  width: 100px;
 }
 </style>

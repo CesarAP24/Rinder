@@ -47,7 +47,7 @@ const routes = [
     },
   },
   {
-    path: "/soporte",
+    path: "/support",
     name: "Soporte",
     components: {
       default: import("../views/SoporteView.vue"),

@@ -232,15 +232,17 @@ h4 {
   font-size: 14px;
 }
 
-#placeholder-plan {
+#placeholder-plan[data-v-43943ed4] {
   background-color: #ff007f;
   width: 300px;
-  height: 130px;
+  height: 133px;
+  margin-left: 0px;
+  margin-top: -4px;
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
   background-size: cover;
   background-repeat: no-repeat;
-  margin-bottom: 21px;
+  margin-bottom: 30px;
   background-position: center;
 }
 
@@ -267,13 +269,14 @@ p[data-v-43943ed4] {
   margin-top: 9px;
 }
 
-*[data-v-43943ed4][data-v-43943ed4] {
+*[data-v-43943ed4][data-v-43943ed4][data-v-43943ed4][data-v-43943ed4] {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
   margin-right: 14px;
-  margin-top: 8px;
+  margin-top: 7px;
   margin-left: 6px;
+  margin-bottom: 17px;
+  text-align: left;
 }
 </style>

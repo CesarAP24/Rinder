@@ -2,7 +2,7 @@
   <div class="match-card">
     <div class="left-matches">
       <button @click="like">
-        <img src="static/images/c_rosado.PNG" alt="Acepta" />
+        <img src="../assets/acepta.PNG" alt="Acepta" />
       </button>
     </div>
     <div class="center-matches">
@@ -20,7 +20,7 @@
     </div>
     <div class="right-matches">
       <button @click="dislike">
-        <img src="static/images/equis.PNG" alt="Rechaza" />
+        <img src="../assets/rechaza.PNG" class="logo" />
       </button>
     </div>
   </div>

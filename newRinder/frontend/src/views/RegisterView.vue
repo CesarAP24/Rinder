@@ -1,6 +1,7 @@
 <template>
   <div id="total_percent">
     <div id="register-page">
+      <img src="../assets/logoRinder.PNG" class="logo" />
       <RegisterForm />
     </div>
   </div>
@@ -117,7 +118,7 @@ p {
 
 .container {
   overflow-y: scroll;
-  height: 500px;
+  height: 100vh;
 }
 
 #contraseñas_distintas {

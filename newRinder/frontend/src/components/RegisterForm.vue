@@ -3,7 +3,6 @@
     <section id="register-section">
       <form @submit="submitForm">
         <div class="container_register">
-          <h3 id="datos">Regístrate aquí</h3>
           <div id="encap">
             <input
               type="text"
@@ -198,7 +197,7 @@ p {
 
 .container {
   overflow-y: scroll;
-  height: 500px;
+  height: 100vh;
 }
 
 #contraseñas_distintas {
