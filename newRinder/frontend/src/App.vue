@@ -12,15 +12,6 @@ export default {
   components: {
     SideBar,
   },
-  data() {
-    return {
-      photo: "https://via.placeholder.com/525x425",
-      name: "Cesar Perales",
-      age: 17,
-      description:
-        "Guapo por naturaleza, con propietaria pero sin dueña :Stars:. Tuyo no por siempre puesto que cesitar es libre, cesitar es amor.",
-    };
-  },
 };
 </script>
 

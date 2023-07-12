@@ -9,7 +9,6 @@
         />
       </div>
       <a href="\">Rind your love!</a>
-      <a @click="changeTab('posts')" style="display: none">Posts</a>
       <a href="\messages">Mensajes</a>
       <a href="\profile">Mi Perfil</a>
       <a href="\plans">Planes</a>

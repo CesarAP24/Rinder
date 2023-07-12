@@ -1,27 +1,15 @@
 <template>
-  <div class="match-card">
-    <div class="left-matches">
-      <button @click="like">
-        <img src="../assets/acepta.PNG" alt="Acepta" />
-      </button>
-    </div>
-    <div class="center-matches">
-      <div class="profile-photo-matches">
-        <img :src="photo" alt="Foto de perfil" />
-        <div class="profile-photo-footer">
-          <h4>{{ name }}</h4>
-          <h4>{{ age }}</h4>
-        </div>
-      </div>
-      <div class="profile-info-matches">
-        <p><strong>Descripción:</strong></p>
-        <p>{{ description }}</p>
+  <div class="center-matches">
+    <div class="profile-photo-matches">
+      <img :src="photo" alt="Foto de perfil" />
+      <div class="profile-photo-footer">
+        <h4>{{ name }}</h4>
+        <h4>{{ age }}</h4>
       </div>
     </div>
-    <div class="right-matches">
-      <button @click="dislike">
-        <img src="../assets/rechaza.PNG" class="logo" />
-      </button>
+    <div class="profile-info-matches">
+      <p><strong>Descripción:</strong></p>
+      <p>{{ description }}</p>
     </div>
   </div>
 </template>
