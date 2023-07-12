@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 import sys
 
 
@@ -33,6 +34,20 @@ class Usuario(db.Model):
     def delete(self):
         returned_code = 200
         try:
+            its_mensajes = Mensaje.query.filter_by(id_usuario=self.id_usuario).all()
+            for mensaje in its_mensajes:
+                db.session.delete(mensaje)
+            its_chats = Chat.query.filter_by(id_usuario=self.id_usuario).all()
+            
+            its_pertenencias = Pertenencia.query.filter_by(id_usuario=self.id_usuario).all()
+
+            for pertenencia in its_pertenencias:
+                db.session.delete(pertenencia)
+
+            its_perfil = Perfil.query.filter_by(id_usuario=self.id_usuario).first()
+            db.session.delete(its_perfil)
+
+            #deletear con cascada
             db.session.delete(self)
             db.session.commit()
         except:

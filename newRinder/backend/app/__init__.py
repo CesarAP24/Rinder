@@ -24,6 +24,7 @@ import uuid
 import json
 from datetime import datetime
 from flask_bcrypt import Bcrypt
+from datetime import timedelta
 
 
 # App
@@ -493,14 +494,37 @@ def create_app(test_config=None):
 
 
     @app.route('/chats', methods=['POST'])
+    @jwt_required()
     def post_chats():
+        id_usuario = get_jwt_identity()
         returned_code = 201
+
+        current_user = Usuario.query.filter_by(id_usuario=id_usuario).first()
+
+        if not current_user:
+            return jsonify({"success": False, "message": 'User does not exist'}), 404
+
         try:
             #crear chat
             chat = Chat();
-            db.session.add(chat)
+            db.session.add(chat )
             db.session.commit()
             id_chat = chat.id_chat
+
+            #crear participacion
+            pertenece = Pertenece(id_usuario=id_usuario, id_chat=id_chat)
+            db.session.add(pertenece)
+            db.session.commit()
+
+            #crear mensaje de administrador
+            mensaje = Mensaje(id_usuario=id_usuario, id_chat=id_chat, contenido='Chat iniciado')
+            chat.cantidad_mensajes = chat.cantidad_mensajes + 1
+            db.session.add(mensaje)
+            db.session.commit()
+
+            chat.id_mensaje = mensaje.id_mensaje
+            db.session.commit()
+
 
         except Exception as e:
             print(sys.exc_info())
@@ -557,11 +581,12 @@ def create_app(test_config=None):
             return jsonify({"success": True, 'message': 'Compra created successfully'}), returned_code
 
     @app.route('/likes', methods=['POST'])
+    @jwt_required()
     def post_likes():
         returned_code = 201
         list_errors = []
         try:
-            body = request.json
+            body = request.get_json()
             id_usuario = get_jwt_identity()
             if 'id_usuario_likeado' not in body:
                 list_errors.append('id_usuario_likeado is required')
@@ -577,8 +602,7 @@ def create_app(test_config=None):
 
                 return jsonify({
                     "success": True,
-                    "message": "Like creado exitosamente",
-                    "like": like.serialize()
+                    "message": "Like creado exitosamente"
                 }), returned_code
         except Exception as e:
             print(sys.exc_info())
@@ -588,27 +612,29 @@ def create_app(test_config=None):
             db.session.close()
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Like', 'errors': list_errors}), returned_code
+        elif returned_code != 201:
+            abort(returned_code)
         else:
             return jsonify({"success": True, 'message': 'Like created successfully'}), returned_code
 
-    # DELETE ---------------------------------------------------------------
+    # DELETE --------------------------------------------------------------
 
-    @app.route('/usuarios/<id>', methods=['DELETE'])
+    @app.route('/usuarios/<correo>', methods=['DELETE'])
     @jwt_required()
-    def delete_users(id):
+    def delete_users(correo):
         list_errors = []
         returned_code = 200
         id_usuario = get_jwt_identity()
 
-        if id_current_user != id:
+        usuario = Usuario.query.filter_by(correo=correo).first()
+
+        if not(usuario):
+            returned_code = 404
+        elif usuario.id_usuario != id_usuario:
             returned_code = 401
         else:
             try:
-                usuario = Usuario.query.get(id_usuario)
-                if usuario:
-                    returned_code = usuario.delete()
-                else:
-                    returned_code = 404
+                returned_code = usuario.delete()
             except Exception as e:
                 print(sys.exc_info())
                 db.session.rollback()
@@ -659,17 +685,18 @@ def create_app(test_config=None):
                 list_errors.append('correo is required')
             else:
                 correo = body['correo']
-            if 'password' not in body:
-                list_errors.append('password is required')
+            if 'contraseña' not in body:
+                list_errors.append('contraseña is required')
             else:
-                password = body['password']
+                password = body['contraseña']
             if len(list_errors) > 0:
                 returned_code = 400
             else:
                 usuario = Usuario.query.filter_by(correo=correo).first()
 
                 if usuario and usuario.check_password(password):
-                    access_token = create_access_token(identity=usuario.id_usuario)
+                    #codigo de acceso de 30 dias
+                    access_token = create_access_token(identity=usuario.id_usuario, expires_delta=timedelta(days=30))
                     returned_code = 200
                 else:
                     returned_code = 401

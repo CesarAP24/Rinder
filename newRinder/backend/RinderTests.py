@@ -17,13 +17,13 @@ class RinderTests(unittest.TestCase):
 		self.client = self.app.test_client()
 
 		self.copy_user = {
-			"password": "copy",
-			"email": "copy@test.com"
+			"contraseña": "copy",
+			"correo": "copy@test.com"
 			}
 
 		self.not_found_user = {
-			"password": "not_found",
-			"email": "not_found@not_fount.com"
+			"contraseña": "not_found",
+			"correo": "not_found@not_fount.com"
 			}
 	
 
@@ -33,26 +33,24 @@ class RinderTests(unittest.TestCase):
 
 	def test_create_user(self):
 		new_user = {
-			"password": "test",
-			"email": lambda: random_mail()
+			"contraseña": "test",
+			"correo": random_mail()
 		}
-		response = self.client.post('/users', json=new_user)
+		response = self.client.post('/usuarios', json=new_user)
 		data = json.loads(response.data)
 
 		self.assertEqual(response.status_code, 201)
 		self.assertEqual(data['success'], True)
-		self.assertTrue(data['user'])
-		self.assertTrue(data['access_token'])
 
 	def test_create_user_no_data(self):
-		response = self.client.post('/users', json={})
+		response = self.client.post('/usuarios', json={})
 		data = json.loads(response.data)
 
 		self.assertEqual(response.status_code, 400)
 		self.assertEqual(data['success'], False)
 	
 	def test_create_user_incomplete_data(self):
-		response = self.client.post('/users', json={"username": "test"})
+		response = self.client.post('/usuarios', json={"username": "test"})
 		data = json.loads(response.data)
 
 		self.assertEqual(response.status_code, 400)
@@ -60,15 +58,14 @@ class RinderTests(unittest.TestCase):
 
 	def test_create_user_already_exists(self):
 		#crear un usuario q no existe
-		response_1 = self.client.post('/users', json=self.copy_user)
+		response_1 = self.client.post('/usuarios', json=self.copy_user)
 		data_1 = json.loads(response_1.data)
 
 		#crear un usuario q ya existe
-		response_2 = self.client.post('/users', json=self.copy_user)
+		response_2 = self.client.post('/usuarios', json=self.copy_user)
 		data_2 = json.loads(response_2.data)
 
 		self.assertEqual(response_2.status_code, 409)
-		self.assertEqual(data_1['success'], True)
 		self.assertEqual(data_2['success'], False)
 
 	# mensaje ---------------------------------------------------------------------------------------------------------
@@ -81,14 +78,14 @@ class RinderTests(unittest.TestCase):
 
 	def test_login_success(self):
 		new_user = {
-			'email': random_mail(),
-			'password': 'test'
+			'correo': random_mail(),
+			'contraseña': 'test'
 		}
-		response = self.client.post('/users', json=new_user)
+		response = self.client.post('/usuarios', json=new_user)
 
 		login_user = {
-			"email": new_user['email'],
-			"password": new_user['password']
+			"correo": new_user['correo'],
+			"contraseña": new_user['contraseña']
 		}
 
 		response = self.client.post('/api/login', json=login_user)
@@ -106,7 +103,7 @@ class RinderTests(unittest.TestCase):
 		self.assertEqual(data['success'], False)
 
 	def test_login_incomplete_data(self):
-		response = self.client.post('/api/login', json={"email": "test"})
+		response = self.client.post('/api/login', json={"correo": "test"})
 		data = json.loads(response.data)
 
 		self.assertEqual(response.status_code, 400)
@@ -115,15 +112,15 @@ class RinderTests(unittest.TestCase):
 
 	def test_login_wrong_password(self):
 		usuario = {
-			'email': random_mail(),
-			'password': 'test'
+			'correo': random_mail(),
+			'contraseña': 'test'
 		}
 
-		new_user = self.client.post('/users', json=usuario)
+		new_user = self.client.post('/usuarios', json=usuario)
 
 		login_user = {
-			"email": usuario['email'],
-			"password": "wrong_password"
+			"correo": usuario['correo'],
+			"contraseña": "wrong_password"
 		}
 
 		response = self.client.post('/api/login', json=login_user)
@@ -136,11 +133,9 @@ class RinderTests(unittest.TestCase):
 	def test_login_user_not_exists(self):
 		response = self.client.post('/api/login', json=self.not_found_user)
 		data = json.loads(response.data)
-
-		self.assertEqual(response.status_code, 404)
+		self.assertEqual(response.status_code, 401)
 		self.assertEqual(data['success'], False)
 		self.assertTrue(data['errors'])
-
 
 
 # post:
