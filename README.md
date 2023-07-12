@@ -13,7 +13,11 @@
 ## Descripción del proyecto:
 
 <p align="justify">
-Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías, entre las cuales destaca TensorFlow. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, utilizando redes neuronales para el aprendizaje automático. Rinder ayuda a los usuarios a establecer conexiones e interacciones con otras personas. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles, aprovechando las capacidades de procesamiento y análisis de datos de la librería TensorFlow.
+Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, permitiendo a los usuarios establecer conexiones e interacciones con otras personas de manera efectiva. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles.
+
+Además, Rinder utiliza Vue.js como su framework de frontend, lo que proporciona una interfaz de usuario dinámica y receptiva. Con Vue.js, los usuarios pueden disfrutar de una experiencia de navegación fluida y enriquecedora en Rinder. Además, Vue.js permite una gestión eficiente de los componentes de la interfaz de usuario, lo que contribuye a la escalabilidad y mantenibilidad del sistema.
+
+Rinder también ha integrado el API de PayPal para ofrecer a los usuarios la posibilidad de adquirir suscripciones premium. A través del uso del API de PayPal, los usuarios pueden realizar pagos seguros y disfrutar de beneficios exclusivos al suscribirse a Rinder. Esta integración con PayPal proporciona una forma conveniente y confiable de acceder a características premium y mejorar la experiencia de citas en Rinder.
 </p>
 
 
@@ -41,9 +45,10 @@ La visión de Rinder es convertirse en líderes dentro de la industria de citas 
 
 El avance del proyecto se encuetra en las siguientes ramas:
 
-main<br>
-AdvanceFE -> Cesar e Isabella<br>
-AdvanceBE -> Cesar y Gianpier<br>
+RestAPI -> backend 
+frontVue -> Frontend
+
+
   
 
 
@@ -92,4 +97,6 @@ localhost
 1.- git clone https://github.com/CesarAP24/Rinder.git <br>
 2.- pip install -r requerimientos.txt <br>
 3.- correr el codigo app.py en la terminal <br> 
+4.- Instalar las dependencias por parte del frontend 
+5.- npm install 
 
