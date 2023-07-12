@@ -6,6 +6,7 @@
           id="profile-section-photo-img"
           src="https://via.placeholder.com/150"
           alt="Foto de perfil"
+          ref="foto_perfil"
         />
         <button id="btn-add-photo" class="btn-add-photo">
           <span class="icon" @click="openEditProfilePhoto">+</span>

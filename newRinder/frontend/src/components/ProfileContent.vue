@@ -1,25 +1,21 @@
 <template>
   <div class="profile-down">
     <div class="profile-info-main rounded-pink-border" style="width: 100%">
-      <h5 id="profile-username" style="font-size: 18px">Username</h5>
+      <h5 id="profile-username" style="font-size: 18px">
+        {{ profile.username }}
+      </h5>
       <br />
       <h6 id="profile-description" style="font-size: 15px; line-height: 25px">
-        <h7>Descripción:</h7> Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-        qui officia deserunt mollit anim id est laborum.
+        <h7>Descripción:</h7> {{ profile.description }}
       </h6>
       <h6 id="profile-nacimiento" style="font-size: 15px; line-height: 35px">
-        <h7>Fecha nacimiento:</h7> 20/05/2005
+        <h7>Fecha nacimiento:</h7> {{ profile.nacimiento }}
       </h6>
       <h6 id="profile-edad" style="font-size: 15px; line-height: 35px">
-        <h7>Edad:</h7> 23
+        <h7>Edad:</h7> {{ profile.edad }}
       </h6>
       <h6 id="profile-genero" style="font-size: 15px; line-height: 35px">
-        <h7>Género:</h7> M
+        <h7>Género:</h7> {{ profile.genero }}
       </h6>
 
       <button class="btn-edit-profile" @click="openEditProfile">
@@ -43,27 +39,39 @@
       class="mensaje-emergente"
       style="display: none"
     >
-      <form id="form-upload">
+      <form id="form-upload" @submit="saveProfile">
         <div>
           <label for="username">Nuevo nombre de usuario:</label>
-          <input type="text" id="username" name="username" />
-        </div>
-        <div>
-          <label for="name">Nuevo nombre:</label>
-          <input type="text" id="name" name="name" />
-        </div>
-        <div>
-          <label for="lastname">Nuevo apellido:</label>
-          <input type="text" id="lastname" name="lastname" />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            v-model="newProfile.username"
+          />
         </div>
         <div>
           <label for="description" id="labelDescrip">Nueva Descripción:</label>
-          <textarea id="description" name="description"></textarea>
+          <textarea
+            id="description"
+            name="description"
+            v-model="newProfile.description"
+          ></textarea>
         </div>
+        <div>
+          <!-- nuevo genero -->
+          <label for="genero">Nuevo género:</label>
+          <input
+            type="text"
+            id="genero"
+            name="genero"
+            v-model="newProfile.genero"
+          />
+        </div>
+        <!-- Add fields for other profile properties such as nacimiento, edad, genero, etc. -->
+        <button type="submit" class="btn-send" id="btn-send-upload">
+          Guardar
+        </button>
       </form>
-      <button type="submit" class="btn-send" id="btn-send-upload">
-        Guardar
-      </button>
     </div>
   </div>
 </template>
@@ -73,7 +81,18 @@ export default {
   name: "ProfileContent",
   data() {
     return {
-      isEditProfileOpen: false, // Initially closed
+      isEditProfileOpen: false,
+      profile: {
+        username: "nombreusuario",
+        description: "Aquí va una breve descripción",
+        nacimiento: "dd/mm/aaaa",
+        edad: "18",
+        genero: "M",
+      },
+      newProfile: {
+        username: "",
+        description: "",
+      },
     };
   },
   methods: {
@@ -84,6 +103,9 @@ export default {
 
       fullDiv.style.display = "block";
       mEmergente2.style.display = "block";
+
+      // Initialize newProfile with current profile data
+      this.newProfile = { ...this.profile };
     },
     closeEditProfile() {
       const fullDiv = document.getElementById("fullscreen");
@@ -92,6 +114,15 @@ export default {
 
       fullDiv.style.display = "none";
       mEmergente2.style.display = "none";
+    },
+    saveProfile(event) {
+      event.preventDefault();
+
+      // Update the profile with new data
+      this.profile = { ...this.newProfile };
+
+      // Close the edit profile form
+      this.closeEditProfile();
     },
   },
 };
@@ -204,21 +235,16 @@ export default {
 
 .profile-down {
   padding: 15px;
-  width: 100%;
+  width: 100vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: left;
   flex-direction: row;
+  height: 100vh;
 }
 
 .profile-info-main,
 .profile-post-box {
   margin-bottom: 20px;
-}
-
-.profile-down .profile-info-main {
-  width: 30%;
-  padding: 20px;
-  height: fit-content;
 }
 
 .profile-posts {
@@ -510,7 +536,7 @@ input[type="file"]:focus::-ms-browse {
   padding: 15px;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: left;
 }
 
 .profile-info-immage {
@@ -524,7 +550,7 @@ input[type="file"]:focus::-ms-browse {
   border: 4px solid white;
   align-items: center;
   justify-content: flex-end;
-  text-align: right; /* Alineación del texto */
+  text-align: rigth; /* Alineación del texto */
 }
 
 .profile-info-immage img {
@@ -533,27 +559,16 @@ input[type="file"]:focus::-ms-browse {
   object-fit: cover; /* Ajuste de la imagen para cubrir el contenedor sin distorsión */
 }
 
-.profile-down {
-  padding: 15px;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-}
-
 .profile-info-main,
 .profile-post-box {
   margin-bottom: 20px;
 }
 
 .profile-down .profile-info-main {
-  width: 30%;
+  width: 100%;
   padding: 20px;
   height: fit-content;
-}
-
-.profile-posts {
-  width: 65%;
+  align-items: left;
 }
 
 .profile-post-header {
@@ -685,6 +700,15 @@ button.profile-post-like-btn {
   height: 100vh;
   z-index: 1000; /* asegúrate de que tenga un índice z alto para estar por encima de todo lo demás */
   background-color: rgba(0, 0, 0, 0.5); /* un fondo negro transparente */
+}
+
+.profile-info-main {
+  flex-grow: 1;
+  margin-right: 20px; /* Espacio entre el elemento principal y los posts */
+}
+
+.profile-posts {
+  flex-grow: 1;
 }
 
 .mensaje-emergente2 {

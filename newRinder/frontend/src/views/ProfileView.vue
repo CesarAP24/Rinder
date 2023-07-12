@@ -2,11 +2,9 @@
   <div class="about">// cabecera (componente) // contenido (componente)</div>
 </template> -->
 <template>
-  <div id="app">
-    <div class="profile-container">
-      <ProfileHeader></ProfileHeader>
-      <ProfileContent></ProfileContent>
-    </div>
+  <div class="profile-container">
+    <ProfileHeader></ProfileHeader>
+    <ProfileContent></ProfileContent>
   </div>
 </template>
 

@@ -1,11 +1,10 @@
 <template>
-  <div id="app"></div>
   <div class="Planes" id="basicPlan">
     <div id="placeholder-plan"></div>
-    <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
+    <p class="Planes-abajo">Aceptamos donaciones para mejoras :)</p>
     <p class="Planes-abajo">____________________________________________</p>
     <div class="Button-Plan">
-      <button class="Planess" @click="showPayPal">Plan Básico (Actual)</button>
+      <button class="Planess" @click="showPayPal">Dona aquí</button>
     </div>
   </div>
 </template>

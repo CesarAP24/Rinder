@@ -22,7 +22,6 @@
           </div>
         </div>
         <div class="paypal" v-show="showPayPalButton" id="pal">
-          <h5></h5>
           <PayPalButton />
         </div>
       </div>

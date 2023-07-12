@@ -21,20 +21,14 @@
             <li>Completa el formulario de soporte a continuación</li>
           </ul>
         </div>
-        <SoporteForm></SoporteForm>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SoporteForm from "../components/SoporteForm.vue";
-
 export default {
   name: "SoporteView",
-  components: {
-    SoporteForm,
-  },
 };
 </script>
 

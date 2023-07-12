@@ -38,10 +38,111 @@ export default {
   },
   methods: {
     like() {
-      // Lógica para manejar el evento de "like"
+      this.moveMatchesOutTop();
+      setTimeout(() => {
+        this.showNewUser();
+      }, 300);
+      setTimeout(() => {
+        this.moveMatchesInBottom();
+      }, 800);
+
+      fetch("/Users/match/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // body: JSON.stringify({
+        //   user_id: this.$refs.foto_perfil.getAttribute(
+        //     "profile-section-photo-img"
+        //   ),
+        // }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            if (data.success && data.match) {
+              //mostrar
+              alert("¡Es un match!");
+              //ir a mensajes
+              this.$router.push("/Mensajes");
+            }
+          } else {
+            console.log("error");
+          }
+        });
     },
     dislike() {
-      // Lógica para manejar el evento de "dislike"
+      this.moveMatchesOutBottom();
+      setTimeout(() => {
+        this.showNewUser();
+      }, 300);
+      setTimeout(() => {
+        this.moveMatchesInTop();
+      }, 800);
+    },
+    moveMatchesInTop() {
+      const centerMatches = this.$el.querySelector(".center-matches");
+      //remover todas las clases
+      centerMatches.classList.remove(
+        "slide-out-bottom",
+        "slide-in-bottom",
+        "slide-out-top"
+      );
+      centerMatches.classList.add("slide-in-top");
+    },
+    moveMatchesOutBottom() {
+      const centerMatches = this.$el.querySelector(".center-matches");
+      //remover todas las clases
+      centerMatches.classList.remove(
+        "slide-in-top",
+        "slide-in-bottom",
+        "slide-out-top"
+      );
+      centerMatches.classList.add("slide-out-bottom");
+    },
+    moveMatchesInBottom() {
+      const centerMatches = this.$el.querySelector(".center-matches");
+      //remover todas las clases
+      centerMatches.classList.remove(
+        "slide-out-bottom",
+        "slide-in-top",
+        "slide-out-top"
+      );
+      centerMatches.classList.add("slide-in-bottom");
+    },
+    moveMatchesOutTop() {
+      const centerMatches = this.$el.querySelector(".center-matches");
+      //remover todas las clases
+      centerMatches.classList.remove(
+        "slide-out-bottom",
+        "slide-in-bottom",
+        "slide-in-top"
+      );
+      centerMatches.classList.add("slide-out-top");
+    },
+    showNewUser() {
+      fetch("/Users/match", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          this.photo = !data.data.ruta_photo
+            ? "static/profilePhotos/default/defaultProfile.png"
+            : "static/profilePhotos/" +
+              data.data.user_id +
+              "/" +
+              data.data.ruta_photo;
+          this.name = data.data.nombre;
+          this.age = data.data.edad;
+          this.description = data.data.descripcion;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
