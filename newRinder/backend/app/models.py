@@ -120,7 +120,8 @@ class Perfil(db.Model):
             'nacimiento': self.nacimiento,
             'genero': self.genero,
             'descripcion': self.descripcion,
-            'ruta_photo': self.ruta_photo
+            'ruta_photo': self.ruta_photo,
+            'correo': Usuario.query.get(self.id_usuario).correo if Usuario.query.get(self.id_usuario) else None,
         }
 
 

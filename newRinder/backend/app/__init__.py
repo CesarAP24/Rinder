@@ -91,6 +91,7 @@ def create_app(test_config=None):
 
         try:
             chats = Pertenece.query.filter_by(id_usuario=id).all()
+            chats = Chat.query.filter(Chat.id_chat.in_([chat.id_chat for chat in chats])).all()
             if not chats:
                 code = 404
                 error_message = "No se encontraron chats"
@@ -106,22 +107,28 @@ def create_app(test_config=None):
         elif code != 200:
             abort(code)
         else:
+            print([chat.serialize() for chat in chats])
             return jsonify({
                 'success': True,
                 'chats': [chat.serialize() for chat in chats]
             }), code
 
     @app.route('/perfiles', methods=['GET'])
+    @jwt_required()
     def get_perfil():
         code = 200
         try:
             id = get_jwt_identity()
 
-            if id:
-                ids_likeados = (db.session.query(LikeaPerfil.id_usuario).filter(LikeaPerfil.id_usuario == "mi id").subquery())
-                perfiles = Perfil.query.filter(Perfil.id_usuario.in_(ids_likeados)).all()
-            else:
-                perfiles = Perfil.query.all()
+            #usuario existe?
+            usuario = Usuario.query.filter_by(id_usuario=id).first()
+            if not usuario:
+                abort(404)
+
+            #buscar perfiles que el usuario no haya likeado
+            likes = Like.query.filter_by(id_usuario=id).all()
+            id_likes = [like.id_usuario_likeado for like in likes]
+            perfiles = Perfil.query.filter(Perfil.id_usuario.notin_(id_likes)).all()
 
             if not perfiles:
                 code = 404
@@ -142,7 +149,6 @@ def create_app(test_config=None):
                 'success': True,
                 'perfiles': [perfil.serialize() for perfil in perfiles]
             }), code
-
 
     @app.route('/suscripciones', methods=['GET'])
     def get_suscriptions():
@@ -180,9 +186,17 @@ def create_app(test_config=None):
         }), 200
 
 
-    @app.route('/usuarios/<id>/compras', methods=['GET'])
+    @app.route('/usuarios/<correo>/compras', methods=['GET'])
     @jwt_required()
-    def get_compras_usuario(id):
+    def get_compras_usuario(correo):
+        user = Usuario.query.filter_by(correo=correo).first()
+        if not user:
+            return jsonify({
+                'success': False,
+                'error': 'No se encontró el usuario'
+            }), 404
+        else:
+            id = user.id_usuario
         if get_jwt_identity() != id:
             abort(401)
 
@@ -213,52 +227,67 @@ def create_app(test_config=None):
 
 
     # PATCH ----------------------------------------------------------------
-    @app.route('/perfiles', methods=['PATCH'])
+    @app.route('/perfiles/<correo>', methods=['PATCH'])
     @jwt_required()
-    def patch_perfil():
+    def patch_perfil(correo):
         returned_code = 200
         list_errors = []
+        search_user = Usuario.query.filter_by(correo=correo).first()
+        if not(search_user):
+            return jsonify({
+                'success': False,
+                'error': 'El usuario no existe'
+            }), 404
+
+        id_usuario = get_jwt_identity()
+        
+        if search_user.id_usuario != id_usuario:
+            abort(401)
+
         try:
-            id_usuario = get_jwt_identity()
-            body = request.json
-            Perfil = Perfil.query.filter_by(id_usuario=id_usuario).first()
-            if Perfil:
+            body = request.get_json()
+
+            profile = Perfil.query.filter_by(id_usuario=id_usuario).first()
+            
+            if profile:
                 if 'nombre' in body:
                     nombre = body['nombre']
-                    Perfil.nombre = nombre
+                    profile.nombre = nombre
                 if 'apellido' in body:
                     apellido = body['apellido']
-                    Perfil.apellido = apellido
+                    profile.apellido = apellido
                 if 'descripcion' in body:
                     descripcion = body['descripcion']
-                    Perfil.descripcion = descripcion
+                    profile.descripcion = descripcion
                 if 'ruta_photo' in body:
                     ruta_photo = body['ruta_photo']
-                    Perfil.ruta_photo = ruta_photo
-                if 'ruta_network' in body:
-                    ruta_network = body['ruta_network']
-                    Perfil.ruta_network = ruta_network
+                    profile.ruta_photo = ruta_photo
 
-                Perfil.modified_at = datetime.utcnow()
+                profile.modified_at = datetime.utcnow()
                 db.session.commit()
             else:
                 returned_code = 404
                 list_errors.append('Perfil not found')
 
         except Exception as e:
+            print(e)
             returned_code = 500
-            list_errors.append(str(e))
-        finally:
-            if returned_code == 200:
-                return jsonify({
-                    'success': True,
-                    'perfil': Perfil.serialize()
-                }), returned_code
-            else:
-                return jsonify({
-                    'success': False,
-                    'errors': list_errors
-                }), returned_code
+
+
+        if returned_code == 404:
+            return jsonify({
+                'success': False,
+                'error': list_errors
+            }), 404
+        elif returned_code != 200:
+            abort(returned_code)
+        else:
+            return jsonify({
+                'success': True,
+                'message': 'Perfil actualizado exitosamente',
+                'Perfil': profile.serialize()
+            }), returned_code
+
 
     @app.route('/usuarios', methods=['PATCH'])
     @jwt_required()
@@ -297,7 +326,7 @@ def create_app(test_config=None):
         if returned_code == 200:
             return jsonify({
                 'success': True,
-                'usuario': usuario.serialize()
+                'correo': usuario.correo
             }), returned_code
         else:
             return jsonify({
