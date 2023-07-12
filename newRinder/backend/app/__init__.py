@@ -92,9 +92,25 @@ def create_app(test_config=None):
         try:
             chats = Pertenece.query.filter_by(id_usuario=id).all()
             chats = Chat.query.filter(Chat.id_chat.in_([chat.id_chat for chat in chats])).all()
+            chats = [chat.serialize() for chat in chats]
+
             if not chats:
                 code = 404
                 error_message = "No se encontraron chats"
+            else:
+                #asignar la photo del chat que no sea la foto del usuario
+                for chat in range(len(chats)):
+                    #buscar usuarios que pertenecen al chat
+                    usuarios = Pertenece.query.filter_by(id_chat=chats[chat]['id_chat']).all()
+                    id_usuarios = [usuario.id_usuario for usuario in usuarios]
+                    perfiles = Perfil.query.filter(Perfil.id_usuario.in_(id_usuarios)).all()
+
+                    if len(usuarios) == 1:
+                        chats[chat]['photo'] = perfiles[0].ruta_photo
+                    else:
+                        for perfil in perfiles:
+                            if perfil.id_usuario != id:
+                                chats[chat]['photo'] = perfil.ruta_photo
         except Exception as e:
             print(e)
             code = 500
@@ -107,10 +123,9 @@ def create_app(test_config=None):
         elif code != 200:
             abort(code)
         else:
-            print([chat.serialize() for chat in chats])
             return jsonify({
                 'success': True,
-                'chats': [chat.serialize() for chat in chats]
+                'chats': chats
             }), code
 
     @app.route('/perfiles', methods=['GET'])
@@ -334,48 +349,48 @@ def create_app(test_config=None):
                 'errors': list_errors
             }), returned_code
 
-    @app.route('/compras', methods=['PATCH'])
-    @jwt_required()
-    def patch_compras():
-        returned_code = 200
-        list_errors = []
-        try:
-            id_usuario = get_jwt_identity()
-            body = request.json
-            compra = Compra.query.filter_by(id_usuario=id_usuario).first()
+    # @app.route('/compras', methods=['PATCH'])
+    # @jwt_required()
+    # def patch_compras():
+    #     returned_code = 200
+    #     list_errors = []
+    #     try:
+    #         id_usuario = get_jwt_identity()
+    #         body = request.json
+    #         compra = Compra.query.filter_by(id_usuario=id_usuario).first()
 
-            if compra:
-                if 'suscripcion' in body:
-                    suscripcion = body['suscripcion']
-                    compra.suscripcion = suscripcion
-                if 'precio_compra' in body:
-                    precio_compra = body['precio_compra']
-                    compra.precio_compra = precio_compra
+    #         if compra:
+    #             if 'suscripcion' in body:
+    #                 suscripcion = body['suscripcion']
+    #                 compra.suscripcion = suscripcion
+    #             if 'precio_compra' in body:
+    #                 precio_compra = body['precio_compra']
+    #                 compra.precio_compra = precio_compra
 
-                db.session.commit()
-            else:
-                returned_code = 404
-                list_errors.append(
-                    'Compra no encontrada para el usuario actual')
-                return jsonify({
-                    'success': False,
-                    'errors': list_errors
-                }), returned_code
+    #             db.session.commit()
+    #         else:
+    #             returned_code = 404
+    #             list_errors.append(
+    #                 'Compra no encontrada para el usuario actual')
+    #             return jsonify({
+    #                 'success': False,
+    #                 'errors': list_errors
+    #             }), returned_code
 
-        except Exception as e:
-            returned_code = 500
-            list_errors.append(str(e))
+    #     except Exception as e:
+    #         returned_code = 500
+    #         list_errors.append(str(e))
 
-        if returned_code == 200:
-            return jsonify({
-                'success': True,
-                'compra': compra.serialize()
-            }), returned_code
-        else:
-            return jsonify({
-                'success': False,
-                'errors': list_errors
-            }), returned_code
+    #     if returned_code == 200:
+    #         return jsonify({
+    #             'success': True,
+    #             'compra': compra.serialize()
+    #         }), returned_code
+    #     else:
+    #         return jsonify({
+    #             'success': False,
+    #             'errors': list_errors
+    #         }), returned_code
 
     # POST -----------------------------------------------------------------
 
@@ -454,7 +469,7 @@ def create_app(test_config=None):
         returned_code = 201
         list_errors = []
         try:
-            body = request.json
+            body = request.get_json()
             currently_chat = Chat.query.filter_by(id_chat=id_chat).first()
             id_last_mensaje = currently_chat.id_mensaje
             if not currently_chat:
@@ -473,23 +488,20 @@ def create_app(test_config=None):
                 db.session.add(mensaje)
                 db.session.commit()
                 currently_chat.id_mensaje = id_mensaje
+                currently_chat.cantidad_mensajes = currently_chat.cantidad_mensajes + 1
                 db.session.commit()
 
-                return jsonify({
-                    "success": True,
-                    "message": "Mensaje creado exitosamente",
-                    "mensaje": mensaje.serialize()
-                }), returned_code
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
-        finally:
-            db.session.close()
+
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Mensaje', 'errors': list_errors}), returned_code
+        elif returned_code != 201:
+            abort(returned_code)
         else:
-            return jsonify({"success": True, 'message': 'Mensaje created successfully'}), returned_code
+            return jsonify({"success": True, "message": 'Mensaje created successfully', "mensaje": mensaje.serialize()})
 
     @app.route('/suscripciones', methods=['POST'])
     @jwt_required()
@@ -554,6 +566,9 @@ def create_app(test_config=None):
         if not current_user:
             return jsonify({"success": False, "message": 'User does not exist'}), 404
 
+        profile = Perfil.query.filter_by(id_usuario=id_usuario).first()
+        chat_photo = profile.ruta_photo
+
         try:
             #crear chat
             chat = Chat();
@@ -589,6 +604,12 @@ def create_app(test_config=None):
                 'message': 'Chat created',
                 'id_chat': id_chat
             }), returned_code
+
+    @app.route('/chats/usuarios', methods=['POST'])
+    @jwt_required()
+    def post_chats_usuarios():
+        #verificar que pertenesca al chat
+        pass
 
     @app.route('/compras', methods=['POST'])
     @jwt_required()
