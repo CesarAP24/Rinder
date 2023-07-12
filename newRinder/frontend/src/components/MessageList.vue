@@ -1,21 +1,23 @@
 <template>
-  <div class="contact-box" :data-id="chat.id" @click="openChat">
+  <div class="contact-box" data-id="1">
     <div class="contact-box-immage">
-      <img :src="chat.profileImage" alt="Foto de perfil" />
+      <img src="https://via.placeholder.com/60" alt="Foto de perfil" />
     </div>
     <div class="contact-box-message">
-      <p>
-        <strong>{{ chat.name }}</strong>
-      </p>
-      <p>{{ chat.lastMessage }}</p>
-      <div v-if="chat.isMatch" id="its_a_match">IT'S A MATCH!</div>
+      <p><strong>Cesar Perales</strong></p>
+      <p>Last message here!</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["chat"],
+  props: {
+    name: String,
+    image: String,
+    lastMessage: String,
+    id: String,
+  },
   methods: {
     openChat() {
       // Lógica para abrir el chat
@@ -114,6 +116,7 @@ export default {
 
 .left-Messages-container .contact-box .contact-box-message p {
   margin: 0;
+  text-align: left;
 }
 
 /*right container - MESSAGES*/

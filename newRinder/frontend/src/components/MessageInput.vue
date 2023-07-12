@@ -1,12 +1,7 @@
 <template>
-  <div class="message-input">
-    <input
-      type="text"
-      placeholder="Escribe un mensaje"
-      v-model="message"
-      @keydown.enter="sendMessage"
-    />
-    <button @click="sendMessage">Enviar</button>
+  <div class="send-Messages-container">
+    <input type="text" placeholder="Escribe un mensaje" id="mensaje_value" />
+    <button id="send-btn" class="send-btn">Enviar</button>
   </div>
 </template>
 
@@ -33,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-.Messages-container {
+.messages-view {
   display: flex;
   flex-direction: row;
   justify-content: stretch;
@@ -259,14 +254,15 @@ export default {
   background-color: rgb(31 31 31 / 5%);
 }
 
-.emoji-btn,
 .file-btn,
 .send-btn {
   font-size: 16px;
-  padding: 10px;
-  border-radius: 100%;
+  padding: 14px;
+  width: 81px;
+  border-radius: 9px;
   border: 0;
-  background-color: transparent;
+  margin: 0;
+  background-color: #ff008d;
 }
 
 /*hover*/

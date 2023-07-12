@@ -1,68 +1,60 @@
 <template>
   <div class="messages-view">
-    <div class="left-messages-container">
+    <div class="left-Messages-container">
       <h3>Mensajes</h3>
-      <div id="show_chats" style="display: none">
-        Aquí se van a mostrar tus chats!
-      </div>
       <div class="messages-list-container" id="messages-list-container">
-        <message-list :chats="chats" @selectChat="openChat" />
+        <MessageList
+          v-for="chat in chats"
+          :key="chat.id"
+          :name="chat.name"
+          :image="chat.profileImage"
+          :lastMessage="chat.lastMessage"
+          :id="chat.id"
+          @click="openChat(chat)"
+        />
       </div>
     </div>
 
-    <div class="right-messages-container">
-      <div id="main-messages-container" class="main-messages-container">
-        <div class="user-message-info" v-if="selectedChat">
-          <img :src="selectedChat.profileImage" alt="Foto de perfil" />
-          <h4>{{ selectedChat.name }}</h4>
-          <p><strong>Descripción: </strong>{{ selectedChat.description }}</p>
+    <div class="right-Messages-container">
+      <div id="main-Messages-container" class="main-Messages-container">
+        <div class="user-Message-info">
+          <div id="user-Message-image">
+            <img
+              src="http://localhost:5000/static/images/casurpiemelisante/imagen.jpg"
+              alt="Foto de perfil"
+            />
+          </div>
+          <h4>César Perales</h4>
+          <p>
+            <strong>Descripción: </strong>Con propietaria pero sin dueña siuuu
+          </p>
         </div>
-        <div class="user-message-box" id="user-message-box">
-          <message-bubble
-            v-for="message in selectedChat ? selectedChat.messages : []"
-            :key="message.id"
-            :message="message"
-          />
-        </div>
+        <div class="user-Message-box" id="user-Message-box"></div>
       </div>
-      <message-input v-if="selectedChat" />
+      <MessageInput />
     </div>
   </div>
 </template>
 
 <script>
 import MessageInput from "@/components/MessageInput.vue";
-import MessageBubble from "@/components/MessageBubbles.vue";
+// import MessageBubble from "@/components/MessageBubbles.vue";
 import MessageList from "@/components/MessageList.vue";
 
 export default {
   components: {
     MessageInput,
-    MessageBubble,
+    // MessageBubble,
     MessageList,
   },
   data() {
     return {
       chats: [
-        // Datos de ejemplo de los chats
         {
-          id: 1,
+          id: 34567890,
           name: "Cesar Perales",
           profileImage: "https://via.placeholder.com/60",
           lastMessage: "Último mensaje aquí",
-          isMatch: true,
-          description: "Con propietaria pero sin dueña siuuu",
-          messages: [
-            { id: 1, content: "Hola", time: "10:00", isMe: false },
-            { id: 2, content: "Hola, ¿cómo estás?", time: "10:05", isMe: true },
-            {
-              id: 3,
-              content: "Bien, gracias. ¿Y tú?",
-              time: "10:10",
-              isMe: false,
-            },
-            // ...
-          ],
         },
         // Otros chats...
       ],
@@ -78,7 +70,23 @@ export default {
 </script>
 
 <style>
-.Messages-container {
+#user-Message-image {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+#user-Message-image img {
+  height: 100%;
+}
+
+.messages-view {
   display: flex;
   flex-direction: row;
   justify-content: stretch;
@@ -88,10 +96,6 @@ export default {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-.contact-box-immage img {
-  height: 100%;
 }
 
 /*left container ---- CONTACTOS*/
@@ -217,12 +221,6 @@ export default {
 .right-Messages-container .main-Messages-container .user-Message-info:hover {
   background-color: rgba(0, 0, 0, 0.035);
   cursor: pointer;
-}
-
-.right-Messages-container .main-Messages-container .user-Message-info img {
-  border-radius: 100%;
-  overflow: hidden;
-  margin-bottom: 25px;
 }
 
 .right-Messages-container .main-Messages-container .user-Message-box {
