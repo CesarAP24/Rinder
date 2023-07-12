@@ -358,29 +358,22 @@ def create_app(test_config=None):
                 list_errors.append('correo is required')
             else:
                 correo = body['correo']
-                if Usuario.query.filter_by(correo=correo).first():
-                    list_errors.append('correo already exists')
             if 'contraseña' not in body:
                 list_errors.append('contraseña is required')
             else:
-                hashed_password = bcrypt.generate_password_hash(
-                    body['contraseña']).decode('utf-8')
-                contraseña = hashed_password
+                contraseña = body['contraseña']
 
             if len(list_errors) > 0:
                 returned_code = 400
             else:
-                id_usuario = str(uuid.uuid4())
-                usuario = Usuario(id_usuario=id_usuario,
-                                  correo=correo, contraseña=contraseña)
-                db.session.add(usuario)
-                db.session.commit()
+                search_user = Usuario.query.filter_by(correo=correo).first()
 
-                return jsonify({
-                    "success": True,
-                    "message": "Usuario creado exitosamente",
-                    "usuario": usuario.serialize()
-                }), returned_code
+                if search_user:
+                    returned_code = 409
+                else:
+                    usuario = Usuario(correo, contraseña)
+                    id_usuario = usuario.insert()
+
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
@@ -389,8 +382,16 @@ def create_app(test_config=None):
             db.session.close()
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating User', 'errors': list_errors}), returned_code
+        elif returned_code == 409:
+            return jsonify({"success": False, "message": 'User already exists'}), returned_code
+        elif returned_code != 201:
+            abort(returned_code)
         else:
-            return jsonify({"success": True, 'message': 'User created successfully'}), returned_code
+            return jsonify({
+                'success': True,
+                'message': 'User created',
+                'id_usuario': id_usuario
+            }), returned_code
 
     @app.route('/chats/<id>/mensajes', methods=['POST'])
     @jwt_required()
@@ -461,62 +462,60 @@ def create_app(test_config=None):
                 if len(list_errors) > 0:
                     returned_code = 400
                 else:
-                    suscripcion = Suscripcion(nombre=nombre, precio=precio)
-                    db.session.add(suscripcion)
-                    db.session.commit()
-
-                    return jsonify({
-                        "success": True,
-                        "message": "Suscripcion creada exitosamente",
-                        "suscripcion": suscripcion.serialize()
-                    }), returned_code
+                    suscripcion_search = Suscripcion.query.filter_by(nombre=nombre).first()
+                    if suscripcion_search:
+                        returned_code = 409
+                    else:
+                        suscripcion = Suscripcion(nombre=nombre, precio=precio)
+                        db.session.add(suscripcion)
+                        db.session.commit()
+                        returned_code = 201
             else:
-                return jsonify({"success": False, "message": 'No tienes permiso para crear suscripciones'}), 401
+                returned_code = 401
 
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
-        finally:
-            db.session.close()
 
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Suscripcion', 'errors': list_errors}), returned_code
+        elif returned_code == 409:
+            return jsonify({"success": False, "message": 'Suscripcion already exists'}), returned_code
+        elif returned_code != 201:
+            abort(returned_code)
         else:
-            return jsonify({"success": True, 'message': 'Suscripcion created successfully'}), returned_code
+            return jsonify({
+                'success': True,
+                'message': 'Suscripcion created',
+                'suscripcion': suscripcion.serialize()
+            }), returned_code
+
 
     @app.route('/chats', methods=['POST'])
     def post_chats():
         returned_code = 201
-        list_errors = []
         try:
-            body = request.json
-            if 'id_mensaje' not in body:
-                list_errors.append('The chat is empty')
-            else:
-                id_mensaje = body['id_mensaje']
-            if len(list_errors) > 0:
-                returned_code = 400
-            else:
-                chat = Chat(id_mensaje=id_mensaje)
-                db.session.add(chat)
-                db.session.commit()
+            #crear chat
+            chat = Chat();
+            db.session.add(chat)
+            db.session.commit()
+            id_chat = chat.id_chat
 
-                return jsonify({
-                    "success": True,
-                    "message": "Chat creado exitosamente",
-                    "chat": chat.serialize()
-                }), returned_code
         except Exception as e:
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
-        finally:
-            db.session.close()
-        if returned_code == 400:
-            return jsonify({"success": False, "message": 'Error creating Chat', 'errors': list_errors}), returned_code
+
+        if returned_code != 201:
+            abort(returned_code)
         else:
-            return jsonify({"success": True, 'message': 'Chat created successfully'}), returned_code
+            return jsonify({
+                'success': True,
+                'message': 'Chat created',
+                'id_chat': id_chat
+            }), returned_code
+
 
     @app.route('/compras', methods=['POST'])
     def post_compras():
@@ -550,8 +549,8 @@ def create_app(test_config=None):
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
-        finally:
-            db.session.close()
+
+
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Compra', 'errors': list_errors}), returned_code
         else:
@@ -594,77 +593,105 @@ def create_app(test_config=None):
 
     # DELETE ---------------------------------------------------------------
 
-    @app.route('/usuarios', methods=['DELETE'])
-    def delete_users():
+    @app.route('/usuarios/<id>', methods=['DELETE'])
+    @jwt_required()
+    def delete_users(id):
         list_errors = []
         returned_code = 200
-        try:
-            id_usuario = get_jwt_identity()
-            usuario = Usuario.query.get(id_usuario)
-            if usuario:
-                db.session.delete(usuario)
-                db.session.commit()
-                return jsonify({
-                    "success": True,
-                    "message": "Usuario eliminado exitosamente"
-                }), returned_code
-            else:
-                return jsonify({"success": False, "message": 'Usuario no encontrado'}), 404
-        except Exception as e:
-            print(sys.exc_info())
-            db.session.rollback()
-            returned_code = 500
-        finally:
-            db.session.close()
-        if returned_code == 400:
-            return jsonify({"success": False, "message": 'Error deleting Usuario', 'errors': list_errors}), returned_code
-        else:
-            return jsonify({"success": True, 'message': 'Usuario deleted successfully'}), returned_code
+        id_usuario = get_jwt_identity()
 
-    @app.route('/suscripciones', methods=['DELETE'])
+        if id_current_user != id:
+            returned_code = 401
+        else:
+            try:
+                usuario = Usuario.query.get(id_usuario)
+                if usuario:
+                    returned_code = usuario.delete()
+                else:
+                    returned_code = 404
+            except Exception as e:
+                print(sys.exc_info())
+                db.session.rollback()
+                returned_code = 500
+
+        if returned_code == 404:
+            return jsonify({"success": False, "message": 'Usuario no encontrado'}), returned_code
+        elif returned_code != 200:
+            abort(returned_code)
+        else:
+            return jsonify({"success": True, 'message': 'Usuario eliminado exitosamente'}), returned_code
+
+    @app.route('/suscripciones/<nombre>', methods=['DELETE'])
+    @jwt_required()
     def delete_suscriptions():
         creadores = ['casurpiemelisante', 'giansegg', 'isabellaromero']
         id_usuario = get_jwt_identity()
-        returned_code = 201
-        list_errors = []
-        try:
-            body = request.json
-            if id_usuario not in creadores:
-                list_errors.append('permiso denegado')
-            else:
-                if 'nombre' not in body:
-                    list_errors.append('nombre is required')
-                else:
-                    nombre = body['nombre']
-                if len(list_errors) > 0:
-                    returned_code = 400
-                else:
-                    suscripcion = Suscripcion.query.get(nombre)
-                    if suscripcion:
-                        db.session.delete(suscripcion)
-                        db.session.commit()
-                        return jsonify({
-                            "success": True,
-                            "message": "Suscripcion eliminada exitosamente"
-                        }), returned_code
-                    else:
-                        return jsonify({"success": False, "message": 'Suscripcion no encontrada'}), 404
-        except Exception as e:
-            print(sys.exc_info())
-            db.session.rollback()
-            returned_code = 500
-        finally:
-            db.session.close()
-        if returned_code == 400:
-            return jsonify({"success": False, "message": 'Error deleting Suscripcion', 'errors': list_errors}), returned_code
+        returned_code = 200
+
+        if id_usuario not in creadores:
+            abort(401)
+
         else:
-            return jsonify({"success": True, 'message': 'Suscripcion deleted successfully'}), returned_code
+            suscripcion = Suscripcion.query.filter_by(nombre=nombre).first()
+            if suscripcion:
+                db.session.delete(suscripcion)
+                db.session.commit()
+                returned_code = 200
+            else:
+                returned_code = 404
+
+        if returned_code == 404:
+            return jsonify({"success": False, "message": 'Suscripcion no encontrada'}), returned_code
+        elif returned_code != 200:
+            abort(returned_code)
+        else:
+            return jsonify({"success": True, 'message': 'Suscripcion eliminada exitosamente'}), returned_code
 
     # LOGIN ----------------------------------------------------------------
 
     @app.route('/api/login', methods=['POST'])
     def login():
-        abort(501)
+        returned_code = 200
+        list_errors = []
+        try:
+            body = request.json
+            if 'correo' not in body:
+                list_errors.append('correo is required')
+            else:
+                correo = body['correo']
+            if 'password' not in body:
+                list_errors.append('password is required')
+            else:
+                password = body['password']
+            if len(list_errors) > 0:
+                returned_code = 400
+            else:
+                usuario = Usuario.query.filter_by(correo=correo).first()
+
+                if usuario and usuario.check_password(password):
+                    access_token = create_access_token(identity=usuario.id_usuario)
+                    returned_code = 200
+                else:
+                    returned_code = 401
+                    list_errors.append('Usuario o contraseña incorrectos')
+
+        except Exception as e:
+            print(sys.exc_info())
+            db.session.rollback()
+            returned_code = 500
+        finally:
+            db.session.close()
+
+
+        if returned_code == 400:
+            return jsonify({"success": False, "message": 'Error logging in', 'errors': list_errors}), returned_code
+        elif returned_code == 401:
+            return jsonify({"success": False, "message": 'Error logging in', 'errors': list_errors}), returned_code
+
+        elif returned_code != 200:
+            abort(returned_code)
+        else:
+            return jsonify({"success": True, 'message': 'Login successfully', 'access_token': access_token}), returned_code
 
     # HANDLE ERROR ---------------------------------------------------------
 
@@ -687,6 +714,10 @@ def create_app(test_config=None):
     @app.errorhandler(403)
     def forbidden(error):
         return jsonify({"success": False, "message": 'Forbidden'}), 403
+
+    @app.errorhandler(409)
+    def conflict(error):
+        return jsonify({"success": False, "message": 'Conflict'}), 409
 
     @app.errorhandler(500)
     def server_error(error):

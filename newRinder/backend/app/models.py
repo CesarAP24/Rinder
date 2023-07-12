@@ -2,7 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from config.local import config
 import uuid
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import ForeignKey
+import sys
 
 
 
@@ -19,12 +21,47 @@ def setup_db(app, database_path):
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
-    id_usuario = db.Column(db.String(36), primary_key=True)
+    id_usuario = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     correo = db.Column(db.String(50), nullable = False, unique=True)
-    contraseña = db.Column(db.String(100), nullable = False)
+    contraseña = db.Column(db.String(300), nullable = False)
+
+    #metodo para verificar la contraseña hasheada
+    def check_password(self, contraseña):
+        return check_password_hash(self.contraseña, contraseña)
+
+
+    def delete(self):
+        returned_code = 200
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            returned_code = 500
+
+        return returned_code
+
+
+    def insert(self):
+        user_id = "None"
+        try:
+            db.session.add(self)
+            db.session.commit()
+            user_id = self.id_usuario
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+
+        return user_id
+
+
+    def __init__(self, correo, contraseña):
+        self.correo = correo
+        self.contraseña = generate_password_hash(contraseña)
 
     def __repr__(self):
-        return f"<Usuario {self.username}, {self.correo}, {self.id_usuario}>"
+        return f"<Usuario {self.correo}, {self.id_usuario}>"
 
      
 # Perfil ------------------------------------------------------------------------------------------------
