@@ -43,15 +43,6 @@
             Lo sentimos, debes ser mayor de edad para acceder a este sitio.
           </div>
 
-          <label for="username">Username</label>
-          <input
-            type="text"
-            v-model="username"
-            required
-            placeholder="Ingrese su usuario"
-            autocomplete="off"
-          />
-
           <label for="password">Contraseña</label>
           <input
             type="password"
@@ -61,14 +52,15 @@
             autocomplete="on"
           />
 
-          <input
-            type="password"
-            v-model="confirmPassword"
-            required
-            placeholder="Confirme su contraseña"
-            autocomplete="off"
-          />
-          <div id="contraseñas_distintas" style="display: none"></div>
+          <!-- genero -->
+          <div id="genero-a">
+            <label for="genero">Género</label>
+            <select name="genero" id="genero">
+              <option value="masculino">Masculino</option>
+              <option value="femenino">Femenino</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
 
           <button type="submit" id="register-btn">Registrarse</button>
 
@@ -90,9 +82,7 @@ export default {
       apellido: "",
       email: "",
       fechaNacimiento: "",
-      username: "",
       password: "",
-      confirmPassword: "",
     };
   },
   methods: {
@@ -100,9 +90,58 @@ export default {
       event.preventDefault();
       // Aquí puedes agregar la lógica para enviar los datos del formulario al servidor y realizar el registro
       // Puedes acceder a los valores de los campos usando this.nombre, this.apellido, this.email, etc.
+      console.log(document.getElementById("genero").value);
+
+      const userData = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        correo: this.email,
+        nacimiento: this.fechaNacimiento,
+        contraseña: this.password,
+        genero: document.getElementById("genero").value,
+      };
+
+      //fetch a la ruta http://localhost:5000/api/register
+      fetch("http://localhost:5000/usuarios", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.login(this.email, this.password);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Ocurrió un error al registrar el usuario");
+        });
     },
-    showRegisterForm() {
-      // Aquí puedes agregar la lógica para mostrar el formulario de registro
+    login(correo, contraseña) {
+      // fetch a login
+      fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          correo: correo,
+          contraseña: contraseña,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          window.location.href = "/";
+          const access_token = data.access_token;
+          document.cookie = `access_token=${access_token}; path=/;`;
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Ocurrió un error al iniciar sesión");
+        });
     },
   },
 };
