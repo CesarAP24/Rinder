@@ -8,6 +8,12 @@
 <script>
 export default {
   name: "PayPalButton",
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       form: {

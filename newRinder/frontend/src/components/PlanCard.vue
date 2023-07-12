@@ -4,14 +4,19 @@
     <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
     <p class="Planes-abajo">____________________________________________</p>
     <div class="Button-Plan">
-      <p class="Planess">Plan Básico (Actual)</p>
+      <button class="Planess" @click="showPayPal">Plan Básico (Actual)</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BasicPlan",
+  name: "PlanCard",
+  methods: {
+    showPayPal() {
+      this.$emit("showPayPal");
+    },
+  },
 };
 </script>
 
