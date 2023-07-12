@@ -45,7 +45,7 @@ La visión de Rinder es convertirse en líderes dentro de la industria de citas 
 
 El avance del proyecto se encuetra en las siguientes ramas:
 
-RestAPI -> backend <br>
+frontback2 -> backend <br>
 frontVue -> Frontend
 
 
