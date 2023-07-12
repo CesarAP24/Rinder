@@ -22,6 +22,7 @@ from flask_bcrypt import Bcrypt
 import sys
 import uuid
 import json
+import os
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from datetime import timedelta
@@ -349,50 +350,46 @@ def create_app(test_config=None):
                 'errors': list_errors
             }), returned_code
 
-    # @app.route('/compras', methods=['PATCH'])
-    # @jwt_required()
-    # def patch_compras():
-    #     returned_code = 200
-    #     list_errors = []
-    #     try:
-    #         id_usuario = get_jwt_identity()
-    #         body = request.json
-    #         compra = Compra.query.filter_by(id_usuario=id_usuario).first()
-
-    #         if compra:
-    #             if 'suscripcion' in body:
-    #                 suscripcion = body['suscripcion']
-    #                 compra.suscripcion = suscripcion
-    #             if 'precio_compra' in body:
-    #                 precio_compra = body['precio_compra']
-    #                 compra.precio_compra = precio_compra
-
-    #             db.session.commit()
-    #         else:
-    #             returned_code = 404
-    #             list_errors.append(
-    #                 'Compra no encontrada para el usuario actual')
-    #             return jsonify({
-    #                 'success': False,
-    #                 'errors': list_errors
-    #             }), returned_code
-
-    #     except Exception as e:
-    #         returned_code = 500
-    #         list_errors.append(str(e))
-
-    #     if returned_code == 200:
-    #         return jsonify({
-    #             'success': True,
-    #             'compra': compra.serialize()
-    #         }), returned_code
-    #     else:
-    #         return jsonify({
-    #             'success': False,
-    #             'errors': list_errors
-    #         }), returned_code
-
     # POST -----------------------------------------------------------------
+
+    @app.route('/usuarios/<correo>/foto', methods=['POST'])
+    @jwt_required()
+    def post_foto(correo):
+        id_usuario = get_jwt_identity()
+        if id_usuario != Usuario.query.filter_by(correo=correo).first().id_usuario:
+            abort(401)
+        try:
+            file = request.files['file']
+            if file:
+                filename = file.filename
+                #ruta actual
+                current_path = os.getcwd()
+                #ruta donde se guardan las fotos static/images/<id>
+                path = os.path.join(current_path, 'app', 'static','images', str(id_usuario))
+                #si no existe la carpeta la crea
+                print(path)
+                if not os.path.exists(path):
+                    os.makedirs(path)
+                #ruta donde se guarda la foto
+                file.save(os.path.join(path, filename))
+                #actualiza la ruta de la foto en la base de datos
+                profile = Perfil.query.filter_by(id_usuario=id_usuario).first()
+                profile.ruta_photo = filename
+
+                db.session.commit()
+                return jsonify({
+                    'success': True,
+                    'message': 'Foto de perfil actualizada exitosamente'
+                }), 200
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'file is required'
+                }), 400
+        except Exception as e:
+            print(e)
+            abort(500)
+
 
     @app.route('/usuarios', methods=['POST'])
     def post_users():
