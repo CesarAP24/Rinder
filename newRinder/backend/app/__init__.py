@@ -18,7 +18,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import ForeignKey
 from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 
+import sys
 import sys
 import uuid
 import json
@@ -31,7 +33,11 @@ from flask_bcrypt import Bcrypt
 def create_app(test_config=None):
     app = Flask(__name__)
     app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis'
+    app.secret_key = 'pneumonoultramicroscopicsilicovolcanoconiosis'
     app.config['JWT_SECRET_KEY'] = 'pneumonoultramicroscopicsilicovolcanoconiosis'
+    bcrypt = Bcrypt(app)
+    jwt = JWTManager(app)
+
     bcrypt = Bcrypt(app)
     jwt = JWTManager(app)
 
@@ -116,8 +122,10 @@ def create_app(test_config=None):
             id = get_jwt_identity()
 
             if id:
-                ids_likeados = (db.session.query(LikeaPerfil.id_usuario).filter(LikeaPerfil.id_usuario == "mi id").subquery())
-                perfiles = Perfil.query.filter(Perfil.id_usuario.in_(ids_likeados)).all()
+                ids_likeados = (db.session.query(LikeaPerfil.id_usuario).filter(
+                    LikeaPerfil.id_usuario == "mi id").subquery())
+                perfiles = Perfil.query.filter(
+                    Perfil.id_usuario.in_(ids_likeados)).all()
             else:
                 perfiles = Perfil.query.all()
 
@@ -140,7 +148,6 @@ def create_app(test_config=None):
                 'success': True,
                 'perfiles': [perfil.serialize() for perfil in perfiles]
             }), code
-
 
     @app.route('/suscripciones', methods=['GET'])
     def get_suscriptions():
@@ -177,7 +184,6 @@ def create_app(test_config=None):
             'compras': [compra.serialize() for compra in compras]
         }), 200
 
-
     @app.route('/usuarios/<id>/compras', methods=['GET'])
     @jwt_required()
     def get_compras_usuario(id):
@@ -185,7 +191,7 @@ def create_app(test_config=None):
             abort(401)
 
         code = 200
-        error_message = "";
+        error_message = ""
 
         try:
             compras = Compra.query.filter_by(id_usuario=id).all()
@@ -209,8 +215,8 @@ def create_app(test_config=None):
                 'compras': [compra.serialize() for compra in compras]
             }), code
 
-
     # PATCH ----------------------------------------------------------------
+
     @app.route('/perfiles', methods=['PATCH'])
     @jwt_required()
     def patch_perfil():
@@ -462,7 +468,8 @@ def create_app(test_config=None):
                 if len(list_errors) > 0:
                     returned_code = 400
                 else:
-                    suscripcion_search = Suscripcion.query.filter_by(nombre=nombre).first()
+                    suscripcion_search = Suscripcion.query.filter_by(
+                        nombre=nombre).first()
                     if suscripcion_search:
                         returned_code = 409
                     else:
@@ -491,13 +498,12 @@ def create_app(test_config=None):
                 'suscripcion': suscripcion.serialize()
             }), returned_code
 
-
     @app.route('/chats', methods=['POST'])
     def post_chats():
         returned_code = 201
         try:
-            #crear chat
-            chat = Chat();
+            # crear chat
+            chat = Chat()
             db.session.add(chat)
             db.session.commit()
             id_chat = chat.id_chat
@@ -515,7 +521,6 @@ def create_app(test_config=None):
                 'message': 'Chat created',
                 'id_chat': id_chat
             }), returned_code
-
 
     @app.route('/compras', methods=['POST'])
     def post_compras():
@@ -549,7 +554,6 @@ def create_app(test_config=None):
             print(sys.exc_info())
             db.session.rollback()
             returned_code = 500
-
 
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error creating Compra', 'errors': list_errors}), returned_code
@@ -669,7 +673,8 @@ def create_app(test_config=None):
                 usuario = Usuario.query.filter_by(correo=correo).first()
 
                 if usuario and usuario.check_password(password):
-                    access_token = create_access_token(identity=usuario.id_usuario)
+                    access_token = create_access_token(
+                        identity=usuario.id_usuario)
                     returned_code = 200
                 else:
                     returned_code = 401
@@ -681,7 +686,6 @@ def create_app(test_config=None):
             returned_code = 500
         finally:
             db.session.close()
-
 
         if returned_code == 400:
             return jsonify({"success": False, "message": 'Error logging in', 'errors': list_errors}), returned_code
