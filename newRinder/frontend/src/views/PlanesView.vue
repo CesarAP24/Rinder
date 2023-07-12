@@ -16,12 +16,15 @@
             <p class="Planes-abajo">
               ____________________________________________
             </p>
-            <div class="Button-Plan">
+            <button class="Button-Plan" @click="showPayPal">
               <p class="Planess">{{ plan.name }}</p>
-            </div>
+            </button>
           </div>
         </div>
-        <PayPalButton />
+        <div class="paypal" v-show="showPayPalButton" id="pal">
+          <h5></h5>
+          <PayPalButton />
+        </div>
       </div>
     </div>
   </div>
@@ -55,6 +58,12 @@ export default {
       ],
     };
   },
+  methods: {
+    showPayPal() {
+      const paypal = document.querySelector(".paypal");
+      paypal.style.display = "block";
+    },
+  },
 };
 </script>
 
@@ -64,6 +73,12 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
+}
+
+.pal {
+  /* tamano no tan grande */
+  width: 100px;
+  height: 50px;
 }
 
 h1,
@@ -112,6 +127,10 @@ body {
   font-family: "Montserrat", sans-serif;
   align-items: center;
   margin-bottom: 90px;
+}
+
+.paypal {
+  margin-top: 20px;
 }
 
 .main {
@@ -283,5 +302,10 @@ p[data-v-43943ed4] {
   margin-left: 6px;
   margin-bottom: 17px;
   text-align: left;
+}
+.paypal-button-container {
+  min-width: 500px;
+  max-width: 750px;
+  margin-left: 100px;
 }
 </style>

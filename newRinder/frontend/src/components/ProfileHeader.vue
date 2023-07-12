@@ -117,14 +117,15 @@ export default {
   height: auto;
 }
 
-.profile-info-fast {
+.profile-info-fast[data-v-0fabfe96] {
   width: 100%;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-  height: auto;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 
 .profile-info-fast-box {
@@ -251,21 +252,18 @@ export default {
   max-width: 100%;
 }
 
-.btn-add-photo {
-  position: fixed;
+.btn-add-photo[data-v-0fabfe96] {
   background-color: #007bff;
   border-width: thick;
-  border-radius: 100%;
+  border-radius: 124%;
   padding: 2px 2px;
   font-size: 8px;
   font-weight: bold;
-  cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   width: 32px;
   text-align: center;
-  overflow: visible;
   border: 2px solid white;
-  margin-bottom: -7px;
+  margin-bottom: -110px;
   margin-right: -7px;
 }
 

@@ -1,17 +1,23 @@
 <template>
+  <div id="app"></div>
   <div class="Planes" id="basicPlan">
     <div id="placeholder-plan"></div>
     <p class="Planes-abajo">Consta en likes limitados, máximo 20 por día</p>
     <p class="Planes-abajo">____________________________________________</p>
     <div class="Button-Plan">
-      <p class="Planess">Plan Básico (Actual)</p>
+      <button class="Planess" @click="showPayPal">Plan Básico (Actual)</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BasicPlan",
+  name: "PlanCard",
+  methods: {
+    showPayPal() {
+      this.$emit("showPayPal");
+    },
+  },
 };
 </script>
 
@@ -22,8 +28,7 @@ export default {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
 }
-
-h1,
+a h1,
 h2,
 h3,
 h4,
