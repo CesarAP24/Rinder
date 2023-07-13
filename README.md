@@ -13,7 +13,11 @@
 ## Descripción del proyecto:
 
 <p align="justify">
-Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías, entre las cuales destaca TensorFlow. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, utilizando redes neuronales para el aprendizaje automático. Rinder ayuda a los usuarios a establecer conexiones e interacciones con otras personas. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles, aprovechando las capacidades de procesamiento y análisis de datos de la librería TensorFlow.
+Rinder es un servicio web de citas que utiliza el framework de desarrollo web Flask en Python, junto con una serie de librerías. Este servicio está diseñado para brindar una experiencia satisfactoria en las citas, permitiendo a los usuarios establecer conexiones e interacciones con otras personas de manera efectiva. Rinder ofrece un proceso más intuitivo y eficaz para encontrar personas altamente compatibles.
+
+Además, Rinder utiliza Vue.js como su framework de frontend, lo que proporciona una interfaz de usuario dinámica y receptiva. Con Vue.js, los usuarios pueden disfrutar de una experiencia de navegación fluida y enriquecedora en Rinder. Además, Vue.js permite una gestión eficiente de los componentes de la interfaz de usuario, lo que contribuye a la escalabilidad y mantenibilidad del sistema.
+
+Rinder también ha integrado el API de PayPal para ofrecer a los usuarios la posibilidad de adquirir suscripciones premium. A través del uso del API de PayPal, los usuarios pueden realizar pagos seguros y disfrutar de beneficios exclusivos al suscribirse a Rinder. Esta integración con PayPal proporciona una forma conveniente y confiable de acceder a características premium y mejorar la experiencia de citas en Rinder.
 </p>
 
 ## Objetivos/Misión/Visión:
@@ -40,25 +44,39 @@ La API de Rinder está desarrollada en Flask, un framework de desarrollo web en 
 
 #### Modelos:
 
-- `Perfil(id_usuario : PK FK, nombre, apellido, nacimiento, edad, genero, descripcion, ruta_photo)`
-  
-    Guarda todo lo referente a la información del usuario, como su nombre, edad, género, preferencias, etc.
+frontback2 -> backend <br>
+frontVue -> Frontend
 
-- `Usuario(id_usuario : PK, correo, contraseña)`. 
+Componentes:
+LoginForm.vue <br>
+MatchCard.vue <br>
+MessageBubbles.vue <br>
+MessageInput.vue <br> 
+MessageList.vue <br>
+MessagesChats.vue <br>
+PlanCard.vue <br>
+ProfileContent.vue <br>
+ProfileHeader.vue <br>
+RegisterForm.vue <br>
+SideBar.vue <br>
+paypalButton.vue <br>
   
-    Guarda la información de la cuenta del usuario, como su correo electrónico, contraseña y el perfil asociado. El objetivo de tener dos modelos separados es para mantener la información de la cuenta del usuario separada de su información personal.
 
-- `Publicación(id_publicacion : PK, id_usuario : FK, ruta_html)`. 
-  
-    Guarda la información de las publicaciones de los usuarios, como su contenido, fecha de publicación, etc. Una publicación puede ser un comentario o una foto.
-  
-  - `Comentario(id_publicacion : PK FK, id_publicacion2 : FK)`. 
-    
-      Un comentario es una publicación que tiene ascociada otra publicación, por lo que un usuario puede comentar una publicación y tambien responder a comentarios.
-  
-  - `Post(id_publicacion: PK FK)`. 
-    
-      Una Post es una publicación que no tiene asociada otra publicación, por lo que un usuario puede publicar una foto o un comentario.
+## Funcionalidades de la app:
+- Matchear <br>
+	La app debe ser capaz de matchear de forma "inteligente" a los usuarios, mostrandoles primero los que más podrían encajar con ellos
+
+- Interaccion <br>
+	Los usuarios que matchean, pueden interatucar entre si.
+
+- Posts(API Version)<br>
+	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
+
+- Monetización<br>
+	El usuario puede realizar donaciones, nosotros colocamos un monto minimo entonces esto nos ayudará a financiar el proyecto y realizar grandes mejoras
+
+## Host:
+localhost
 
 - `Mensaje(id_mensaje : PK, id_usuario : FK, id_chat : FK, id_mensajePadre : FK)`. 
   
@@ -82,6 +100,10 @@ La API de Rinder está desarrollada en Flask, un framework de desarrollo web en 
 
 ### Frontend:
 
-Diagrama de componentes:
+1.- git clone https://github.com/CesarAP24/Rinder.git <br>
+2.- pip install -r requerimientos.txt <br>
+3.- correr el codigo app.py en la terminal <br> 
+4.- Instalar las dependencias por parte del frontend 
+5.- npm install 
 
 ![](C:\Users\cesar\Desktop\proectos%20universidad\Rinder\DIAGRAMA.PNG)
