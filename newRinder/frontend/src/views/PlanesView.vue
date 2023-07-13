@@ -42,18 +42,8 @@ export default {
       planes: [
         {
           id: 1,
-          name: "Plan Básico",
-          description: "Consta en likes limitados, máximo 20 por día",
-        },
-        {
-          id: 2,
-          name: "Plan VIP",
-          description: "Consta en likes limitados, máximo 50 por día",
-        },
-        {
-          id: 3,
-          name: "Plan Súper-VIP",
-          description: "Consta en likes ilimitados",
+          name: "Donanos aqui!",
+          description: "Sus donaciones nos aportan mucho!",
         },
       ],
     };

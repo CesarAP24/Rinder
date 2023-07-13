@@ -312,4 +312,14 @@ body {
   font-size: 13px;
   margin-top: 10px;
 }
+
+select {
+  width: 95%;
+  margin: 7px;
+  padding: 11px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  border: 1px solid #d5d5d5;
+  font-family: "Montserrat";
+}
 </style>

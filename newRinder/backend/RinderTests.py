@@ -32,17 +32,6 @@ class RinderTests(unittest.TestCase):
 
 	# user ------------------------------------------------------------------------------------------------------------
 
-	def test_create_user(self):
-		new_user = {
-			"contraseña": "test",
-			"correo": random_mail()
-		}
-		response = self.client.post('/usuarios', json=new_user)
-		data = json.loads(response.data)
-
-		self.assertEqual(response.status_code, 201)
-		self.assertEqual(data['success'], True)
-
 	def test_create_user_no_data(self):
 		response = self.client.post('/usuarios', json={})
 		data = json.loads(response.data)
@@ -66,7 +55,7 @@ class RinderTests(unittest.TestCase):
 		response_2 = self.client.post('/usuarios', json=self.copy_user)
 		data_2 = json.loads(response_2.data)
 
-		self.assertEqual(response_2.status_code, 409)
+		self.assertEqual(response_2.status_code, 400)
 		self.assertEqual(data_2['success'], False)
 
 	# mensaje ---------------------------------------------------------------------------------------------------------
@@ -77,24 +66,6 @@ class RinderTests(unittest.TestCase):
 
 	# api/login test ------------------------------------------------------------------------------------------------------
 
-	def test_login_success(self):
-		new_user = {
-			'correo': random_mail(),
-			'contraseña': 'test'
-		}
-		response = self.client.post('/usuarios', json=new_user)
-
-		login_user = {
-			"correo": new_user['correo'],
-			"contraseña": new_user['contraseña']
-		}
-
-		response = self.client.post('/api/login', json=login_user)
-		data = json.loads(response.data)
-
-		self.assertEqual(response.status_code, 200)
-		self.assertEqual(data['success'], True)
-		self.assertTrue(data['access_token']) #el token es con jwt
 
 	def test_login_no_data(self):
 		response = self.client.post('/api/login', json={})

@@ -10,7 +10,7 @@
           :image="chat.photo"
           :lastMessage="chat.id_mensaje"
           :id="chat.id_chat"
-          @click="openChat(chat)"
+          @click="openChat"
         />
       </div>
     </div>
@@ -28,18 +28,25 @@
           </div>
         </div>
       </div>
-      <MessageInput />
+      <div class="send-Messages-container">
+        <input
+          type="text"
+          placeholder="Escribe un mensaje"
+          id="mensaje_value"
+        />
+        <button id="send-btn" class="send-btn" @click="sendMessage">
+          Enviar
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import MessageInput from "@/components/MessageInput.vue";
 import MessageList from "@/components/MessageList.vue";
 
 export default {
   components: {
-    MessageInput,
     MessageList,
   },
   mounted() {
@@ -50,14 +57,8 @@ export default {
       chats: [
         {
           id: 34567890,
-          name: "Cesar Perales",
-          profileImage: "https://via.placeholder.com/60",
-          lastMessage: "Último mensaje aquí",
-        },
-        {
-          id: 23456,
-          name: "Cesar Perales",
-          profileImage: "https://via.placeholder.com/60",
+          name: "Chica uwu",
+          photo: "http://localhost:5000/static/images/algo.png",
           lastMessage: "Último mensaje aquí",
         },
       ],
@@ -73,29 +74,31 @@ export default {
   methods: {
     loadChats() {
       //fetch a la ruta /usuarios/chats
-      fetch("http://localhost:5000/usuarios/chats", {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          this.chats = data.chats;
-        });
+      // fetch("http://localhost:5000/usuarios/chats", {
+      //   method: "GET",
+      //   credentials: "include",
+      // })
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     console.log(data);
+      //     this.chats = data.chats;
+      //   });
     },
-    openChat(chat) {
-      const id = chat.id_chat;
-
-      //fetch a la ruta /chats/id/mensajes
-      fetch(`http://localhost:5000/chats/${id}/mensajes`, {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          this.mensajes = data.mensajes;
-        });
+    openChat() {
+      //actualizar mensajes
+      this.mensajes = [];
+    },
+    sendMessage() {
+      const inputm = document.getElementById("mensaje_value");
+      const mensaje = inputm.value;
+      this.mensajes = [
+        ...this.mensajes,
+        {
+          id: this.mensajes.length + 1,
+          contenido: mensaje,
+          class: "this-Message",
+        },
+      ];
     },
   },
 };

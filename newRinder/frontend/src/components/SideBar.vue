@@ -11,7 +11,7 @@
       <a href="\">Rind your love!</a>
       <a href="\messages">Mensajes</a>
       <a href="\profile">Mi Perfil</a>
-      <a href="\plans">Planes</a>
+      <a href="\plans">Donations</a>
       <a href="\support">Soporte</a>
     </div>
     <div>

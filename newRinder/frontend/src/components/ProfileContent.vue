@@ -1,19 +1,13 @@
 <template>
   <div class="profile-down">
     <div class="profile-info-main rounded-pink-border" style="width: 100%">
-      <h5 id="profile-username" style="font-size: 18px">Username</h5>
+      <h5 id="profile-username" style="font-size: 18px">Usuario</h5>
       <br />
       <h6 id="profile-description" style="font-size: 15px; line-height: 25px">
-        <h7>Descripción:</h7> Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-        qui officia deserunt mollit anim id est laborum.
+        <h7>Descripción:</h7> Descripcion
       </h6>
       <h6 id="profile-nacimiento" style="font-size: 15px; line-height: 35px">
-        <h7>Fecha nacimiento:</h7> 20/05/2005
+        <h7>Fecha nacimiento:</h7> 20/05/2001
       </h6>
       <h6 id="profile-edad" style="font-size: 15px; line-height: 35px">
         <h7>Edad:</h7> 23

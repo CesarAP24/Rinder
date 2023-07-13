@@ -4,7 +4,7 @@
       <div class="profile-info-immage">
         <img
           id="profile-section-photo-img"
-          src="https://via.placeholder.com/150"
+          src="http://localhost:5000/static/images/casurpiemelisante/algo.png"
           alt="Foto de perfil"
         />
         <button id="btn-add-photo" class="btn-add-photo">

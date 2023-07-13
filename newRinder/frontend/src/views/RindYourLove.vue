@@ -29,11 +29,11 @@ export default {
   },
   data() {
     return {
-      photo: "https://via.placeholder.com/525x425",
-      name: "Cesar Perales",
+      photo: "http://localhost:5000/static/images/algo.png",
+      name: "Chica uwu",
       age: 17,
       description:
-        "Guapo por naturaleza, con propietaria pero sin dueña :Stars:. Tuyo no por siempre puesto que cesitar es libre, cesitar es amor.",
+        "Conoceme en la pizzeria, soy muy divertida y me gusta la pizza",
     };
   },
   methods: {
