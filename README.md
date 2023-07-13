@@ -48,9 +48,20 @@ El avance del proyecto se encuetra en las siguientes ramas:
 frontback2 -> backend <br>
 frontVue -> Frontend
 
-
+Componentes:
+LoginForm.vue <br>
+MatchCard.vue <br>
+MessageBubbles.vue <br>
+MessageInput.vue <br> 
+MessageList.vue <br>
+MessagesChats.vue <br>
+PlanCard.vue <br>
+ProfileContent.vue <br>
+ProfileHeader.vue <br>
+RegisterForm.vue <br>
+SideBar.vue <br>
+paypalButton.vue <br>
   
-
 
 ## Funcionalidades de la app:
 - Matchear <br>
@@ -63,17 +74,7 @@ frontVue -> Frontend
 	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
 
 - Monetización<br>
-	El usuario puede pagar por una cuenta premium que le permita acceder a más funcionalidades, como por ejemplo, ver a los usuarios que le dieron like. Ver los usuarios que observan su perfil o tener likes ilimitados
-
-	Es justo en este punto en el que recalcamos que los likes para una cuenta gratuita son limitados. Es decir, una cuenta gratuita podrá dar hasta 15 likes diarios.
-
-- Tipos de planes
-	- Gratuito
-		Las cuentas gratuitas pueden dar de 10 a 20 likes diarios y tienen acceso a los posts de los usuarios que le dieron like. Sin embargo tienen anuncios presentes en la app.
-	- Premium
-		Los premium tieneen hasta 50 likes por día y a diferencia de los gratuitos estos no poseen anuncios.
-	- Vip
-		Los usuarios VIP pueden observar a los usuarios que le dieron like, tienen likes ilimitados y no poseen anuncios.
+	El usuario puede realizar donaciones, nosotros colocamos un monto minimo entonces esto nos ayudará a financiar el proyecto y realizar grandes mejoras
 
 ## Host:
 localhost
