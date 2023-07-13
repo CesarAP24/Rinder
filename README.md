@@ -106,4 +106,4 @@ localhost
 4.- Instalar las dependencias por parte del frontend 
 5.- npm install 
 
-![](C:\Users\cesar\Desktop\proectos%20universidad\Rinder\DIAGRAMA.PNG)
+![](\DIAGRAMA.PNG)
