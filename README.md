@@ -69,9 +69,6 @@ paypalButton.vue <br>
 - Interaccion <br>
 	Los usuarios que matchean, pueden interatucar entre si.
 
-- Posts(API Version)<br>
-	La app tiene un sistema de posts que le permite al usuario compartir fotos, videos, comentarios o su vida en general. De este modo puede interactuar de mejor forma con la gente interesada en este.
-
 - Monetización<br>
 	El usuario puede realizar donaciones, nosotros colocamos un monto minimo entonces esto nos ayudará a financiar el proyecto y realizar grandes mejoras
 
@@ -90,13 +87,10 @@ localhost
   
     Relaciona los usuarios con los chats en los que participan. Por tanto un chat puede tener varios usuarios. Sin embargo, si un chat no tiene nombre tomará el nombre de los usuarios dentro del chat sin incluir al usuario que está haciendo la consulta.
 
-- `LikeaPerfil(id_usuario : PK FK, id_usuarioLikeado : PK FK)`. 
+- `Like(id_usuario : PK FK, id_usuarioLikeado : PK FK)`. 
   
     Guarda la información de los likes que un usuario le da a un perfil, como la fecha en la que se dio el like.
 
-- `LikeaPublicacion(id_usuario : PK FK, id_Publicacion : PK FK)`. 
-  
-    Guarda la información de los likes que un usuario le da a una publicación, como la fecha en la que se dio el like.
 
 ### Frontend:
 
@@ -106,4 +100,4 @@ localhost
 4.- Instalar las dependencias por parte del frontend 
 5.- npm install 
 
-![](\DIAGRAMA.PNG)
+![](DIAGRAMA.PNG)
